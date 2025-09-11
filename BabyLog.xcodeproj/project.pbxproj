@@ -16,6 +16,14 @@
 		4F1E7DF92E72F85800ED93E7 /* BabyLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7DF82E72F85800ED93E7 /* BabyLogTests.swift */; };
 		4F1E7E032E72F85800ED93E7 /* BabyLogUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E022E72F85800ED93E7 /* BabyLogUITests.swift */; };
 		4F1E7E052E72F85800ED93E7 /* BabyLogUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E042E72F85800ED93E7 /* BabyLogUITestsLaunchTests.swift */; };
+		4F1E7E172E72F9ED00ED93E7 /* CoreEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */; };
+		4F1E7E192E72FA0500ED93E7 /* CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E182E72FA0500ED93E7 /* CoreDataClass.swift */; };
+		4F1E7E1B2E72FA1500ED93E7 /* CareEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E1A2E72FA1500ED93E7 /* CareEvent.swift */; };
+		4F1E7E1E2E72FAB900ED93E7 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E1D2E72FAB900ED93E7 /* RootView.swift */; };
+		4F1E7E202E72FB2B00ED93E7 /* OnboardingNewBabyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E1F2E72FB2B00ED93E7 /* OnboardingNewBabyView.swift */; };
+		4F1E7E222E72FB8E00ED93E7 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E212E72FB8E00ED93E7 /* TimelineView.swift */; };
+		4F1E7E242E72FE9000ED93E7 /* EventRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E232E72FE9000ED93E7 /* EventRowView.swift */; };
+		4F1E7E262E72FF7400ED93E7 /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E252E72FF7400ED93E7 /* AddEventView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +56,14 @@
 		4F1E7DFE2E72F85800ED93E7 /* BabyLogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BabyLogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1E7E022E72F85800ED93E7 /* BabyLogUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogUITests.swift; sourceTree = "<group>"; };
 		4F1E7E042E72F85800ED93E7 /* BabyLogUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreEnums.swift; sourceTree = "<group>"; };
+		4F1E7E182E72FA0500ED93E7 /* CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataClass.swift; sourceTree = "<group>"; };
+		4F1E7E1A2E72FA1500ED93E7 /* CareEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareEvent.swift; sourceTree = "<group>"; };
+		4F1E7E1D2E72FAB900ED93E7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		4F1E7E1F2E72FB2B00ED93E7 /* OnboardingNewBabyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNewBabyView.swift; sourceTree = "<group>"; };
+		4F1E7E212E72FB8E00ED93E7 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
+		4F1E7E232E72FE9000ED93E7 /* EventRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRowView.swift; sourceTree = "<group>"; };
+		4F1E7E252E72FF7400ED93E7 /* AddEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +114,8 @@
 		4F1E7DE12E72F85600ED93E7 /* BabyLog */ = {
 			isa = PBXGroup;
 			children = (
+				4F1E7E1C2E72FAAB00ED93E7 /* Presentation */,
+				4F1E7E112E72F86500ED93E7 /* Model */,
 				4F1E7DE22E72F85600ED93E7 /* BabyLogApp.swift */,
 				4F1E7DE42E72F85600ED93E7 /* ContentView.swift */,
 				4F1E7DE62E72F85800ED93E7 /* Assets.xcassets */,
@@ -131,6 +149,28 @@
 				4F1E7E042E72F85800ED93E7 /* BabyLogUITestsLaunchTests.swift */,
 			);
 			path = BabyLogUITests;
+			sourceTree = "<group>";
+		};
+		4F1E7E112E72F86500ED93E7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4F1E7E182E72FA0500ED93E7 /* CoreDataClass.swift */,
+				4F1E7E1A2E72FA1500ED93E7 /* CareEvent.swift */,
+				4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4F1E7E1C2E72FAAB00ED93E7 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				4F1E7E1D2E72FAB900ED93E7 /* RootView.swift */,
+				4F1E7E212E72FB8E00ED93E7 /* TimelineView.swift */,
+				4F1E7E232E72FE9000ED93E7 /* EventRowView.swift */,
+				4F1E7E252E72FF7400ED93E7 /* AddEventView.swift */,
+				4F1E7E1F2E72FB2B00ED93E7 /* OnboardingNewBabyView.swift */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,10 +303,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F1E7E1E2E72FAB900ED93E7 /* RootView.swift in Sources */,
 				4F1E7DEF2E72F85800ED93E7 /* BabyLog.xcdatamodeld in Sources */,
+				4F1E7E202E72FB2B00ED93E7 /* OnboardingNewBabyView.swift in Sources */,
+				4F1E7E222E72FB8E00ED93E7 /* TimelineView.swift in Sources */,
 				4F1E7DEC2E72F85800ED93E7 /* Persistence.swift in Sources */,
 				4F1E7DE52E72F85600ED93E7 /* ContentView.swift in Sources */,
+				4F1E7E172E72F9ED00ED93E7 /* CoreEnums.swift in Sources */,
+				4F1E7E262E72FF7400ED93E7 /* AddEventView.swift in Sources */,
 				4F1E7DE32E72F85600ED93E7 /* BabyLogApp.swift in Sources */,
+				4F1E7E192E72FA0500ED93E7 /* CoreDataClass.swift in Sources */,
+				4F1E7E242E72FE9000ED93E7 /* EventRowView.swift in Sources */,
+				4F1E7E1B2E72FA1500ED93E7 /* CareEvent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
