@@ -30,7 +30,14 @@ struct TimelineView: View {
         NavigationStack {
             List {
                 if events.isEmpty {
-                    ContentUnavailableView("기록 없음", systemImage: "calendar.badge.exclamationmark", description: Text("오른쪽 위 + 버튼으로 첫 기록을 추가하세요."))
+                    EmptyStateView(
+                        title: "기록 없음",
+                        systemImage: "calendar.badge.exclamationmark",
+                        message: "오른쪽 위 + 버튼으로 첫 기록을 추가하세요."
+                    )
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
                 } else {
                     ForEach(events) { ev in
                         EventRowView(event: ev)
@@ -38,16 +45,18 @@ struct TimelineView: View {
                     .onDelete(perform: delete)
                 }
             }
-            .navigationTitle("\(baby.name) 타임라인")
+            .navigationTitle("\(baby.name ?? "") 타임라인")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { showAddSheet = true } label: {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showAddSheet = true
+                    } label: {
                         Image(systemName: "plus.circle.fill")
                     }
                 }
             }
             .sheet(isPresented: $showAddSheet) {
-                
+                AddEventView(baby: baby)
             }
         }
     }
@@ -60,6 +69,17 @@ struct TimelineView: View {
 
 struct TimelineView_Previews: PreviewProvider {
     static var previews: some View {
-        TimelineView()
+        let context = PreviewPersistence.controller.container.viewContext
+        
+        let request: NSFetchRequest<Baby> = Baby.fetchRequest()
+        let baby = (try? context.fetch(request).first) ?? {
+            let b = Baby(context: context)
+            b.id = UUID()
+            b.name = "Preview Baby"
+            b.birthday = Date()
+            return b
+        }()
+        
+        TimelineView(baby: baby)
     }
 }

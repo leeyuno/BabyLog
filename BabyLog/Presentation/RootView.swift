@@ -10,7 +10,7 @@ import CoreData
 
 struct RootView: View {
     @Environment(\.managedObjectContext) private var context
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: \Baby.name, ascending: true)])
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Baby.name, ascending: true)])
     private var babies: FetchedResults<Baby>
     
     var body: some View {

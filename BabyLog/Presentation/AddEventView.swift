@@ -5,16 +5,24 @@
 //  Created by 이윤오 on 2025/09/11.
 //
 
+//
+//  AddEventView.swift
+//  BabyLog
+//
+//  Created by 이윤오 on 2025/09/11.
+//
+
 import SwiftUI
+import CoreData
 
 struct AddEventView: View {
-    let baby = Baby
+    let baby: Baby
     @Environment(\.managedObjectContext) private var context
     @Environment(\.dismiss) private var dismiss
     
     @State private var kind: CareKind = .feed
     
-    //feed
+    // feed
     @State private var feedType: FeedType = .breastMilk
     @State private var feedAmount: Int = 60
     
@@ -29,10 +37,13 @@ struct AddEventView: View {
     @State private var note: String = ""
     
     var body: some View {
-        NavigationStack {
+        // iOS 15 호환을 위해 NavigationView 사용
+        NavigationView {
             Form {
                 Picker("종류", selection: $kind) {
-                    ForEach(CareKind.allCases, id: \.self) { Text($0.label).tag(30) }
+                    ForEach(CareKind.allCases, id: \.self) {
+                        Text($0.label).tag($0) // ✅ 열거값 자체를 tag로
+                    }
                 }
                 
                 switch kind {
@@ -43,7 +54,11 @@ struct AddEventView: View {
                             Text("분유").tag(FeedType.formula)
                         }
                         Stepper(value: $feedAmount, in: 10...300, step: 10) {
-                            HStack { Text("수유량"); Spacer(); Text("\(feedAmount) ml") }
+                            HStack {
+                                Text("수유량")
+                                Spacer()
+                                Text("\(feedAmount) ml")
+                            }
                         }
                     }
                 case .diaper:
@@ -65,15 +80,17 @@ struct AddEventView: View {
                 }
                 
                 Section("메모") {
-                    Text("선택 입력", text: $note, axis: .vertical)
+                    // ✅ Text → TextField로 교체
+                    TextField("선택 입력", text: $note, axis: .vertical)
                 }
             }
+            // .formStyle(.grouped)  // ❌ iOS15에서는 제거
             .navigationTitle("새 기록")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
+                ToolbarItem(placement: .navigationBarLeading) { // iOS15 호환
                     Button("닫기") { dismiss() }
                 }
-                ToolbarItem(placement: .confirmationAction) {
+                ToolbarItem(placement: .navigationBarTrailing) { // iOS15 호환
                     Button("저장") { save() }
                         .disabled(!isValid)
                 }
@@ -83,7 +100,7 @@ struct AddEventView: View {
     
     private var isValid: Bool {
         switch kind {
-        case. feed:
+        case .feed:
             return feedAmount > 0
         case .diaper:
             return true
@@ -121,6 +138,19 @@ struct AddEventView: View {
 
 struct AddEventView_Previews: PreviewProvider {
     static var previews: some View {
-        AddEventView()
+        let context = PreviewPersistence.controller.container.viewContext
+
+        // Baby 하나 확보
+        let request: NSFetchRequest<Baby> = Baby.fetchRequest()
+        let baby = (try? context.fetch(request).first) ?? {
+            let b = Baby(context: context)
+            b.id = UUID()
+            b.name = "Preview Baby"
+            b.birthday = Date()
+            return b
+        }()
+
+        return AddEventView(baby: baby)
+            .environment(\.managedObjectContext, context)
     }
 }

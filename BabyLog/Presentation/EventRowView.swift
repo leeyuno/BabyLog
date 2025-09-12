@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct EventRowView: View {
     let event: CareEvent
@@ -66,6 +67,25 @@ struct EventRowView: View {
 
 struct EventRowView_Previews: PreviewProvider {
     static var previews: some View {
-        EventRowView(event: CareEvent(entity: <#T##NSEntityDescription#>, insertInto: <#T##NSManagedObjectContext?#>))
+        let context = PreviewPersistence.controller.container.viewContext
+
+        // 미리보기용 fetch
+        let request: NSFetchRequest<CareEvent> = CareEvent.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \CareEvent.createdAt, ascending: false)]
+        request.fetchLimit = 1
+
+        let event = (try? context.fetch(request).first) ?? {
+            let e = CareEvent(context: context)
+            e.id = UUID()
+            e.kind = .feed
+            e.feedType = .formula
+            e.feedAmountML = 120
+            e.createdAt = Date()
+            return e
+        }()
+
+        return EventRowView(event: event)
+            .previewLayout(.sizeThatFits)
+            .padding()
     }
 }
