@@ -18,9 +18,10 @@ struct TimelineView: View {
     init(baby: Baby) {
         self.baby = baby
         let since = Calendar.current.date(byAdding: .hour, value: -24, to: Date()) ?? Date().addingTimeInterval(-86400)
-        let predicate = NSPredicate(format: "baby == %@ AND createAy >= %@", baby, since as NSDate)
+        let predicate = NSPredicate(format: "baby == %@ AND createdAt >= %@", baby, since as NSDate)
         _events = FetchRequest<CareEvent>(
-            sortDescriptors: [NSSortDescriptor(keyPath: \CareEvent.createdAt, ascending: false)],
+            entity: CareEvent.entity(),
+            sortDescriptors: [NSSortDescriptor(key: "createdAt", ascending: false)],
             predicate: predicate,
             animation: .default
         )

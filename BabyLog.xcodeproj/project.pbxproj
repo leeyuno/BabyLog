@@ -24,6 +24,7 @@
 		4F1E7E262E72FF7400ED93E7 /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E252E72FF7400ED93E7 /* AddEventView.swift */; };
 		4F1E7E2C2E74530300ED93E7 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */; };
 		4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */; };
+		4F1E7E302E75A12500ED93E7 /* BabyLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		4F1E7E252E72FF7400ED93E7 /* AddEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventView.swift; sourceTree = "<group>"; };
 		4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPersistence.swift; sourceTree = "<group>"; };
+		4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 			children = (
 				4F1E7E1A2E72FA1500ED93E7 /* CareEvent.swift */,
 				4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */,
+				4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				4F1E7E222E72FB8E00ED93E7 /* TimelineView.swift in Sources */,
 				4F1E7DEC2E72F85800ED93E7 /* Persistence.swift in Sources */,
 				4F1E7E2C2E74530300ED93E7 /* EmptyStateView.swift in Sources */,
+				4F1E7E302E75A12500ED93E7 /* BabyLog.swift in Sources */,
 				4F1E7E172E72F9ED00ED93E7 /* CoreEnums.swift in Sources */,
 				4F1E7E262E72FF7400ED93E7 /* AddEventView.swift in Sources */,
 				4F1E7DE32E72F85600ED93E7 /* BabyLogApp.swift in Sources */,
