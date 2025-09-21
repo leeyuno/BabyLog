@@ -25,7 +25,19 @@ struct RootView: View {
     var body: some View {
         Group {
             if let baby = babies.first {
-                TimelineView(baby: baby)
+                TabView {
+                    TimelineView(baby: baby)
+                        .tabItem {
+                            Image(systemName: "list.bullet.rectangle")
+                            Text("타임라인")
+                        }
+                    
+                    WeeklyOverviewView(baby: baby)
+                        .tabItem {
+                            Image(systemName: "chart.bar.doc.horizontal")
+                            Text("주간 개요")
+                        }
+                }
             } else {
                 OnboardingNewBabyView()
             }

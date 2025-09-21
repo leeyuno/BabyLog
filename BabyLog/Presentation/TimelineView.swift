@@ -14,6 +14,8 @@ struct TimelineView: View {
     @State private var showAddSheet = false
     
     @FetchRequest private var events: FetchedResults<CareEvent>
+    
+    @State private var editingEvent: CareEvent? = nil
 
     init(baby: Baby) {
         self.baby = baby
@@ -42,11 +44,18 @@ struct TimelineView: View {
                 } else {
                     ForEach(events) { ev in
                         EventRowView(event: ev)
+                            .swipeActions(edge: .trailing) {
+                                Button {
+                                    editingEvent = ev
+                                } label: {
+                                    Label("편집", systemImage: "pencil")
+                                }
+                            }
                     }
                     .onDelete(perform: delete)
                 }
             }
-            .navigationTitle("\(baby.name ?? "") 타임라인")
+            .navigationTitle("\(baby.name) 타임라인")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -58,6 +67,9 @@ struct TimelineView: View {
             }
             .sheet(isPresented: $showAddSheet) {
                 AddEventView(baby: baby)
+            }
+            .sheet(item: $editingEvent) { ev in
+                EditEventTimeView(event: ev)
             }
         }
     }

@@ -24,7 +24,7 @@ struct AddEventView: View {
     
     // feed
     @State private var feedType: FeedType = .breastMilk
-    @State private var feedAmount: Int = 60
+    @State private var feedAmount: Int = 80
     
     // diaper
     @State private var diaperType: DiaperType = .pee
@@ -50,8 +50,8 @@ struct AddEventView: View {
                 case .feed:
                     Section("수유") {
                         Picker("타입", selection: $feedType) {
-                            Text("모유").tag(FeedType.breastMilk)
                             Text("분유").tag(FeedType.formula)
+                            Text("모유").tag(FeedType.breastMilk)
                         }
                         Stepper(value: $feedAmount, in: 10...300, step: 10) {
                             HStack {

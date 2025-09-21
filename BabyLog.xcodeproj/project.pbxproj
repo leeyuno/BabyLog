@@ -25,6 +25,26 @@
 		4F1E7E2C2E74530300ED93E7 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */; };
 		4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */; };
 		4F1E7E302E75A12500ED93E7 /* BabyLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */; };
+		4F1E7E322E7A87C600ED93E7 /* EditEventTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E312E7A87C600ED93E7 /* EditEventTimeView.swift */; };
+		4F1E7E342E7F8C5000ED93E7 /* WeeklyOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */; };
+		4F1E7E362E7F93C000ED93E7 /* ChartsGroupedBars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */; };
+		4F1E7E382E7F960E00ED93E7 /* FallbackBars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */; };
+		4F1E7E402E7FA48400ED93E7 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1E7E3F2E7FA48300ED93E7 /* WidgetKit.framework */; };
+		4F1E7E422E7FA48400ED93E7 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1E7E412E7FA48400ED93E7 /* SwiftUI.framework */; };
+		4F1E7E452E7FA48400ED93E7 /* BabyLogWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E442E7FA48400ED93E7 /* BabyLogWidgetBundle.swift */; };
+		4F1E7E472E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E462E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift */; };
+		4F1E7E492E7FA48400ED93E7 /* BabyLogElapsedWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E482E7FA48400ED93E7 /* BabyLogElapsedWidget.swift */; };
+		4F1E7E4C2E7FA48600ED93E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E7E4B2E7FA48600ED93E7 /* Assets.xcassets */; };
+		4F1E7E4E2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E4A2E7FA48400ED93E7 /* BabyLogWidget.intentdefinition */; };
+		4F1E7E4F2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E4A2E7FA48400ED93E7 /* BabyLogWidget.intentdefinition */; };
+		4F1E7E522E7FA48600ED93E7 /* BabyLogWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4F1E7E3D2E7FA48300ED93E7 /* BabyLogWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4F1E7E582E7FA72300ED93E7 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E572E7FA72300ED93E7 /* Constant.swift */; };
+		4F1E7E592E7FA8D500ED93E7 /* BabyLogElapsedWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E482E7FA48400ED93E7 /* BabyLogElapsedWidget.swift */; };
+		4F1E7E5B2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */; };
+		4F1E7E5C2E7FABA800ED93E7 /* BabyLogTodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */; };
+		4F1E7E5E2E7FBB1B00ED93E7 /* CareEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E1A2E72FA1500ED93E7 /* CareEvent.swift */; };
+		4F1E7E5F2E7FBB1F00ED93E7 /* CoreEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */; };
+		4F1E7E602E7FBB2400ED93E7 /* BabyLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +62,28 @@
 			remoteGlobalIDString = 4F1E7DDE2E72F85600ED93E7;
 			remoteInfo = BabyLog;
 		};
+		4F1E7E502E7FA48600ED93E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4F1E7DD72E72F85600ED93E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F1E7E3C2E7FA48300ED93E7;
+			remoteInfo = BabyLogWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4F1E7E562E7FA48600ED93E7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4F1E7E522E7FA48600ED93E7 /* BabyLogWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4F1E7DDF2E72F85600ED93E7 /* BabyLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabyLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,6 +107,22 @@
 		4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPersistence.swift; sourceTree = "<group>"; };
 		4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLog.swift; sourceTree = "<group>"; };
+		4F1E7E312E7A87C600ED93E7 /* EditEventTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEventTimeView.swift; sourceTree = "<group>"; };
+		4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyOverviewView.swift; sourceTree = "<group>"; };
+		4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsGroupedBars.swift; sourceTree = "<group>"; };
+		4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallbackBars.swift; sourceTree = "<group>"; };
+		4F1E7E3D2E7FA48300ED93E7 /* BabyLogWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BabyLogWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F1E7E3F2E7FA48300ED93E7 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		4F1E7E412E7FA48400ED93E7 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		4F1E7E442E7FA48400ED93E7 /* BabyLogWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogWidgetBundle.swift; sourceTree = "<group>"; };
+		4F1E7E462E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogWidgetLiveActivity.swift; sourceTree = "<group>"; };
+		4F1E7E482E7FA48400ED93E7 /* BabyLogElapsedWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogElapsedWidget.swift; sourceTree = "<group>"; };
+		4F1E7E4A2E7FA48400ED93E7 /* BabyLogWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = BabyLogWidget.intentdefinition; sourceTree = "<group>"; };
+		4F1E7E4B2E7FA48600ED93E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4F1E7E4D2E7FA48600ED93E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F1E7E572E7FA72300ED93E7 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogTodayWidget.swift; sourceTree = "<group>"; };
+		4F1E7E5D2E7FBA1000ED93E7 /* BabyLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BabyLog.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +147,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4F1E7E3A2E7FA48300ED93E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1E7E422E7FA48400ED93E7 /* SwiftUI.framework in Frameworks */,
+				4F1E7E402E7FA48400ED93E7 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -99,6 +165,8 @@
 				4F1E7DE12E72F85600ED93E7 /* BabyLog */,
 				4F1E7DF72E72F85800ED93E7 /* BabyLogTests */,
 				4F1E7E012E72F85800ED93E7 /* BabyLogUITests */,
+				4F1E7E432E7FA48400ED93E7 /* BabyLogWidget */,
+				4F1E7E3E2E7FA48300ED93E7 /* Frameworks */,
 				4F1E7DE02E72F85600ED93E7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +177,7 @@
 				4F1E7DDF2E72F85600ED93E7 /* BabyLog.app */,
 				4F1E7DF42E72F85800ED93E7 /* BabyLogTests.xctest */,
 				4F1E7DFE2E72F85800ED93E7 /* BabyLogUITests.xctest */,
+				4F1E7E3D2E7FA48300ED93E7 /* BabyLogWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,6 +185,7 @@
 		4F1E7DE12E72F85600ED93E7 /* BabyLog */ = {
 			isa = PBXGroup;
 			children = (
+				4F1E7E5D2E7FBA1000ED93E7 /* BabyLog.entitlements */,
 				4F1E7E1C2E72FAAB00ED93E7 /* Presentation */,
 				4F1E7E112E72F86500ED93E7 /* Model */,
 				4F1E7DE22E72F85600ED93E7 /* BabyLogApp.swift */,
@@ -158,6 +228,7 @@
 				4F1E7E1A2E72FA1500ED93E7 /* CareEvent.swift */,
 				4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */,
 				4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */,
+				4F1E7E572E7FA72300ED93E7 /* Constant.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -166,7 +237,11 @@
 			isa = PBXGroup;
 			children = (
 				4F1E7E1D2E72FAB900ED93E7 /* RootView.swift */,
+				4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */,
+				4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */,
+				4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */,
 				4F1E7E212E72FB8E00ED93E7 /* TimelineView.swift */,
+				4F1E7E312E7A87C600ED93E7 /* EditEventTimeView.swift */,
 				4F1E7E232E72FE9000ED93E7 /* EventRowView.swift */,
 				4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */,
 				4F1E7E252E72FF7400ED93E7 /* AddEventView.swift */,
@@ -174,6 +249,29 @@
 				4F1E7E1F2E72FB2B00ED93E7 /* OnboardingNewBabyView.swift */,
 			);
 			path = Presentation;
+			sourceTree = "<group>";
+		};
+		4F1E7E3E2E7FA48300ED93E7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F1E7E3F2E7FA48300ED93E7 /* WidgetKit.framework */,
+				4F1E7E412E7FA48400ED93E7 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4F1E7E432E7FA48400ED93E7 /* BabyLogWidget */ = {
+			isa = PBXGroup;
+			children = (
+				4F1E7E442E7FA48400ED93E7 /* BabyLogWidgetBundle.swift */,
+				4F1E7E462E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift */,
+				4F1E7E482E7FA48400ED93E7 /* BabyLogElapsedWidget.swift */,
+				4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */,
+				4F1E7E4A2E7FA48400ED93E7 /* BabyLogWidget.intentdefinition */,
+				4F1E7E4B2E7FA48600ED93E7 /* Assets.xcassets */,
+				4F1E7E4D2E7FA48600ED93E7 /* Info.plist */,
+			);
+			path = BabyLogWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,10 +284,12 @@
 				4F1E7DDB2E72F85600ED93E7 /* Sources */,
 				4F1E7DDC2E72F85600ED93E7 /* Frameworks */,
 				4F1E7DDD2E72F85600ED93E7 /* Resources */,
+				4F1E7E562E7FA48600ED93E7 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4F1E7E512E7FA48600ED93E7 /* PBXTargetDependency */,
 			);
 			name = BabyLog;
 			productName = BabyLog;
@@ -232,6 +332,23 @@
 			productReference = 4F1E7DFE2E72F85800ED93E7 /* BabyLogUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		4F1E7E3C2E7FA48300ED93E7 /* BabyLogWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F1E7E532E7FA48600ED93E7 /* Build configuration list for PBXNativeTarget "BabyLogWidgetExtension" */;
+			buildPhases = (
+				4F1E7E392E7FA48300ED93E7 /* Sources */,
+				4F1E7E3A2E7FA48300ED93E7 /* Frameworks */,
+				4F1E7E3B2E7FA48300ED93E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BabyLogWidgetExtension;
+			productName = BabyLogWidgetExtension;
+			productReference = 4F1E7E3D2E7FA48300ED93E7 /* BabyLogWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -253,6 +370,9 @@
 						CreatedOnToolsVersion = 14.2;
 						TestTargetID = 4F1E7DDE2E72F85600ED93E7;
 					};
+					4F1E7E3C2E7FA48300ED93E7 = {
+						CreatedOnToolsVersion = 14.2;
+					};
 				};
 			};
 			buildConfigurationList = 4F1E7DDA2E72F85600ED93E7 /* Build configuration list for PBXProject "BabyLog" */;
@@ -271,6 +391,7 @@
 				4F1E7DDE2E72F85600ED93E7 /* BabyLog */,
 				4F1E7DF32E72F85800ED93E7 /* BabyLogTests */,
 				4F1E7DFD2E72F85800ED93E7 /* BabyLogUITests */,
+				4F1E7E3C2E7FA48300ED93E7 /* BabyLogWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -299,6 +420,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4F1E7E3B2E7FA48300ED93E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1E7E4C2E7FA48600ED93E7 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -308,17 +437,25 @@
 			files = (
 				4F1E7E1E2E72FAB900ED93E7 /* RootView.swift in Sources */,
 				4F1E7DEF2E72F85800ED93E7 /* BabyLog.xcdatamodeld in Sources */,
+				4F1E7E322E7A87C600ED93E7 /* EditEventTimeView.swift in Sources */,
 				4F1E7E202E72FB2B00ED93E7 /* OnboardingNewBabyView.swift in Sources */,
 				4F1E7E222E72FB8E00ED93E7 /* TimelineView.swift in Sources */,
+				4F1E7E362E7F93C000ED93E7 /* ChartsGroupedBars.swift in Sources */,
 				4F1E7DEC2E72F85800ED93E7 /* Persistence.swift in Sources */,
+				4F1E7E4F2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */,
+				4F1E7E582E7FA72300ED93E7 /* Constant.swift in Sources */,
 				4F1E7E2C2E74530300ED93E7 /* EmptyStateView.swift in Sources */,
+				4F1E7E592E7FA8D500ED93E7 /* BabyLogElapsedWidget.swift in Sources */,
 				4F1E7E302E75A12500ED93E7 /* BabyLog.swift in Sources */,
 				4F1E7E172E72F9ED00ED93E7 /* CoreEnums.swift in Sources */,
 				4F1E7E262E72FF7400ED93E7 /* AddEventView.swift in Sources */,
 				4F1E7DE32E72F85600ED93E7 /* BabyLogApp.swift in Sources */,
+				4F1E7E342E7F8C5000ED93E7 /* WeeklyOverviewView.swift in Sources */,
+				4F1E7E5B2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift in Sources */,
 				4F1E7E242E72FE9000ED93E7 /* EventRowView.swift in Sources */,
 				4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */,
 				4F1E7E1B2E72FA1500ED93E7 /* CareEvent.swift in Sources */,
+				4F1E7E382E7F960E00ED93E7 /* FallbackBars.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +476,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4F1E7E392E7FA48300ED93E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1E7E602E7FBB2400ED93E7 /* BabyLog.swift in Sources */,
+				4F1E7E5C2E7FABA800ED93E7 /* BabyLogTodayWidget.swift in Sources */,
+				4F1E7E452E7FA48400ED93E7 /* BabyLogWidgetBundle.swift in Sources */,
+				4F1E7E5F2E7FBB1F00ED93E7 /* CoreEnums.swift in Sources */,
+				4F1E7E472E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift in Sources */,
+				4F1E7E5E2E7FBB1B00ED93E7 /* CareEvent.swift in Sources */,
+				4F1E7E492E7FA48400ED93E7 /* BabyLogElapsedWidget.swift in Sources */,
+				4F1E7E4E2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -351,6 +503,11 @@
 			isa = PBXTargetDependency;
 			target = 4F1E7DDE2E72F85600ED93E7 /* BabyLog */;
 			targetProxy = 4F1E7DFF2E72F85800ED93E7 /* PBXContainerItemProxy */;
+		};
+		4F1E7E512E7FA48600ED93E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F1E7E3C2E7FA48300ED93E7 /* BabyLogWidgetExtension */;
+			targetProxy = 4F1E7E502E7FA48600ED93E7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -472,8 +629,10 @@
 		4F1E7E092E72F85800ED93E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BabyLog/BabyLog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BabyLog/Preview Content\"";
@@ -501,8 +660,10 @@
 		4F1E7E0A2E72F85800ED93E7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BabyLog/BabyLog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BabyLog/Preview Content\"";
@@ -603,6 +764,60 @@
 			};
 			name = Release;
 		};
+		4F1E7E542E7FA48600ED93E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2H7EM56K2Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BabyLogWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BabyLogWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leeyuno.BabyLog.BabyLogWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4F1E7E552E7FA48600ED93E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2H7EM56K2Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BabyLogWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BabyLogWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leeyuno.BabyLog.BabyLogWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -638,6 +853,15 @@
 			buildConfigurations = (
 				4F1E7E0F2E72F85800ED93E7 /* Debug */,
 				4F1E7E102E72F85800ED93E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F1E7E532E7FA48600ED93E7 /* Build configuration list for PBXNativeTarget "BabyLogWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F1E7E542E7FA48600ED93E7 /* Debug */,
+				4F1E7E552E7FA48600ED93E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

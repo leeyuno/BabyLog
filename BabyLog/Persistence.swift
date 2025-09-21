@@ -16,7 +16,16 @@ struct PersistenceController {
         container = NSPersistentContainer(name: "BabyLog")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            let storeURL = FileManager.default
+                .containerURL(forSecurityApplicationGroupIdentifier: "group.com.leeyuno.BabyLog")!
+                .appendingPathComponent("BabyLog.sqlite")
+            
+            let description = NSPersistentStoreDescription(url: storeURL)
+            container.persistentStoreDescriptions = [description]
         }
+        
+        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
