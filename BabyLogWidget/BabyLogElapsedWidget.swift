@@ -71,7 +71,7 @@ struct BabyLogElapsedProvider: TimelineProvider {
     }
 }
 
-struct BabyLogWidgetEntryView : View {
+struct BabyLogElapsedWidgetEntryView : View {
     var entry: BabyLogElapsedProvider.Entry
 
     var body: some View {
@@ -95,7 +95,7 @@ struct BabyLogElapsedWidget: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: BabyLogElapsedProvider()) { entry in
-            BabyLogWidgetEntryView(entry: entry)
+            BabyLogElapsedWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("수유 경과 시간")
         .description("마지막 수유로부터 얼마나 지났는지 보여줍니다.")

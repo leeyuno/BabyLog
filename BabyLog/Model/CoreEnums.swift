@@ -20,7 +20,7 @@ enum CareKind: Int16, CaseIterable {
 
 enum FeedType: Int16, CaseIterable {
     case breastMilk = 0, formula = 1
-    var label: String { self == .breastMilk ? "모유" : "분유" }
+    var label: String { self == .formula ? "분유" : "모유" }
 }
 
 enum DiaperType: Int16, CaseIterable {

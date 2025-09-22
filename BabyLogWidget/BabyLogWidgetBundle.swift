@@ -13,5 +13,6 @@ struct BabyLogWidgetBundle: WidgetBundle {
     var body: some Widget {
         BabyLogElapsedWidget()
         BabyLogTodayWidget()
+        BabyLogDailySummaryWidget()
     }
 }

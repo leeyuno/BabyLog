@@ -45,6 +45,14 @@
 		4F1E7E5E2E7FBB1B00ED93E7 /* CareEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E1A2E72FA1500ED93E7 /* CareEvent.swift */; };
 		4F1E7E5F2E7FBB1F00ED93E7 /* CoreEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */; };
 		4F1E7E602E7FBB2400ED93E7 /* BabyLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */; };
+		4F1E7E6C2E8195D100ED93E7 /* MetricChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E6B2E8195D100ED93E7 /* MetricChipView.swift */; };
+		4F1E7E7A2E819E4A00ED93E7 /* DailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */; };
+		4F1E7E7C2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E7B2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift */; };
+		4F1E7E7E2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E7D2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift */; };
+		4F1E7E7F2E819EF400ED93E7 /* DailySummaryWidgetChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E7D2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift */; };
+		4F1E7E802E819F0200ED93E7 /* BabyLogDailySummaryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E7B2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift */; };
+		4F1E7E812E819FCF00ED93E7 /* DailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */; };
+		4F1E7E832E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +131,11 @@
 		4F1E7E572E7FA72300ED93E7 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogTodayWidget.swift; sourceTree = "<group>"; };
 		4F1E7E5D2E7FBA1000ED93E7 /* BabyLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BabyLog.entitlements; sourceTree = "<group>"; };
+		4F1E7E6B2E8195D100ED93E7 /* MetricChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricChipView.swift; sourceTree = "<group>"; };
+		4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySummary.swift; sourceTree = "<group>"; };
+		4F1E7E7B2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogDailySummaryWidget.swift; sourceTree = "<group>"; };
+		4F1E7E7D2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySummaryWidgetChipView.swift; sourceTree = "<group>"; };
+		4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogQuickAddWIdget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +242,7 @@
 				4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */,
 				4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */,
 				4F1E7E572E7FA72300ED93E7 /* Constant.swift */,
+				4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -239,10 +253,12 @@
 				4F1E7E1D2E72FAB900ED93E7 /* RootView.swift */,
 				4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */,
 				4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */,
+				4F1E7E6B2E8195D100ED93E7 /* MetricChipView.swift */,
 				4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */,
 				4F1E7E212E72FB8E00ED93E7 /* TimelineView.swift */,
 				4F1E7E312E7A87C600ED93E7 /* EditEventTimeView.swift */,
 				4F1E7E232E72FE9000ED93E7 /* EventRowView.swift */,
+				4F1E7E7D2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift */,
 				4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */,
 				4F1E7E252E72FF7400ED93E7 /* AddEventView.swift */,
 				4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */,
@@ -264,9 +280,11 @@
 			isa = PBXGroup;
 			children = (
 				4F1E7E442E7FA48400ED93E7 /* BabyLogWidgetBundle.swift */,
+				4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */,
 				4F1E7E462E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift */,
 				4F1E7E482E7FA48400ED93E7 /* BabyLogElapsedWidget.swift */,
 				4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */,
+				4F1E7E7B2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift */,
 				4F1E7E4A2E7FA48400ED93E7 /* BabyLogWidget.intentdefinition */,
 				4F1E7E4B2E7FA48600ED93E7 /* Assets.xcassets */,
 				4F1E7E4D2E7FA48600ED93E7 /* Info.plist */,
@@ -436,10 +454,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F1E7E1E2E72FAB900ED93E7 /* RootView.swift in Sources */,
+				4F1E7E6C2E8195D100ED93E7 /* MetricChipView.swift in Sources */,
 				4F1E7DEF2E72F85800ED93E7 /* BabyLog.xcdatamodeld in Sources */,
 				4F1E7E322E7A87C600ED93E7 /* EditEventTimeView.swift in Sources */,
 				4F1E7E202E72FB2B00ED93E7 /* OnboardingNewBabyView.swift in Sources */,
 				4F1E7E222E72FB8E00ED93E7 /* TimelineView.swift in Sources */,
+				4F1E7E7A2E819E4A00ED93E7 /* DailySummary.swift in Sources */,
+				4F1E7E7C2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift in Sources */,
 				4F1E7E362E7F93C000ED93E7 /* ChartsGroupedBars.swift in Sources */,
 				4F1E7DEC2E72F85800ED93E7 /* Persistence.swift in Sources */,
 				4F1E7E4F2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */,
@@ -452,10 +473,12 @@
 				4F1E7DE32E72F85600ED93E7 /* BabyLogApp.swift in Sources */,
 				4F1E7E342E7F8C5000ED93E7 /* WeeklyOverviewView.swift in Sources */,
 				4F1E7E5B2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift in Sources */,
+				4F1E7E832E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift in Sources */,
 				4F1E7E242E72FE9000ED93E7 /* EventRowView.swift in Sources */,
 				4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */,
 				4F1E7E1B2E72FA1500ED93E7 /* CareEvent.swift in Sources */,
 				4F1E7E382E7F960E00ED93E7 /* FallbackBars.swift in Sources */,
+				4F1E7E7E2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +505,9 @@
 			files = (
 				4F1E7E602E7FBB2400ED93E7 /* BabyLog.swift in Sources */,
 				4F1E7E5C2E7FABA800ED93E7 /* BabyLogTodayWidget.swift in Sources */,
+				4F1E7E812E819FCF00ED93E7 /* DailySummary.swift in Sources */,
+				4F1E7E7F2E819EF400ED93E7 /* DailySummaryWidgetChipView.swift in Sources */,
+				4F1E7E802E819F0200ED93E7 /* BabyLogDailySummaryWidget.swift in Sources */,
 				4F1E7E452E7FA48400ED93E7 /* BabyLogWidgetBundle.swift in Sources */,
 				4F1E7E5F2E7FBB1F00ED93E7 /* CoreEnums.swift in Sources */,
 				4F1E7E472E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift in Sources */,

@@ -53,11 +53,8 @@ struct WeeklyOverviewView: View {
             VStack(spacing: 24) {
                 headerTotals
                 
-                if #available(iOS 16.0, *) {
-                    ChartsGroupedBars(days: days, data: aggregateByDay(days: days, events: Array(events)))
-                } else {
-                    
-                }
+                ChartsGroupedBars(days: days, data: aggregateByDay(days: days, events: Array(events)))
+                kpiChips
             }
             .padding()
         }
@@ -80,6 +77,43 @@ struct WeeklyOverviewView: View {
                 StatPill(title: "배변", value: "\(poopCount) 회", systemImage: "toilet.fill")
             }
         }
+    }
+    
+    private var kpiChips: some View {
+        let tuples = aggregateByDay(days: days, events: Array(events)) // (date, feedML, sleepHours, poopCount)
+        // days는 오름차순. 마지막이 '오늘'
+        let todayTuple = tuples.last ?? (Date(), 0, 0.0, 0)
+        let lastSix = tuples.prefix(6) // 오늘 제외 앞의 6일
+        
+        let avgFeed6 = average(lastSix.map { Double($0.feedML) })
+        let avgSleep6 = average(lastSix.map { $0.sleepHours })
+        let avgPoop6 = average(lastSix.map { Double($0.poopCount) })
+        
+        return HStack(spacing: 8) {
+            MetricChipView(kind: .sleep,
+                           title: "수면",
+                           today: todayTuple.sleepHours * 60.0,   // 분 단위로 포맷하기 위해 분으로 넘김
+                           avg6: avgSleep6 * 60.0,               // 평균도 분
+                           unit: .timeHM)
+            MetricChipView(kind: .feeding,
+                           title: "수유",
+                           today: Double(todayTuple.feedML),
+                           avg6: avgFeed6,
+                           unit: .ml)
+            MetricChipView(kind: .diaper,
+                           title: "배변",
+                           today: Double(todayTuple.poopCount),
+                           avg6: avgPoop6,
+                           unit: .count)
+        }
+        .frame(height: 80)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("오늘 요약과 최근 6일 평균")
+    }
+    
+    private func average(_ arr: [Double]) -> Double {
+        guard !arr.isEmpty else { return 0 }
+        return arr.reduce(0, +) / Double(arr.count)
     }
     
     private func formattedRange() -> String {
@@ -172,5 +206,11 @@ struct WeeklyOverviewView_Previews: PreviewProvider {
         }()
         
         WeeklyOverviewView(baby: baby)
+            .environment(\.managedObjectContext, context)
+            .preferredColorScheme(.light)
+        
+        WeeklyOverviewView(baby: baby)
+            .environment(\.managedObjectContext, context)
+            .preferredColorScheme(.dark)
     }
 }
