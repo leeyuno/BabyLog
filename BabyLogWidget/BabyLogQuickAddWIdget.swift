@@ -105,6 +105,6 @@ struct AddQuickRecoredWidget: Widget {
         }
         .configurationDisplayName("빠른 기록 추가")
         .description("홈 화면에서 바로 기록을 추가하세요.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .accessoryRectangular, .accessoryInline, .accessoryCircular])
     }
 }

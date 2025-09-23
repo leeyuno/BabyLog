@@ -70,6 +70,8 @@ struct BabyLogDailySummaryWidget: Widget {
         StaticConfiguration(kind: "BabyLogDailySummaryWidget", provider: Provider()) { entry in
             BabyLogDailySummaryWidgetEntryView(entry: entry)
         }
-        .supportedFamilies([.systemMedium])
+        .configurationDisplayName("오늘 vs 6일 평균")
+        .description("오늘과 오늘을 제외한 이번주 6일의 평균을 비교해서 보여줍니다.")
+        .supportedFamilies([.systemMedium, .accessoryRectangular, .accessoryInline, .accessoryCircular])
     }
 }
