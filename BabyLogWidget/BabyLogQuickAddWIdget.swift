@@ -34,47 +34,16 @@ struct QuickAddWidgetEntryView: View {
     @Environment(\.widgetFamily) private var family
     
     //추가 기본 타입 설정
-    private let defaultKind = "sleep"
+    private let defaultKind = "feed"
     
     var body: some View {
-        let url = URL(string: "babylog://add?type=\(defaultKind)")!
+//        let url = URL(string: "babylog://add?type=\(defaultKind)")!
         
         switch family {
-        case .systemSmall:
-            Link(destination: url) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color(.secondarySystemBackground))
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(Color.blue)
-                }
-                .background(roundedBG)
-            }
-            .accessibilityLabel("기록 추가")
-            
+        case .accessoryCircular, .accessoryRectangular, .accessoryInline:
+            AddQuickLockWidgetView()   // 내부에서 .widgetURL 사용
         default:
-            Link(destination: url) {
-                HStack(spacing: 12) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 40, weight: .semibold))
-                        .foregroundColor(Color.blue)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("기록 추가")
-                            .font(.headline)
-                        Text("탭하면 바로 추가 화면이 열립니다.")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer(minLength: 8)
-                }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(RoundedRectangle(cornerRadius: 16).fill(Color(.secondarySystemBackground)))
-                .background(roundedBG)
-            }
-            .accessibilityLabel("기록 추가")
+            AddQuickHomeWidgetView()   // 내부에서 Link 사용
         }
     }
     
@@ -95,6 +64,14 @@ struct QuickAddWidgetEntryView: View {
         shape.fill(Color(.secondarySystemBackground))
             .background(Color.clear)
         #endif
+    }
+    
+    fileprivate func makeDeepLink(_ kind: AddKind) -> URL {
+        var comp = URLComponents()
+        comp.scheme = "babylog"
+        comp.host = "add"
+        comp.queryItems = [ .init(name: "type", value: kind.rawValue) ]
+        return comp.url!
     }
 }
 

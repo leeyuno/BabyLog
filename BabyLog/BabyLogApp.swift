@@ -18,6 +18,7 @@ struct BabyLogApp: App {
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(router)
                 .onOpenURL { url in
+                    print(url)
                     router.handle(url: url)
                 }
         }

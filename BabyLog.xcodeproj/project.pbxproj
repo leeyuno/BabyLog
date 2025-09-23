@@ -55,6 +55,14 @@
 		4F1E7E832E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */; };
 		4F1E7E862E82395F00ED93E7 /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E572E7FA72300ED93E7 /* Routing.swift */; };
 		4F1E7E872E823A1600ED93E7 /* BabyLogQuickAddWIdget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */; };
+		4F1E7E8A2E823F9900ED93E7 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E892E823F9900ED93E7 /* BannerView.swift */; };
+		4F1E7E8C2E823FC800ED93E7 /* AppOpenAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E8B2E823FC800ED93E7 /* AppOpenAdManager.swift */; };
+		4F1E7E8E2E82400600ED93E7 /* AdsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E8D2E82400600ED93E7 /* AdsConfig.swift */; };
+		4F1E7E902E82404B00ED93E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E8F2E82404B00ED93E7 /* AppDelegate.swift */; };
+		4F1E7E932E82433A00ED93E7 /* AddQuickLockWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */; };
+		4F1E7E942E82433D00ED93E7 /* AddQuickLockWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */; };
+		4F1E7E962E82434900ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
+		4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +146,13 @@
 		4F1E7E7B2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogDailySummaryWidget.swift; sourceTree = "<group>"; };
 		4F1E7E7D2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySummaryWidgetChipView.swift; sourceTree = "<group>"; };
 		4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogQuickAddWIdget.swift; sourceTree = "<group>"; };
+		4F1E7E892E823F9900ED93E7 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		4F1E7E8B2E823FC800ED93E7 /* AppOpenAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppOpenAdManager.swift; sourceTree = "<group>"; };
+		4F1E7E8D2E82400600ED93E7 /* AdsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsConfig.swift; sourceTree = "<group>"; };
+		4F1E7E8F2E82404B00ED93E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4F1E7E912E8240EA00ED93E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickLockWidgetView.swift; sourceTree = "<group>"; };
+		4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickHomeWidgetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +215,7 @@
 		4F1E7DE12E72F85600ED93E7 /* BabyLog */ = {
 			isa = PBXGroup;
 			children = (
+				4F1E7E912E8240EA00ED93E7 /* Info.plist */,
 				4F1E7E5D2E7FBA1000ED93E7 /* BabyLog.entitlements */,
 				4F1E7E1C2E72FAAB00ED93E7 /* Presentation */,
 				4F1E7E112E72F86500ED93E7 /* Model */,
@@ -245,6 +261,8 @@
 				4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */,
 				4F1E7E572E7FA72300ED93E7 /* Routing.swift */,
 				4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */,
+				4F1E7E8B2E823FC800ED93E7 /* AppOpenAdManager.swift */,
+				4F1E7E8D2E82400600ED93E7 /* AdsConfig.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -265,6 +283,10 @@
 				4F1E7E252E72FF7400ED93E7 /* AddEventView.swift */,
 				4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */,
 				4F1E7E1F2E72FB2B00ED93E7 /* OnboardingNewBabyView.swift */,
+				4F1E7E892E823F9900ED93E7 /* BannerView.swift */,
+				4F1E7E8F2E82404B00ED93E7 /* AppDelegate.swift */,
+				4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */,
+				4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -460,17 +482,22 @@
 				4F1E7DEF2E72F85800ED93E7 /* BabyLog.xcdatamodeld in Sources */,
 				4F1E7E322E7A87C600ED93E7 /* EditEventTimeView.swift in Sources */,
 				4F1E7E202E72FB2B00ED93E7 /* OnboardingNewBabyView.swift in Sources */,
+				4F1E7E962E82434900ED93E7 /* AddQuickHomeWidgetView.swift in Sources */,
 				4F1E7E222E72FB8E00ED93E7 /* TimelineView.swift in Sources */,
 				4F1E7E7A2E819E4A00ED93E7 /* DailySummary.swift in Sources */,
 				4F1E7E7C2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift in Sources */,
 				4F1E7E362E7F93C000ED93E7 /* ChartsGroupedBars.swift in Sources */,
+				4F1E7E8E2E82400600ED93E7 /* AdsConfig.swift in Sources */,
 				4F1E7DEC2E72F85800ED93E7 /* Persistence.swift in Sources */,
 				4F1E7E4F2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */,
+				4F1E7E932E82433A00ED93E7 /* AddQuickLockWidgetView.swift in Sources */,
 				4F1E7E582E7FA72300ED93E7 /* Routing.swift in Sources */,
 				4F1E7E2C2E74530300ED93E7 /* EmptyStateView.swift in Sources */,
 				4F1E7E592E7FA8D500ED93E7 /* BabyLogElapsedWidget.swift in Sources */,
+				4F1E7E8A2E823F9900ED93E7 /* BannerView.swift in Sources */,
 				4F1E7E302E75A12500ED93E7 /* BabyLog.swift in Sources */,
 				4F1E7E172E72F9ED00ED93E7 /* CoreEnums.swift in Sources */,
+				4F1E7E902E82404B00ED93E7 /* AppDelegate.swift in Sources */,
 				4F1E7E262E72FF7400ED93E7 /* AddEventView.swift in Sources */,
 				4F1E7DE32E72F85600ED93E7 /* BabyLogApp.swift in Sources */,
 				4F1E7E342E7F8C5000ED93E7 /* WeeklyOverviewView.swift in Sources */,
@@ -478,6 +505,7 @@
 				4F1E7E832E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift in Sources */,
 				4F1E7E242E72FE9000ED93E7 /* EventRowView.swift in Sources */,
 				4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */,
+				4F1E7E8C2E823FC800ED93E7 /* AppOpenAdManager.swift in Sources */,
 				4F1E7E1B2E72FA1500ED93E7 /* CareEvent.swift in Sources */,
 				4F1E7E382E7F960E00ED93E7 /* FallbackBars.swift in Sources */,
 				4F1E7E7E2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift in Sources */,
@@ -505,7 +533,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */,
 				4F1E7E602E7FBB2400ED93E7 /* BabyLog.swift in Sources */,
+				4F1E7E942E82433D00ED93E7 /* AddQuickLockWidgetView.swift in Sources */,
 				4F1E7E5C2E7FABA800ED93E7 /* BabyLogTodayWidget.swift in Sources */,
 				4F1E7E812E819FCF00ED93E7 /* DailySummary.swift in Sources */,
 				4F1E7E7F2E819EF400ED93E7 /* DailySummaryWidgetChipView.swift in Sources */,
@@ -669,6 +699,7 @@
 				DEVELOPMENT_TEAM = 2H7EM56K2Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BabyLog/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -700,6 +731,7 @@
 				DEVELOPMENT_TEAM = 2H7EM56K2Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BabyLog/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

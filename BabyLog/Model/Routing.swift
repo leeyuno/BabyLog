@@ -26,10 +26,12 @@ final class Router: ObservableObject {
     
     /// babylog://add?type=sleep|feeding|diaper
     func handle(url: URL) {
+        print(url.absoluteString)
         guard url.scheme == "babylog" else { return }
+        print(url.host)
         if url.host == "add" {
             let type = URLComponents(url: url, resolvingAgainstBaseURL: false)?
-                .queryItems?.first(where: { $0.name == "type" })?.value ?? "sleep"
+                .queryItems?.first(where: { $0.name == "type" })?.value ?? "feed"
             if let kind = AddKind(rawValue: type) {
                 route = .add(kind)
             }

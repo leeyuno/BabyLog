@@ -20,10 +20,10 @@ struct AddEventView: View {
     @Environment(\.managedObjectContext) private var context
     @Environment(\.dismiss) private var dismiss
     
-    @State private var kind: CareKind = .feed
+    @State var kind: CareKind = .feed
     
     // feed
-    @State private var feedType: FeedType = .breastMilk
+    @State private var feedType: FeedType = .formula
     @State private var feedAmount: Int = 80
     
     // diaper

@@ -42,8 +42,8 @@ struct RootView: View {
                         }
                 }
                 .sheet(isPresented: $showAdd, onDismiss: { router.reset() }) {
-//                    AddEventView(kind: CareKind(from: addKind), baby: baby)
-//                            .environment(\.managedObjectContext, context)
+                    AddEventView(baby: baby, kind: CareKind(from: addKind))
+                            .environment(\.managedObjectContext, context)
                 }
                 .onChange(of: router.route) { route in
                     if case .add(let k) = route {
@@ -62,6 +62,7 @@ struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         // 프리뷰에서도 라우터 주입 필요
         RootView()
+//            .withAppOpenAd()
             .environmentObject(Router())
     }
 }
