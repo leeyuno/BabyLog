@@ -182,6 +182,6 @@ struct BabyLogTodayWidget: Widget {
         }
         .configurationDisplayName("오늘 통계")
         .description("오늘 수유/수면/배변 요약을 보여줍니다.")
-        .supportedFamilies([.systemSmall, .accessoryRectangular, .accessoryInline, .accessoryCircular])
+        .supportedFamilies([.systemMedium, .accessoryRectangular, .accessoryInline, .accessoryCircular])
     }
 }

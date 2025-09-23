@@ -10,6 +10,7 @@ import CoreData
 
 struct RootView: View {
     @Environment(\.managedObjectContext) private var context
+    @EnvironmentObject private var router: Router
     
     @FetchRequest(
         fetchRequest: {
@@ -19,8 +20,10 @@ struct RootView: View {
         }(),
         animation: .default
     )
-    
     private var babies: FetchedResults<Baby>
+    
+    @State private var showAdd = false
+    @State private var addKind: AddKind = .sleep
     
     var body: some View {
         Group {
@@ -38,6 +41,16 @@ struct RootView: View {
                             Text("주간 개요")
                         }
                 }
+                .sheet(isPresented: $showAdd, onDismiss: { router.reset() }) {
+//                    AddEventView(kind: CareKind(from: addKind), baby: baby)
+//                            .environment(\.managedObjectContext, context)
+                }
+                .onChange(of: router.route) { route in
+                    if case .add(let k) = route {
+                        addKind = k
+                        showAdd = true
+                    }
+                }
             } else {
                 OnboardingNewBabyView()
             }
@@ -47,6 +60,8 @@ struct RootView: View {
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
+        // 프리뷰에서도 라우터 주입 필요
         RootView()
+            .environmentObject(Router())
     }
 }

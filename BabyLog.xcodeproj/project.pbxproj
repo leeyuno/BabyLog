@@ -38,7 +38,7 @@
 		4F1E7E4E2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E4A2E7FA48400ED93E7 /* BabyLogWidget.intentdefinition */; };
 		4F1E7E4F2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E4A2E7FA48400ED93E7 /* BabyLogWidget.intentdefinition */; };
 		4F1E7E522E7FA48600ED93E7 /* BabyLogWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4F1E7E3D2E7FA48300ED93E7 /* BabyLogWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		4F1E7E582E7FA72300ED93E7 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E572E7FA72300ED93E7 /* Constant.swift */; };
+		4F1E7E582E7FA72300ED93E7 /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E572E7FA72300ED93E7 /* Routing.swift */; };
 		4F1E7E592E7FA8D500ED93E7 /* BabyLogElapsedWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E482E7FA48400ED93E7 /* BabyLogElapsedWidget.swift */; };
 		4F1E7E5B2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */; };
 		4F1E7E5C2E7FABA800ED93E7 /* BabyLogTodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */; };
@@ -53,6 +53,8 @@
 		4F1E7E802E819F0200ED93E7 /* BabyLogDailySummaryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E7B2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift */; };
 		4F1E7E812E819FCF00ED93E7 /* DailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */; };
 		4F1E7E832E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */; };
+		4F1E7E862E82395F00ED93E7 /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E572E7FA72300ED93E7 /* Routing.swift */; };
+		4F1E7E872E823A1600ED93E7 /* BabyLogQuickAddWIdget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,7 +130,7 @@
 		4F1E7E4A2E7FA48400ED93E7 /* BabyLogWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = BabyLogWidget.intentdefinition; sourceTree = "<group>"; };
 		4F1E7E4B2E7FA48600ED93E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F1E7E4D2E7FA48600ED93E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4F1E7E572E7FA72300ED93E7 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		4F1E7E572E7FA72300ED93E7 /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
 		4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogTodayWidget.swift; sourceTree = "<group>"; };
 		4F1E7E5D2E7FBA1000ED93E7 /* BabyLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BabyLog.entitlements; sourceTree = "<group>"; };
 		4F1E7E6B2E8195D100ED93E7 /* MetricChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricChipView.swift; sourceTree = "<group>"; };
@@ -241,7 +243,7 @@
 				4F1E7E1A2E72FA1500ED93E7 /* CareEvent.swift */,
 				4F1E7E162E72F9ED00ED93E7 /* CoreEnums.swift */,
 				4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */,
-				4F1E7E572E7FA72300ED93E7 /* Constant.swift */,
+				4F1E7E572E7FA72300ED93E7 /* Routing.swift */,
 				4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */,
 			);
 			path = Model;
@@ -280,8 +282,8 @@
 			isa = PBXGroup;
 			children = (
 				4F1E7E442E7FA48400ED93E7 /* BabyLogWidgetBundle.swift */,
-				4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */,
 				4F1E7E462E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift */,
+				4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */,
 				4F1E7E482E7FA48400ED93E7 /* BabyLogElapsedWidget.swift */,
 				4F1E7E5A2E7FAB4800ED93E7 /* BabyLogTodayWidget.swift */,
 				4F1E7E7B2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift */,
@@ -464,7 +466,7 @@
 				4F1E7E362E7F93C000ED93E7 /* ChartsGroupedBars.swift in Sources */,
 				4F1E7DEC2E72F85800ED93E7 /* Persistence.swift in Sources */,
 				4F1E7E4F2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */,
-				4F1E7E582E7FA72300ED93E7 /* Constant.swift in Sources */,
+				4F1E7E582E7FA72300ED93E7 /* Routing.swift in Sources */,
 				4F1E7E2C2E74530300ED93E7 /* EmptyStateView.swift in Sources */,
 				4F1E7E592E7FA8D500ED93E7 /* BabyLogElapsedWidget.swift in Sources */,
 				4F1E7E302E75A12500ED93E7 /* BabyLog.swift in Sources */,
@@ -510,7 +512,9 @@
 				4F1E7E802E819F0200ED93E7 /* BabyLogDailySummaryWidget.swift in Sources */,
 				4F1E7E452E7FA48400ED93E7 /* BabyLogWidgetBundle.swift in Sources */,
 				4F1E7E5F2E7FBB1F00ED93E7 /* CoreEnums.swift in Sources */,
+				4F1E7E872E823A1600ED93E7 /* BabyLogQuickAddWIdget.swift in Sources */,
 				4F1E7E472E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift in Sources */,
+				4F1E7E862E82395F00ED93E7 /* Routing.swift in Sources */,
 				4F1E7E5E2E7FBB1B00ED93E7 /* CareEvent.swift in Sources */,
 				4F1E7E492E7FA48400ED93E7 /* BabyLogElapsedWidget.swift in Sources */,
 				4F1E7E4E2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */,

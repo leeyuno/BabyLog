@@ -91,7 +91,7 @@ struct BabyLogElapsedWidgetEntryView : View {
 }
 
 struct BabyLogElapsedWidget: Widget {
-    let kind: String = "BabyLogWidget"
+    let kind: String = "BabyLogElapsedWidget"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: BabyLogElapsedProvider()) { entry in

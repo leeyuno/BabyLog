@@ -14,5 +14,6 @@ struct BabyLogWidgetBundle: WidgetBundle {
         BabyLogElapsedWidget()
         BabyLogTodayWidget()
         BabyLogDailySummaryWidget()
+        AddQuickRecoredWidget()
     }
 }

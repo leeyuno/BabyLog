@@ -67,8 +67,9 @@ struct BabyLogDailySummaryWidgetEntryView: View {
 
 struct BabyLogDailySummaryWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "BabyLogWidget", provider: Provider()) { entry in
+        StaticConfiguration(kind: "BabyLogDailySummaryWidget", provider: Provider()) { entry in
             BabyLogDailySummaryWidgetEntryView(entry: entry)
         }
+        .supportedFamilies([.systemMedium])
     }
 }

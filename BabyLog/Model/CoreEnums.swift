@@ -21,6 +21,7 @@ enum CareKind: Int16, CaseIterable {
 enum FeedType: Int16, CaseIterable {
     case breastMilk = 0, formula = 1
     var label: String { self == .formula ? "분유" : "모유" }
+    
 }
 
 enum DiaperType: Int16, CaseIterable {
@@ -30,3 +31,13 @@ enum DiaperType: Int16, CaseIterable {
     }
 }
 
+extension CareKind {
+    /// AddKind → CareKind
+    init(from add: AddKind) {
+        switch add {
+        case .sleep:   self = .sleep
+        case .feeding: self = .feed   // ✅ 이름 다름 주의
+        case .diaper:  self = .diaper
+        }
+    }
+}
