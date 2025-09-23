@@ -86,6 +86,15 @@ struct AddEventView: View {
             }
             // .formStyle(.grouped)  // ❌ iOS15에서는 제거
             .navigationTitle("새 기록")
+            .onAppear {
+                guard kind == .feed else { return }
+                
+                if let last = LastValueProvider.lastFeedingML(for: baby, in: context) {
+                    feedAmount = last
+                } else {
+                    feedAmount = 60
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) { // iOS15 호환
                     Button("닫기") { dismiss() }
