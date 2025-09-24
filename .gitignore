@@ -1,0 +1,50 @@
+# ========== macOS ==========
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ========== Xcode / iOS ==========
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+
+# 워크스페이스는 보통 추적 유지(추천)
+# 필요하면 아래 줄 주석 해제해서 무시 가능
+# *.xcworkspace
+
+# ========== Swift Package Manager ==========
+.swiftpm/
+.build/
+# Package.resolved는 추적 권장
+!Package.resolved
+
+# ========== CocoaPods ==========
+/Pods/
+!Podfile
+!Podfile.lock
+
+# ========== Carthage (사용 안 하면 무시해도 OK) ==========
+Carthage/
+
+# ========== Fastlane(사용 시) ==========
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# ========== Logs / Temps ==========
+*.log
+*.tmp
+*.swp
+
+# ========== Playgrounds ==========
+timeline.xctimeline
+playground.xcworkspace
+
+# ========== Local Configs / Secrets (필요 시) ==========
+*.xcconfig.local
+.env
+
