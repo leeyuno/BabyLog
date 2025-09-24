@@ -30,54 +30,57 @@ struct TimelineView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            List {
-                if events.isEmpty {
-                    EmptyStateView(
-                        title: "기록 없음",
-                        systemImage: "calendar.badge.exclamationmark",
-                        message: "오른쪽 위 + 버튼으로 첫 기록을 추가하세요."
-                    )
-                    .listRowInsets(EdgeInsets())
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                } else {
-                    ForEach(events) { ev in
-                        EventRowView(event: ev)
-                            .swipeActions(edge: .trailing) {
-                                Button {
-                                    editingEvent = ev
-                                } label: {
-                                    Label("편집", systemImage: "pencil")
-                                }
+            NavigationStack {
+                VStack(spacing: 0) {
+                    List {
+                        if events.isEmpty {
+                            EmptyStateView(
+                                title: "기록 없음",
+                                systemImage: "calendar.badge.exclamationmark",
+                                message: "오른쪽 위 + 버튼으로 첫 기록을 추가하세요."
+                            )
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                        } else {
+                            ForEach(events) { ev in
+                                EventRowView(event: ev)
+                                    .swipeActions(edge: .trailing) {
+                                        Button {
+                                            editingEvent = ev
+                                        } label: {
+                                            Label("편집", systemImage: "pencil")
+                                        }
+                                    }
                             }
-                    }
-                    .onDelete(perform: delete)
-                }
-            }
-            .navigationTitle("\(baby.name) 타임라인")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showAddSheet = true
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
+                            .onDelete(perform: delete)
+                        }
+                        BannerView(adUnitID: AdsConfig.bannerUnitID)
+                                .frame(height: 60)            // Adaptive 배너 높이 ≈ 50~60
+                                .listRowInsets(EdgeInsets())  // 좌우 여백 제거
+                                .listRowSeparator(.hidden)    // 구분선 제거
                     }
                 }
-            }
-            .sheet(isPresented: $showAddSheet) {
-                AddEventView(baby: baby)
-            }
-            .sheet(item: $editingEvent) { ev in
-                EditEventTimeView(event: ev)
+                .navigationTitle("\(baby.name) 타임라인")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            showAddSheet = true
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                        }
+                    }
+                }
+                .sheet(isPresented: $showAddSheet) {
+                    WindowAccessor()
+                }
             }
         }
-    }
     
     private func delete(_ offsets: IndexSet) {
-            offsets.map { events[$0] }.forEach(context.delete)
-            try? context.save()
-        }
+        offsets.map { events[$0] }.forEach(context.delete)
+        try? context.save()
+    }
 }
 
 struct TimelineView_Previews: PreviewProvider {

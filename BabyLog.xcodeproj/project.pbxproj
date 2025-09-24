@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4539E5F7C8ECF3690EC13997 /* Pods_BabyLog_BabyLogUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BC6DF3140563F3C08086E57 /* Pods_BabyLog_BabyLogUITests.framework */; };
 		4F1E7DE32E72F85600ED93E7 /* BabyLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7DE22E72F85600ED93E7 /* BabyLogApp.swift */; };
 		4F1E7DE72E72F85800ED93E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E7DE62E72F85800ED93E7 /* Assets.xcassets */; };
 		4F1E7DEA2E72F85800ED93E7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E7DE92E72F85800ED93E7 /* Preview Assets.xcassets */; };
@@ -64,6 +65,10 @@
 		4F1E7E962E82434900ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */; };
+		4F1E7EA12E83DA9500ED93E7 /* WindowAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EA02E83DA9500ED93E7 /* WindowAccessor.swift */; };
+		6142173D49D29F1CB7CC28ED /* Pods_BabyLogTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1145BA96CE7C562F167D513F /* Pods_BabyLogTests.framework */; };
+		B16A1EE7C9F3CCBD189D09FB /* Pods_BabyLogWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55783BC8BD1105BE44DF80C /* Pods_BabyLogWidgetExtension.framework */; };
+		DF562AE97A46FCF532F73C6A /* Pods_BabyLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95BE3C313C4475EA3A9F0A8 /* Pods_BabyLog.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +110,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1145BA96CE7C562F167D513F /* Pods_BabyLogTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BabyLogTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BC6DF3140563F3C08086E57 /* Pods_BabyLog_BabyLogUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BabyLog_BabyLogUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DA25A26117C372DD26924D3 /* Pods-BabyLog-BabyLogUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLog-BabyLogUITests.release.xcconfig"; path = "Target Support Files/Pods-BabyLog-BabyLogUITests/Pods-BabyLog-BabyLogUITests.release.xcconfig"; sourceTree = "<group>"; };
+		3B1E038B50F00DC6804EA52A /* Pods-BabyLogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLogTests.release.xcconfig"; path = "Target Support Files/Pods-BabyLogTests/Pods-BabyLogTests.release.xcconfig"; sourceTree = "<group>"; };
+		4C978BC931604AF68F83361C /* Pods-BabyLogTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLogTests.debug.xcconfig"; path = "Target Support Files/Pods-BabyLogTests/Pods-BabyLogTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4F1E7DDF2E72F85600ED93E7 /* BabyLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabyLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1E7DE22E72F85600ED93E7 /* BabyLogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogApp.swift; sourceTree = "<group>"; };
 		4F1E7DE62E72F85800ED93E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -155,6 +165,14 @@
 		4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickLockWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickHomeWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastValueProvider.swift; sourceTree = "<group>"; };
+		4F1E7EA02E83DA9500ED93E7 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
+		626847689FF55B1FA78F1CE5 /* Pods-BabyLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLog.debug.xcconfig"; path = "Target Support Files/Pods-BabyLog/Pods-BabyLog.debug.xcconfig"; sourceTree = "<group>"; };
+		6EF63560F475858D94D772F7 /* Pods-BabyLogWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLogWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-BabyLogWidgetExtension/Pods-BabyLogWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		705EE50D7EAA93CFC8C21478 /* Pods-BabyLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLog.release.xcconfig"; path = "Target Support Files/Pods-BabyLog/Pods-BabyLog.release.xcconfig"; sourceTree = "<group>"; };
+		7B80168F7CAE8B23DEACF52E /* Pods-BabyLogWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLogWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-BabyLogWidgetExtension/Pods-BabyLogWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		C55783BC8BD1105BE44DF80C /* Pods_BabyLogWidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BabyLogWidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C95BE3C313C4475EA3A9F0A8 /* Pods_BabyLog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BabyLog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F17FBFA9E9739D1156F691E6 /* Pods-BabyLog-BabyLogUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLog-BabyLogUITests.debug.xcconfig"; path = "Target Support Files/Pods-BabyLog-BabyLogUITests/Pods-BabyLog-BabyLogUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF562AE97A46FCF532F73C6A /* Pods_BabyLog.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6142173D49D29F1CB7CC28ED /* Pods_BabyLogTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +196,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4539E5F7C8ECF3690EC13997 /* Pods_BabyLog_BabyLogUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +206,7 @@
 			files = (
 				4F1E7E422E7FA48400ED93E7 /* SwiftUI.framework in Frameworks */,
 				4F1E7E402E7FA48400ED93E7 /* WidgetKit.framework in Frameworks */,
+				B16A1EE7C9F3CCBD189D09FB /* Pods_BabyLogWidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,6 +222,7 @@
 				4F1E7E432E7FA48400ED93E7 /* BabyLogWidget */,
 				4F1E7E3E2E7FA48300ED93E7 /* Frameworks */,
 				4F1E7DE02E72F85600ED93E7 /* Products */,
+				67EEC1DE8F2DE51674288E38 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -290,6 +313,7 @@
 				4F1E7E8F2E82404B00ED93E7 /* AppDelegate.swift */,
 				4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */,
 				4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */,
+				4F1E7EA02E83DA9500ED93E7 /* WindowAccessor.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -299,6 +323,10 @@
 			children = (
 				4F1E7E3F2E7FA48300ED93E7 /* WidgetKit.framework */,
 				4F1E7E412E7FA48400ED93E7 /* SwiftUI.framework */,
+				C95BE3C313C4475EA3A9F0A8 /* Pods_BabyLog.framework */,
+				1BC6DF3140563F3C08086E57 /* Pods_BabyLog_BabyLogUITests.framework */,
+				1145BA96CE7C562F167D513F /* Pods_BabyLogTests.framework */,
+				C55783BC8BD1105BE44DF80C /* Pods_BabyLogWidgetExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -319,6 +347,21 @@
 			path = BabyLogWidget;
 			sourceTree = "<group>";
 		};
+		67EEC1DE8F2DE51674288E38 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				626847689FF55B1FA78F1CE5 /* Pods-BabyLog.debug.xcconfig */,
+				705EE50D7EAA93CFC8C21478 /* Pods-BabyLog.release.xcconfig */,
+				F17FBFA9E9739D1156F691E6 /* Pods-BabyLog-BabyLogUITests.debug.xcconfig */,
+				2DA25A26117C372DD26924D3 /* Pods-BabyLog-BabyLogUITests.release.xcconfig */,
+				4C978BC931604AF68F83361C /* Pods-BabyLogTests.debug.xcconfig */,
+				3B1E038B50F00DC6804EA52A /* Pods-BabyLogTests.release.xcconfig */,
+				7B80168F7CAE8B23DEACF52E /* Pods-BabyLogWidgetExtension.debug.xcconfig */,
+				6EF63560F475858D94D772F7 /* Pods-BabyLogWidgetExtension.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -326,10 +369,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F1E7E082E72F85800ED93E7 /* Build configuration list for PBXNativeTarget "BabyLog" */;
 			buildPhases = (
+				BFEE77C213DF80B91313BD9C /* [CP] Check Pods Manifest.lock */,
 				4F1E7DDB2E72F85600ED93E7 /* Sources */,
 				4F1E7DDC2E72F85600ED93E7 /* Frameworks */,
 				4F1E7DDD2E72F85600ED93E7 /* Resources */,
 				4F1E7E562E7FA48600ED93E7 /* Embed Foundation Extensions */,
+				552061BAF48E5E1C2E37ADD8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -345,6 +390,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F1E7E0B2E72F85800ED93E7 /* Build configuration list for PBXNativeTarget "BabyLogTests" */;
 			buildPhases = (
+				4A5AE92D589DF30DF7B0D929 /* [CP] Check Pods Manifest.lock */,
 				4F1E7DF02E72F85800ED93E7 /* Sources */,
 				4F1E7DF12E72F85800ED93E7 /* Frameworks */,
 				4F1E7DF22E72F85800ED93E7 /* Resources */,
@@ -363,9 +409,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F1E7E0E2E72F85800ED93E7 /* Build configuration list for PBXNativeTarget "BabyLogUITests" */;
 			buildPhases = (
+				C96DA2FEB5D89991CC0915FA /* [CP] Check Pods Manifest.lock */,
 				4F1E7DFA2E72F85800ED93E7 /* Sources */,
 				4F1E7DFB2E72F85800ED93E7 /* Frameworks */,
 				4F1E7DFC2E72F85800ED93E7 /* Resources */,
+				3855CA54D16311E70031A50A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -381,6 +429,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F1E7E532E7FA48600ED93E7 /* Build configuration list for PBXNativeTarget "BabyLogWidgetExtension" */;
 			buildPhases = (
+				D567D440F198C848E8A2A9FB /* [CP] Check Pods Manifest.lock */,
 				4F1E7E392E7FA48300ED93E7 /* Sources */,
 				4F1E7E3A2E7FA48300ED93E7 /* Frameworks */,
 				4F1E7E3B2E7FA48300ED93E7 /* Resources */,
@@ -475,6 +524,131 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3855CA54D16311E70031A50A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BabyLog-BabyLogUITests/Pods-BabyLog-BabyLogUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BabyLog-BabyLogUITests/Pods-BabyLog-BabyLogUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BabyLog-BabyLogUITests/Pods-BabyLog-BabyLogUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4A5AE92D589DF30DF7B0D929 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BabyLogTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		552061BAF48E5E1C2E37ADD8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BabyLog/Pods-BabyLog-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BabyLog/Pods-BabyLog-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BabyLog/Pods-BabyLog-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BFEE77C213DF80B91313BD9C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BabyLog-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C96DA2FEB5D89991CC0915FA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BabyLog-BabyLogUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D567D440F198C848E8A2A9FB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BabyLogWidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4F1E7DDB2E72F85600ED93E7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -510,6 +684,7 @@
 				4F1E7E242E72FE9000ED93E7 /* EventRowView.swift in Sources */,
 				4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */,
 				4F1E7E8C2E823FC800ED93E7 /* AppOpenAdManager.swift in Sources */,
+				4F1E7EA12E83DA9500ED93E7 /* WindowAccessor.swift in Sources */,
 				4F1E7E1B2E72FA1500ED93E7 /* CareEvent.swift in Sources */,
 				4F1E7E382E7F960E00ED93E7 /* FallbackBars.swift in Sources */,
 				4F1E7E7E2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift in Sources */,
@@ -692,6 +867,7 @@
 		};
 		4F1E7E092E72F85800ED93E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 626847689FF55B1FA78F1CE5 /* Pods-BabyLog.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -724,6 +900,7 @@
 		};
 		4F1E7E0A2E72F85800ED93E7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 705EE50D7EAA93CFC8C21478 /* Pods-BabyLog.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -756,6 +933,7 @@
 		};
 		4F1E7E0C2E72F85800ED93E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C978BC931604AF68F83361C /* Pods-BabyLogTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -776,6 +954,7 @@
 		};
 		4F1E7E0D2E72F85800ED93E7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B1E038B50F00DC6804EA52A /* Pods-BabyLogTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -796,6 +975,7 @@
 		};
 		4F1E7E0F2E72F85800ED93E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F17FBFA9E9739D1156F691E6 /* Pods-BabyLog-BabyLogUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -814,6 +994,7 @@
 		};
 		4F1E7E102E72F85800ED93E7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2DA25A26117C372DD26924D3 /* Pods-BabyLog-BabyLogUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -832,6 +1013,7 @@
 		};
 		4F1E7E542E7FA48600ED93E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B80168F7CAE8B23DEACF52E /* Pods-BabyLogWidgetExtension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -859,6 +1041,7 @@
 		};
 		4F1E7E552E7FA48600ED93E7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6EF63560F475858D94D772F7 /* Pods-BabyLogWidgetExtension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
