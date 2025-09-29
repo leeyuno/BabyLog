@@ -17,7 +17,7 @@ struct TodaySummaryEntry: TimelineEntry {
     let poopCount: Int
 }
 
-private let groupID = "group.com.leeyuno.BabyLog"
+private let groupID = "group.com.leeyuno.babylog.ios"
 
 struct TodaySummaryProvider: TimelineProvider {
     func placeholder(in context: Context) -> TodaySummaryEntry {

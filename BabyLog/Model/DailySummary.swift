@@ -18,7 +18,7 @@ public struct DailySummary: Codable, Equatable {
 }
 
 public enum BabyLogGroup {
-    public static let appGroupId = "group.com.yourteam.BabyLog" // <- 실제 App Group ID로 교체
+    public static let appGroupId = "group.com.leeyuno.babylog.ios" // <- 실제 App Group ID로 교체
     public static let summaryKey = "daily_summary_v1"
 }
 

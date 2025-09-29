@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.leeyuno.BabyLog</string>
+		<string>group.com.leeyuno.babylog.ios</string>
 	</array>
 </dict>
 </plist>

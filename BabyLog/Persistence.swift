@@ -18,7 +18,7 @@ struct PersistenceController {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
             let storeURL = FileManager.default
-                .containerURL(forSecurityApplicationGroupIdentifier: "group.com.leeyuno.BabyLog")!
+                .containerURL(forSecurityApplicationGroupIdentifier: "group.com.leeyuno.babylog.ios")!
                 .appendingPathComponent("BabyLog.sqlite")
             
             let description = NSPersistentStoreDescription(url: storeURL)

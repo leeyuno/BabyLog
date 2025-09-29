@@ -15,7 +15,7 @@ struct BabyLogElapsedEntry: TimelineEntry {
     let elasped: String
 }
 
-private let groupID = "group.com.leeyuno.BabyLog"
+private let groupID = "group.com.leeyuno.babylog.ios"
 
 struct BabyLogElapsedProvider: TimelineProvider {
     func placeholder(in context: Context) -> BabyLogElapsedEntry {
