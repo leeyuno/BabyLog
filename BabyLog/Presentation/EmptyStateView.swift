@@ -4,6 +4,8 @@
 //
 //  Created by 이윤오 on 2025/09/12.
 //
+//  목록이 비었을 때 표시하는 공용 안내 뷰.
+//
 
 import SwiftUI
 
@@ -11,7 +13,7 @@ struct EmptyStateView: View {
     let title: String
     let systemImage: String
     let message: String?
-    
+
     var body: some View {
         VStack(spacing: 12) {
             Image(systemName: systemImage)

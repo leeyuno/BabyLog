@@ -4,167 +4,172 @@
 //
 //  Created by 이윤오 on 2025/09/23.
 //
+//  앱 오프닝(전면) 광고 관리자.
+//
+//  흐름: BabyLogApp(scenePhase == .active) → onBecameActive() → 0.3초 후 showIfEligible()
+//        → 정책 통과 시 (캐시된 광고 표시 | 로드 후 표시) → 닫히면 기록 후 다음 광고 프리로드
+//
+//  노출 정책(isEligibleNow): 육아 앱 특성상 보수적으로 유지한다.
+//    1) 정오~다음날 정오 창마다 최대 1회
+//    2) 조용시간(00~05시) 미노출 — 새벽 수유 중 방해 금지
+//    3) 쿨다운, 콜드스타트 전용, 샘플링 옵션 (AppOpenRules)
+//    4) 외부 차단 조건(shouldShowAd) — 예: 기록 입력 시트가 열려 있을 때
+//
 
 import Foundation
 import GoogleMobileAds
 import SwiftUI
 
-// 규칙 세트
+/// 앱 오프닝 광고 노출 규칙
 struct AppOpenRules {
     var enabled: Bool = true                 // 전체 온오프
-    var onlyOnColdStart: Bool = false        // 콜드 스타트에서만 (백→전환은 미표시)
+    var onlyOnColdStart: Bool = false        // 콜드 스타트에서만 (백→포 전환은 미표시)
     var cooldownSec: TimeInterval = 20*60    // 마지막 노출 이후 쿨다운
-    var minActiveSecAfterLaunch: TimeInterval = 1.0 // .active 후 최소 대기
-    var sampling: Double = 1.0               // 0.0~1.0 중 확률 노출 (예: 0.5 = 50%)
+    var minActiveSecAfterLaunch: TimeInterval = 0.2 // .active 후 최소 대기
+    var sampling: Double = 1.0               // 0.0~1.0 확률 노출 (예: 0.5 = 50%)
 }
 
 final class AppOpenAdManager: NSObject, GADFullScreenContentDelegate {
     static let shared = AppOpenAdManager()
-    
-    // 기존 프로퍼티 ...
+
+    /// 구글 정책상 앱 오프닝 광고는 로드 후 4시간이 지나면 만료된다.
+    private static let adExpiry: TimeInterval = 4 * 60 * 60
+    /// 표시할 VC 가 준비되지 않았을 때 재시도 횟수 상한(무한 루프 방지)
+    private static let maxPresentRetries = 5
+
     private var ad: GADAppOpenAd?
+    private var adLoadedAt: Date?
     private var isLoading = false
+    /// 로드 중에 표시 요청이 들어오면 로드 완료 즉시 표시하기 위한 플래그
+    private var presentWhenLoaded = false
     private var isShowing = false
     private weak var window: UIWindow?
-    
-    // 🔧 규칙 / 상태
+
+    // 규칙 / 상태
     var rules = AppOpenRules()
-    var shouldShowAd: (() -> Bool)? = { true }      // 외부 조건 주입 (온보딩/편집/유료제거 등)
+    /// 외부 차단 조건 주입 (온보딩/편집 중/유료 광고제거 등). false 면 미노출.
+    var shouldShowAd: (() -> Bool)? = { true }
     private var becameActiveAt: Date?
-    private var shownAt: Date? {
-        get { UserDefaults.standard.object(forKey: "appopen.lastShownAt") as? Date }
-        set { UserDefaults.standard.set(newValue, forKey: "appopen.lastShownAt") }
-    }
     private var coldStart = true
-    
+    private var shownAt: Date? {
+        get { UserDefaults.standard.object(forKey: AdsConfig.kAppOpenLastShownAt) as? Date }
+        set { UserDefaults.standard.set(newValue, forKey: AdsConfig.kAppOpenLastShownAt) }
+    }
+
+    /// WindowAccessor 가 호출해 표시 기준 윈도우를 캐시한다(없어도 keyWindow 로 폴백).
     func attach(window: UIWindow) { self.window = window }
-    
-    // App이 active 될 때 호출
+
+    /// scenePhase 가 .active 가 될 때 호출
     func onBecameActive() {
         becameActiveAt = Date()
-        // 앱 최초 1회만 true, 이후 포그라운드 전환에서는 false
-        // 필요하면 외부에서 coldStart=false로 바꿔도 됨
     }
-    
-    // 외부에서 "표시 시도" 호출
+
+    /// 정책을 통과하면 광고를 표시(없으면 로드 후 표시)한다.
     func showIfEligible() {
-        print(isEligibleNow())
-        guard isEligibleNow() else { return }
-        print("showIfEligible")
-        print("ad: \(ad)")
-        if let ad = ad {
+        defer { coldStart = false }   // 첫 시도 이후엔 콜드스타트 아님
+        guard !isShowing, isEligibleNow() else { return }
+
+        if let ad = ad, !isExpired {
             present(ad: ad)
         } else {
+            ad = nil
             loadAd(thenPresent: true)
         }
-        
-        // 첫 시도 후에는 콜드스타트 플래그 해제
-        coldStart = false
     }
-    
-    // 프리로드만
+
+    /// 표시 없이 프리로드만
     func preload() { loadAd(thenPresent: false) }
-    
-    // --- 기존의 정오 앵커/quiet hours 함수들은 그대로 사용한다고 가정 ---
-    private func currentNoonAnchor(now: Date = Date()) -> Date {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = .current
-        
-        let startOfDay = cal.startOfDay(for: now)
-        let todayNoon = cal.date(bySettingHour: 12, minute: 0, second: 0, of: startOfDay)!
-        if now >= todayNoon {
-            return todayNoon
-        } else {
-            return cal.date(byAdding: .day, value: -1, to: todayNoon)!
-        }
+
+    private var isExpired: Bool {
+        guard let loadedAt = adLoadedAt else { return true }
+        return Date().timeIntervalSince(loadedAt) > Self.adExpiry
     }
-    
+
+    // MARK: - 정오~정오 1회 정책
+
+    /// 현재 시각이 속한 "정오 창"의 시작(오늘 12시 이후면 오늘 정오, 아니면 어제 정오)
+    private func currentNoonAnchor(now: Date = Date()) -> Date {
+        let cal = Calendar.current
+        let startOfDay = cal.startOfDay(for: now)
+        guard let todayNoon = cal.date(bySettingHour: 12, minute: 0, second: 0, of: startOfDay) else {
+            return startOfDay
+        }
+        if now >= todayNoon { return todayNoon }
+        return cal.date(byAdding: .day, value: -1, to: todayNoon) ?? todayNoon
+    }
+
     private func lastShownAnchor() -> Date? {
         let ts = UserDefaults.standard.double(forKey: AdsConfig.kAppOpenLastAnchorTs)
         return ts > 0 ? Date(timeIntervalSince1970: ts) : nil
     }
-    
+
     private func markShownForCurrentWindow() {
-        let anchor = currentNoonAnchor()
-        UserDefaults.standard.set(anchor.timeIntervalSince1970, forKey: AdsConfig.kAppOpenLastAnchorTs)
+        UserDefaults.standard.set(currentNoonAnchor().timeIntervalSince1970, forKey: AdsConfig.kAppOpenLastAnchorTs)
     }
-    
+
     private func hasShownInCurrentWindow() -> Bool {
         guard let last = lastShownAnchor() else { return false }
-        // 같은 앵커(= 같은 정오-정오 창)면 이미 노출
         return abs(last.timeIntervalSince1970 - currentNoonAnchor().timeIntervalSince1970) < 0.5
     }
-    
+
     private func isQuietHours(now: Date = Date()) -> Bool {
         guard AdsConfig.enableQuietHours else { return false }
-        var cal = Calendar(identifier: .gregorian); cal.timeZone = .current
-        let hour = cal.component(.hour, from: now)
-        return AdsConfig.quietHourRange.contains(hour)
+        return AdsConfig.quietHourRange.contains(Calendar.current.component(.hour, from: now))
     }
-    
-    // ✅ 표시 가능성 판정
+
+    // MARK: - 표시 가능 여부
+
     private func isEligibleNow(now: Date = Date()) -> Bool {
-        return true
-//        guard rules.enabled else { return false }
-//        guard shouldShowAd?() ?? true else { return false }
-//        // 조용시간/정오~정오 1회 정책 (네가 이미 가진 함수)
-//        guard !isQuietHours() else { return false }
-//        guard !hasShownInCurrentWindow() else { return false }
-//
-//        // 콜드 스타트 옵션
-//        if rules.onlyOnColdStart && !coldStart { return false }
-//
-//        // 쿨다운
-//        if let last = shownAt, now.timeIntervalSince(last) < rules.cooldownSec { return false }
-//
-//        // .active 후 최소 대기
-//        if let active = becameActiveAt, now.timeIntervalSince(active) < rules.minActiveSecAfterLaunch {
-//            return false
-//        }
-//
-//        // 샘플링(확률 노출)
-//        if rules.sampling < 1.0 {
-//            if Double.random(in: 0...1) > rules.sampling { return false }
-//        }
+        if AdsConfig.bypassAppOpenRules { return true }   // DEBUG 전용 우회 스위치
+
+        guard rules.enabled else { return false }
+        guard shouldShowAd?() ?? true else { return false }
+        guard !isQuietHours(now: now) else { return false }
+        guard !hasShownInCurrentWindow() else { return false }
+        if rules.onlyOnColdStart && !coldStart { return false }
+        if let last = shownAt, now.timeIntervalSince(last) < rules.cooldownSec { return false }
+        if let active = becameActiveAt, now.timeIntervalSince(active) < rules.minActiveSecAfterLaunch {
+            return false
+        }
+        if rules.sampling < 1.0, Double.random(in: 0...1) > rules.sampling { return false }
         return true
     }
-    
-    // MARK: - Load / Present (이전 답변의 안정화 버전 사용 권장)
+
+    // MARK: - Load / Present
+
     private func loadAd(thenPresent: Bool) {
-        print("loadAD\(thenPresent)")
-        print(isLoading)
-        guard !isLoading else { return }
+        if thenPresent { presentWhenLoaded = true }
+        guard !isLoading else { return }   // 프리로드 진행 중이면 그 결과를 기다린다
         isLoading = true
-        let req = GADRequest()
-        GADAppOpenAd.load(withAdUnitID: AdsConfig.appOpenUnitID,
-                          request: req
-        ) { [weak self] ad, error in
+        GADAppOpenAd.load(withAdUnitID: AdsConfig.appOpenUnitID, request: GADRequest()) { [weak self] ad, error in
             guard let self = self else { return }
             self.isLoading = false
             if let error = error {
+                self.presentWhenLoaded = false
                 print("❌ AppOpen load error:", error.localizedDescription)
                 return
             }
-            guard let ad = ad else { print("❌ AppOpen no fill"); return }
-            self.ad = ad
+            guard let ad = ad else { self.presentWhenLoaded = false; return }
             ad.fullScreenContentDelegate = self
-            print("✅ AppOpen loaded")
-            print(thenPresent)
-            if thenPresent { self.present(ad: ad) }
+            self.ad = ad
+            self.adLoadedAt = Date()
+            if self.presentWhenLoaded {
+                self.presentWhenLoaded = false
+                self.present(ad: ad)
+            }
         }
     }
-    
-    private func present(ad: GADAppOpenAd) {
-        print("####")
-        print(ad)
-        print(self.topViewController())
-        print("###")
+
+    /// 최상단 VC 가 준비될 때까지 0.3초 간격으로 최대 `maxPresentRetries`회 재시도.
+    /// (다른 시트가 떠 있으면 결국 포기 — 사용자의 입력을 가로막지 않는다)
+    private func present(ad: GADAppOpenAd, attempt: Int = 0) {
         DispatchQueue.main.async {
-            guard let root = self.topViewController(),
-                  root.presentedViewController == nil else {
-                // 루트가 아직 없으면 약간 지연
+            guard !self.isShowing else { return }
+            guard let root = self.topViewController(), root.presentedViewController == nil else {
+                guard attempt < Self.maxPresentRetries else { return }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-                    if let ad = self?.ad { self?.present(ad: ad) }
+                    guard let self = self, let ad = self.ad else { return }
+                    self.present(ad: ad, attempt: attempt + 1)
                 }
                 return
             }
@@ -172,7 +177,7 @@ final class AppOpenAdManager: NSObject, GADFullScreenContentDelegate {
             ad.present(fromRootViewController: root)
         }
     }
-    
+
     private func topViewController() -> UIViewController? {
         let base = window?.rootViewController ?? {
             UIApplication.shared.connectedScenes
@@ -183,6 +188,7 @@ final class AppOpenAdManager: NSObject, GADFullScreenContentDelegate {
         }()
         return Self.findTop(from: base)
     }
+
     private static func findTop(from vc: UIViewController?) -> UIViewController? {
         guard let vc = vc else { return nil }
         if let nav = vc as? UINavigationController { return findTop(from: nav.visibleViewController) }
@@ -190,18 +196,18 @@ final class AppOpenAdManager: NSObject, GADFullScreenContentDelegate {
         if let p = vc.presentedViewController { return findTop(from: p) }
         return vc
     }
-    
-    // MARK: - Delegate
-    func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) { print("🔔 AppOpen will present") }
+
+    // MARK: - GADFullScreenContentDelegate
+
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        print("🔔 AppOpen dismissed")
         isShowing = false
-        shownAt = Date()               // ✅ 쿨다운용 타임스탬프
-        markShownForCurrentWindow()    // ✅ 정오~정오 1회 정책 기록(네 함수)
+        shownAt = Date()               // 쿨다운용
+        markShownForCurrentWindow()    // 정오~정오 1회 정책 기록
         self.ad = nil
-        // 다음을 위해 프리로드
+        // 다음 노출을 위해 프리로드
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in self?.preload() }
     }
+
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("❌ AppOpen present error:", error.localizedDescription)
         isShowing = false

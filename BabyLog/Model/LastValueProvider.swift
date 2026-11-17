@@ -7,27 +7,35 @@
 
 import CoreData
 
+/// "마지막으로 입력한 값"을 기본값으로 제공 (새 기록 입력 편의 기능)
 enum LastValueProvider {
-    /// 해당 아기의 "가장 최근" 수유(Feeding) 이벤트에서 ml을 읽어온다.
-    /// 없으면 nil 반환.
+    /// 해당 아기의 가장 최근 수유 이벤트 수유량(ml). 없으면 nil.
     static func lastFeedingML(for baby: Baby, in context: NSManagedObjectContext) -> Int? {
-        let req = NSFetchRequest<CareEvent>(entityName: "CareEvent")
-        // 성능 위해 kind 조건도 넣고 싶다면, 프로젝트 스키마에 맞춰 조정:
-        // - kind가 Int16 raw라면: NSPredicate(format:"baby == %@ AND kindRaw == %d", baby, CareKind.feed.rawValue)
-        // - kind가 Transformable/Computed라면 createdAt만 조건에 두고 나중에 필터
-        req.predicate = NSPredicate(format: "baby == %@", baby)
+        let req: NSFetchRequest<CareEvent> = CareEvent.fetchRequest()
+        // kind 는 Int16 raw(kindRaw)로 저장되므로 DB 레벨에서 바로 필터링 가능
+        req.predicate = NSPredicate(format: "baby == %@ AND kindRaw == %d", baby, CareKind.feed.rawValue)
         req.sortDescriptors = [NSSortDescriptor(key: #keyPath(CareEvent.createdAt), ascending: false)]
-        req.fetchLimit = 20 // 여유롭게 몇 개만 가져와서 코드로 feed만 고르기
+        req.fetchLimit = 1
 
         do {
-            let events = try context.fetch(req)
-            if let lastFeed = events.first(where: { $0.kind == .feed }) {
-                return Int(lastFeed.feedAmountML)
-            }
-            return nil
+            guard let last = try context.fetch(req).first, last.feedAmountML > 0 else { return nil }
+            return Int(last.feedAmountML)
         } catch {
             print("lastFeedingML fetch error:", error)
             return nil
         }
+    }
+
+    /// 최근 `limit`회 수유(수유량 > 0)의 평균 ml. 기록이 없으면 nil.
+    static func recentAverageFeedingML(for baby: Baby, in context: NSManagedObjectContext,
+                                       limit: Int = FeedingGuide.recentSampleCount) -> Double? {
+        let req: NSFetchRequest<CareEvent> = CareEvent.fetchRequest()
+        req.predicate = NSPredicate(format: "baby == %@ AND kindRaw == %d AND feedAmountML > 0",
+                                    baby, CareKind.feed.rawValue)
+        req.sortDescriptors = [NSSortDescriptor(key: #keyPath(CareEvent.createdAt), ascending: false)]
+        req.fetchLimit = limit
+
+        guard let feeds = try? context.fetch(req), !feeds.isEmpty else { return nil }
+        return Double(feeds.reduce(0) { $0 + Int($1.feedAmountML) }) / Double(feeds.count)
     }
 }

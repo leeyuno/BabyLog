@@ -4,6 +4,9 @@
 //
 //  Created by 이윤오 on 2025/09/23.
 //
+//  위젯용 "오늘 vs 6일 평균" 칩 (앱·위젯 두 타깃에 포함).
+//  MetricChipView 와 로직 동일, 위젯 공간에 맞게 폰트만 축소.
+//
 
 import SwiftUI
 

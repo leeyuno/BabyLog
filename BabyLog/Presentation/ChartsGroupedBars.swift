@@ -8,20 +8,20 @@
 import SwiftUI
 import Charts
 
-@available(iOS 16.0, *)
+/// 일별 수유(ml)/수면(h)/배변(회)을 날짜별 그룹 막대로 표시.
+/// ⚠️ 세 지표의 단위가 달라 같은 y축에서 수유(수백 ml)가 다른 값을 압도한다 — 개선 후보.
 struct ChartsGroupedBars: View {
-    let days: [Date]
-    let data: [(date: Date, feedML: Int, sleepHours: Double, poopCount: Int)]
-    
+    let totals: [DayTotals]
+
     private var rows: [SeriesRow] {
         let df = DateFormatter()
         df.dateFormat = "M/d"
-        return data.flatMap { d -> [SeriesRow] in
-            let label = df.string(from: d.date)
+        return totals.flatMap { d -> [SeriesRow] in
+            let label = df.string(from: d.day)
             return [
-                SeriesRow(day: d.date, dayLabel: label, metric: "수유(ml)", value: Double(d.feedML)),
-                SeriesRow(day: d.date, dayLabel: label, metric: "수면(h)", value: d.sleepHours),
-                SeriesRow(day: d.date, dayLabel: label, metric: "배변(회)", value: Double(d.poopCount))
+                SeriesRow(id: "\(label)-feed", dayLabel: label, metric: "수유(ml)", value: Double(d.feedML)),
+                SeriesRow(id: "\(label)-sleep", dayLabel: label, metric: "수면(h)", value: d.sleepHours),
+                SeriesRow(id: "\(label)-poop", dayLabel: label, metric: "배변(회)", value: Double(d.poopCount))
             ]
         }
     }
@@ -36,10 +36,10 @@ struct ChartsGroupedBars: View {
             .frame(height: 280)
         }
     }
-    
+
+    /// 안정적인 id(날짜+지표) — 매 렌더마다 UUID 를 새로 만들면 차트가 전체 재생성된다.
     struct SeriesRow: Identifiable {
-        var id = UUID()
-        let day: Date
+        let id: String
         let dayLabel: String
         let metric: String
         let value: Double

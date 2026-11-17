@@ -4,6 +4,9 @@
 //
 //  Created by 이윤오 on 2025/09/24.
 //
+//  SwiftUI 뷰 계층에서 UIWindow 를 얻어 AppOpenAdManager 에 전달하는 0-크기 뷰.
+//  RootView 의 .background(WindowAccessor()) 로 부착된다.
+//
 
 import SwiftUI
 import UIKit

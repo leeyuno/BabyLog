@@ -4,29 +4,23 @@
 //
 //  Created by 이윤오 on 2025/09/23.
 //
+//  "빠른 기록 추가" 위젯의 홈 화면(systemSmall/Medium) UI. 앱·위젯 두 타깃에 포함.
+//  탭 → babylog://add?type=feeding → RootView 가 새 기록 시트(수유)를 띄운다.
+//
 
 import SwiftUI
 import WidgetKit
 
-fileprivate func makeDeepLink(_ kind: String) -> URL {
-    var comp = URLComponents()
-    comp.scheme = "babylog"
-    comp.host = "add"
-    comp.queryItems = [.init(name: "type", value: kind)]
-    return comp.url!
-}
-
 struct AddQuickHomeWidgetView: View {
+    var kind: AddKind = .feeding
+
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.secondarySystemBackground))
-            HStack(spacing: 8) {
-                Image(systemName: "plus.circle.fill").font(.title)
-                Text("기록 추가").font(.headline)
-            }
-            .padding()
+        HStack(spacing: 8) {
+            Image(systemName: "plus.circle.fill").font(.title)
+            Text("기록 추가").font(.headline)
         }
-        .widgetURL(makeDeepLink("feed"))  // ⬅️ 최상위 컨테이너에 부착
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .widgetURL(DeepLink.add(kind))  // 최상위 컨테이너에 부착해야 위젯 전체가 탭 영역이 된다
     }
 }

@@ -4,6 +4,8 @@
 //
 //  Created by 이윤오 on 2025/09/12.
 //
+//  SwiftUI 프리뷰 전용 인메모리 Core Data + 더미 데이터.
+//
 
 import CoreData
 

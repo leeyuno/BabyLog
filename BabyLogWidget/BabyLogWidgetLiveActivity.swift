@@ -4,6 +4,9 @@
 //
 //  Created by 이윤오 on 2025/09/21.
 //
+//  ⚠️ Xcode 템플릿 그대로(미구현). WidgetBundle 에 등록되어 있지 않다.
+//  수면 진행중 Live Activity 등으로 구현할 때 번들에 추가할 것.
+//
 
 import ActivityKit
 import WidgetKit
@@ -21,7 +24,7 @@ struct BabyLogWidgetAttributes: ActivityAttributes {
 
 struct BabyLogWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: BabyLogWidgetAttributes.self) { context in
+        ActivityConfiguration(for: BabyLogWidgetAttributes.self) { _ in
             // Lock screen/banner UI goes here
             VStack {
                 Text("Hello")
@@ -29,7 +32,7 @@ struct BabyLogWidgetLiveActivity: Widget {
             .activityBackgroundTint(Color.cyan)
             .activitySystemActionForegroundColor(Color.black)
 
-        } dynamicIsland: { context in
+        } dynamicIsland: { _ in
             DynamicIsland {
                 // Expanded UI goes here.  Compose the expanded UI through
                 // various regions, like leading/trailing/center/bottom

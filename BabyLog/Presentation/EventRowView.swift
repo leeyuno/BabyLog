@@ -4,13 +4,15 @@
 //
 //  Created by 이윤오 on 2025/09/11.
 //
+//  타임라인의 기록 1행. 종류별 아이콘/제목/부가정보 + 기록 시각.
+//
 
 import SwiftUI
 import CoreData
 
 struct EventRowView: View {
     let event: CareEvent
-    
+
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: iconName).font(.title3)
@@ -25,7 +27,7 @@ struct EventRowView: View {
         }
         .padding(.vertical, 4)
     }
-    
+
     private var iconName: String {
         switch event.kind {
         case .feed: return "baby.bottle.fill"
@@ -33,7 +35,7 @@ struct EventRowView: View {
         case .sleep: return "moon.zzz.fill"
         }
     }
-    
+
     private var title: String {
         switch event.kind {
         case .feed:
@@ -45,7 +47,7 @@ struct EventRowView: View {
             return "수면"
         }
     }
-    
+
     private var subtitle: String {
         switch event.kind {
         case .feed:

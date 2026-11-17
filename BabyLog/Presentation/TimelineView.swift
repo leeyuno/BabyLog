@@ -4,6 +4,12 @@
 //
 //  Created by 이윤오 on 2025/09/11.
 //
+//  최근 24시간 기록 목록 (createdAt 내림차순).
+//  - + 버튼: 새 기록 시트
+//  - 행 탭 / 스와이프 "편집": AddEventView(editing:) — 종류·수유량·시간·메모 모두 수정
+//  - 스와이프 "삭제" (풀 스와이프 삭제는 실수 방지를 위해 비활성)
+//  ⚠️ 24시간 기준 시각은 init 시점에 고정된다. 앱을 오래 켜두면 범위가 갱신되지 않을 수 있음.
+//
 
 import SwiftUI
 import CoreData
@@ -12,10 +18,10 @@ struct TimelineView: View {
     let baby: Baby
     @Environment(\.managedObjectContext) private var context
     @State private var showAddSheet = false
-    
+
     @FetchRequest private var events: FetchedResults<CareEvent>
-    
-    @State private var editingEvent: CareEvent? = nil
+
+    @State private var editingEvent: CareEvent?
 
     init(baby: Baby) {
         self.baby = baby
@@ -28,7 +34,7 @@ struct TimelineView: View {
             animation: .default
         )
     }
-    
+
     var body: some View {
             NavigationStack {
                 VStack(spacing: 0) {
@@ -44,16 +50,30 @@ struct TimelineView: View {
                             .listRowBackground(Color.clear)
                         } else {
                             ForEach(events) { ev in
-                                EventRowView(event: ev)
-                                    .swipeActions(edge: .trailing) {
-                                        Button {
-                                            editingEvent = ev
-                                        } label: {
-                                            Label("편집", systemImage: "pencil")
-                                        }
+                                // 행 전체 탭 → 편집 (모든 필드 수정 가능)
+                                Button {
+                                    editingEvent = ev
+                                } label: {
+                                    EventRowView(event: ev)
+                                        .contentShape(Rectangle())
+                                }
+                                .buttonStyle(.plain)
+                                // .swipeActions 를 쓰면 .onDelete 기본 삭제가 숨겨지므로 삭제도 직접 둔다.
+                                // 졸린 상태의 실수 방지를 위해 풀 스와이프 삭제는 막는다.
+                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                    Button(role: .destructive) {
+                                        delete(ev)
+                                    } label: {
+                                        Label("삭제", systemImage: "trash")
                                     }
+                                    Button {
+                                        editingEvent = ev
+                                    } label: {
+                                        Label("편집", systemImage: "pencil")
+                                    }
+                                    .tint(.blue)
+                                }
                             }
-                            .onDelete(perform: delete)
                         }
                         BannerView(adUnitID: AdsConfig.bannerUnitID)
                                 .frame(height: 60)            // Adaptive 배너 높이 ≈ 50~60
@@ -72,21 +92,33 @@ struct TimelineView: View {
                     }
                 }
                 .sheet(isPresented: $showAddSheet) {
-                    WindowAccessor()
+                    AddEventView(baby: baby)
+                        .environment(\.managedObjectContext, context)
+                }
+                .sheet(item: $editingEvent) { ev in
+                    // 시트 안에서 삭제한 경우 dismiss 도중 재평가될 수 있어 삭제된 객체는 그리지 않는다
+                    if !ev.isDeleted, ev.managedObjectContext != nil {
+                        AddEventView(editing: ev)
+                            .environment(\.managedObjectContext, context)
+                    }
                 }
             }
         }
-    
-    private func delete(_ offsets: IndexSet) {
-        offsets.map { events[$0] }.forEach(context.delete)
-        try? context.save()
+
+    private func delete(_ event: CareEvent) {
+        context.delete(event)
+        do {
+            try context.saveAndRefreshWidgets()
+        } catch {
+            print("Delete error:", error.localizedDescription)
+        }
     }
 }
 
 struct TimelineView_Previews: PreviewProvider {
     static var previews: some View {
         let context = PreviewPersistence.controller.container.viewContext
-        
+
         let request: NSFetchRequest<Baby> = Baby.fetchRequest()
         let baby = (try? context.fetch(request).first) ?? {
             let b = Baby(context: context)
@@ -95,7 +127,8 @@ struct TimelineView_Previews: PreviewProvider {
             b.birthday = Date()
             return b
         }()
-        
+
         TimelineView(baby: baby)
+            .environment(\.managedObjectContext, context)
     }
 }

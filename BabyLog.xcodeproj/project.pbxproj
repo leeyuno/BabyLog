@@ -13,6 +13,7 @@
 		4F1E7DEA2E72F85800ED93E7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E7DE92E72F85800ED93E7 /* Preview Assets.xcassets */; };
 		4F1E7DEC2E72F85800ED93E7 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7DEB2E72F85800ED93E7 /* Persistence.swift */; };
 		4F1E7DEF2E72F85800ED93E7 /* BabyLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7DED2E72F85800ED93E7 /* BabyLog.xcdatamodeld */; };
+		4F1E7DEF2E72F85800ED93F0 /* BabyLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7DED2E72F85800ED93E7 /* BabyLog.xcdatamodeld */; };
 		4F1E7DF92E72F85800ED93E7 /* BabyLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7DF82E72F85800ED93E7 /* BabyLogTests.swift */; };
 		4F1E7E032E72F85800ED93E7 /* BabyLogUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E022E72F85800ED93E7 /* BabyLogUITests.swift */; };
 		4F1E7E052E72F85800ED93E7 /* BabyLogUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E042E72F85800ED93E7 /* BabyLogUITestsLaunchTests.swift */; };
@@ -26,7 +27,6 @@
 		4F1E7E2C2E74530300ED93E7 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */; };
 		4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */; };
 		4F1E7E302E75A12500ED93E7 /* BabyLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */; };
-		4F1E7E322E7A87C600ED93E7 /* EditEventTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E312E7A87C600ED93E7 /* EditEventTimeView.swift */; };
 		4F1E7E342E7F8C5000ED93E7 /* WeeklyOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */; };
 		4F1E7E362E7F93C000ED93E7 /* ChartsGroupedBars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */; };
 		4F1E7E382E7F960E00ED93E7 /* FallbackBars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */; };
@@ -66,6 +66,8 @@
 		4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */; };
 		4F1E7EA12E83DA9500ED93E7 /* WindowAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EA02E83DA9500ED93E7 /* WindowAccessor.swift */; };
+		4F1E7EB22E90000100ED93E7 /* FeedingGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EB12E90000100ED93E7 /* FeedingGuide.swift */; };
+		4F1E7EB42E90000100ED93E7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EB32E90000100ED93E7 /* SettingsView.swift */; };
 		6142173D49D29F1CB7CC28ED /* Pods_BabyLogTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1145BA96CE7C562F167D513F /* Pods_BabyLogTests.framework */; };
 		B16A1EE7C9F3CCBD189D09FB /* Pods_BabyLogWidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55783BC8BD1105BE44DF80C /* Pods_BabyLogWidgetExtension.framework */; };
 		DF562AE97A46FCF532F73C6A /* Pods_BabyLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95BE3C313C4475EA3A9F0A8 /* Pods_BabyLog.framework */; };
@@ -136,7 +138,6 @@
 		4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPersistence.swift; sourceTree = "<group>"; };
 		4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLog.swift; sourceTree = "<group>"; };
-		4F1E7E312E7A87C600ED93E7 /* EditEventTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEventTimeView.swift; sourceTree = "<group>"; };
 		4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyOverviewView.swift; sourceTree = "<group>"; };
 		4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsGroupedBars.swift; sourceTree = "<group>"; };
 		4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallbackBars.swift; sourceTree = "<group>"; };
@@ -166,6 +167,9 @@
 		4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickHomeWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastValueProvider.swift; sourceTree = "<group>"; };
 		4F1E7EA02E83DA9500ED93E7 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
+		4F1E7EB02E90000100ED93E7 /* BabyLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BabyLog 2.xcdatamodel"; sourceTree = "<group>"; };
+		4F1E7EB12E90000100ED93E7 /* FeedingGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedingGuide.swift; sourceTree = "<group>"; };
+		4F1E7EB32E90000100ED93E7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		626847689FF55B1FA78F1CE5 /* Pods-BabyLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLog.debug.xcconfig"; path = "Target Support Files/Pods-BabyLog/Pods-BabyLog.debug.xcconfig"; sourceTree = "<group>"; };
 		6EF63560F475858D94D772F7 /* Pods-BabyLogWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLogWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-BabyLogWidgetExtension/Pods-BabyLogWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		705EE50D7EAA93CFC8C21478 /* Pods-BabyLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BabyLog.release.xcconfig"; path = "Target Support Files/Pods-BabyLog/Pods-BabyLog.release.xcconfig"; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 				4F1E7E8B2E823FC800ED93E7 /* AppOpenAdManager.swift */,
 				4F1E7E8D2E82400600ED93E7 /* AdsConfig.swift */,
 				4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */,
+				4F1E7EB12E90000100ED93E7 /* FeedingGuide.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -302,7 +307,6 @@
 				4F1E7E6B2E8195D100ED93E7 /* MetricChipView.swift */,
 				4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */,
 				4F1E7E212E72FB8E00ED93E7 /* TimelineView.swift */,
-				4F1E7E312E7A87C600ED93E7 /* EditEventTimeView.swift */,
 				4F1E7E232E72FE9000ED93E7 /* EventRowView.swift */,
 				4F1E7E7D2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift */,
 				4F1E7E2B2E74530300ED93E7 /* EmptyStateView.swift */,
@@ -314,6 +318,7 @@
 				4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */,
 				4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */,
 				4F1E7EA02E83DA9500ED93E7 /* WindowAccessor.swift */,
+				4F1E7EB32E90000100ED93E7 /* SettingsView.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -656,9 +661,10 @@
 			files = (
 				4F1E7E1E2E72FAB900ED93E7 /* RootView.swift in Sources */,
 				4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */,
+				4F1E7EB22E90000100ED93E7 /* FeedingGuide.swift in Sources */,
+				4F1E7EB42E90000100ED93E7 /* SettingsView.swift in Sources */,
 				4F1E7E6C2E8195D100ED93E7 /* MetricChipView.swift in Sources */,
 				4F1E7DEF2E72F85800ED93E7 /* BabyLog.xcdatamodeld in Sources */,
-				4F1E7E322E7A87C600ED93E7 /* EditEventTimeView.swift in Sources */,
 				4F1E7E202E72FB2B00ED93E7 /* OnboardingNewBabyView.swift in Sources */,
 				4F1E7E962E82434900ED93E7 /* AddQuickHomeWidgetView.swift in Sources */,
 				4F1E7E222E72FB8E00ED93E7 /* TimelineView.swift in Sources */,
@@ -712,6 +718,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F1E7DEF2E72F85800ED93F0 /* BabyLog.xcdatamodeld in Sources */,
 				4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */,
 				4F1E7E602E7FBB2400ED93E7 /* BabyLog.swift in Sources */,
 				4F1E7E942E82433D00ED93E7 /* AddQuickLockWidgetView.swift in Sources */,
@@ -886,7 +893,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -924,7 +931,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -951,7 +958,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X53GZ83749;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leeyuno.babylog.ios.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -972,7 +979,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X53GZ83749;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leeyuno.babylog.ios.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1027,6 +1034,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = BabyLogWidget/BabyLogWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X53GZ83749;
@@ -1055,6 +1063,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = BabyLogWidget/BabyLogWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X53GZ83749;
@@ -1132,8 +1141,9 @@
 			isa = XCVersionGroup;
 			children = (
 				4F1E7DEE2E72F85800ED93E7 /* BabyLog.xcdatamodel */,
+				4F1E7EB02E90000100ED93E7 /* BabyLog 2.xcdatamodel */,
 			);
-			currentVersion = 4F1E7DEE2E72F85800ED93E7 /* BabyLog.xcdatamodel */;
+			currentVersion = 4F1E7EB02E90000100ED93E7 /* BabyLog 2.xcdatamodel */;
 			path = BabyLog.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

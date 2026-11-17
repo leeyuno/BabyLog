@@ -4,6 +4,9 @@
 //
 //  Created by 이윤오 on 2025/09/22.
 //
+//  주간 개요의 "오늘 vs 6일 평균" 칩 (앱 전용).
+//  위젯용 DailySummaryWidgetChipView 와 로직이 동일하고 폰트/여백만 다르다 — 수정 시 양쪽을 함께 맞출 것.
+//
 
 import SwiftUI
 import CoreData
@@ -12,7 +15,7 @@ import CoreData
 struct MetricChipView: View {
     enum Kind { case sleep, feeding, diaper }
     enum Unit { case timeHM, ml, count }
-    
+
     let kind: Kind
     let title: String
     /// today/avg6 단위:
@@ -22,7 +25,7 @@ struct MetricChipView: View {
     let today: Double
     let avg6: Double
     let unit: Unit
-    
+
     var iconName: String {
         switch kind {
         case .sleep: return "moon.zzz.fill"
@@ -45,7 +48,7 @@ struct MetricChipView: View {
     var deltaColor: Color {
         abs(delta) < 0.001 ? .secondary : (delta >= 0 ? .green : .red)
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
@@ -72,7 +75,7 @@ struct MetricChipView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .accessibilityLabel("\(title), 오늘 \(format(today)), 최근 6일 평균 \(format(avg6)), 차이 \(deltaText)")
     }
-    
+
     func format(_ v: Double) -> String {
         switch unit {
         case .timeHM:

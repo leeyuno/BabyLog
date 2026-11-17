@@ -4,6 +4,8 @@
 //
 //  Created by 이윤오 on 2025/09/11.
 //
+//  첫 실행 시 아기 등록. 저장되면 RootView 의 @FetchRequest 가 갱신되어 자동으로 메인 탭으로 전환된다.
+//
 
 import SwiftUI
 import CoreData
@@ -44,11 +46,12 @@ struct OnboardingNewBabyView: View {
     private func save() {
         let baby = Baby(context: context)
         baby.id = UUID()
-        baby.name = name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "Baby" : name
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        baby.name = trimmed.isEmpty ? "Baby" : trimmed
         baby.birthday = useBirthday ? birthday : nil
 
         do {
-            try context.save()
+            try context.saveAndRefreshWidgets()
         } catch {
             // 디버깅용: 실제 앱이면 사용자 알림 처리
             print("Core Data save error:", error.localizedDescription)

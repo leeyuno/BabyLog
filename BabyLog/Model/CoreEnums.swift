@@ -7,6 +7,10 @@
 
 import Foundation
 
+// ⚠️ 아래 enum 들의 rawValue(Int16)는 Core Data에 그대로 저장된다.
+//    기존 값의 의미를 바꾸거나 재번호하면 저장된 데이터가 잘못 해석되므로, 추가만 할 것.
+
+/// 기록 종류 (CareEvent.kindRaw)
 enum CareKind: Int16, CaseIterable {
     case feed = 0, diaper = 1, sleep = 2
     var label: String {
@@ -18,16 +22,21 @@ enum CareKind: Int16, CaseIterable {
     }
 }
 
+/// 수유 종류 (CareEvent.feedTypeRaw)
 enum FeedType: Int16, CaseIterable {
     case breastMilk = 0, formula = 1
     var label: String { self == .formula ? "분유" : "모유" }
-    
 }
 
+/// 기저귀 종류 (CareEvent.diaperTypeRaw). 통계의 "배변"은 poop + mixed 만 센다.
 enum DiaperType: Int16, CaseIterable {
     case pee = 0, poop = 1, mixed = 2
     var label: String {
-        switch self { case .pee: return "소변"; case .poop: return "대변"; case .mixed: return "혼합" }
+        switch self {
+        case .pee: return "소변"
+        case .poop: return "대변"
+        case .mixed: return "혼합"
+        }
     }
 }
 
