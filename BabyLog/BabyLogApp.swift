@@ -7,6 +7,7 @@
 //  앱 진입점.
 //  - Core Data viewContext 와 Router 를 환경으로 주입
 //  - babylog:// 딥링크(위젯 탭) → Router
+//  - 앱 활성화 시 다음 수유 알림 재예약
 //
 
 import SwiftUI
@@ -17,6 +18,7 @@ struct BabyLogApp: App {
     let persistenceController = PersistenceController.shared
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup {
@@ -26,6 +28,11 @@ struct BabyLogApp: App {
                 .onOpenURL { url in
                     router.handle(url: url)
                 }
+        }
+        .onChange(of: scenePhase) { phase in
+            if phase == .active {
+                FeedReminder.reschedule(context: persistenceController.container.viewContext)
+            }
         }
     }
 }

@@ -39,6 +39,7 @@ struct EventRowView: View {
     private var title: String {
         switch event.kind {
         case .feed:
+            if event.isDirectBreastfeeding { return "수유 (모유 직접)" }
             let t = event.feedType?.label ?? "-"
             return "수유 (\(t))"
         case .diaper:
@@ -51,6 +52,10 @@ struct EventRowView: View {
     private var subtitle: String {
         switch event.kind {
         case .feed:
+            if event.isDirectBreastfeeding {
+                return Self.breastSummary(left: Int(event.breastLeftSec), right: Int(event.breastRightSec),
+                                          last: event.lastBreastSide)
+            }
             let amount = event.feedAmountML > 0 ? "\(event.feedAmountML) ml" : "-"
             return "수유량 \(amount)"
         case .diaper:
@@ -64,6 +69,16 @@ struct EventRowView: View {
                 return "수면 기록"
             }
         }
+    }
+
+    /// "왼 8분 · 오 12분 (총 20분) · 오른쪽에서 끝" — 시간이 없으면 "시간 기록 없음"
+    static func breastSummary(left: Int, right: Int, last: BreastSide?) -> String {
+        let total = left + right
+        guard total > 0 else { return "시간 기록 없음" }
+        func m(_ s: Int) -> Int { Int((Double(s) / 60).rounded()) }
+        var text = "왼 \(m(left))분 · 오 \(m(right))분 (총 \(m(total))분)"
+        if let last { text += " · \(last.label)에서 끝" }
+        return text
     }
 }
 

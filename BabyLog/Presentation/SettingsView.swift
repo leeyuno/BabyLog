@@ -7,6 +7,7 @@
 //  설정 탭: 아기 프로필 사진 + 아기 정보(이름·생일/개월수·몸무게) 수정 + 수유량 자동 추천 on/off.
 //  - 사진: PhotosPicker → BabyPhotoStore (정사각형 600px JPEG, 즉시 저장)
 //  - 몸무게를 바꿔 저장하면 오늘 날짜의 성장 기록(WeightRecord)으로 쌓인다 → 성장 탭 차트
+//  - 성별: WHO 성장곡선 비교에만 사용 / 다음 수유 알림: FeedReminder (즉시 반영)
 //  - 개월수: 생일이 있으면 자동 계산, 없으면 직접 입력(Baby.manualAgeMonths)
 //  - 자동 추천 스위치는 @AppStorage(FeedingSettings.autoRecommendKey) — AddEventView 와 공유
 //  - 입력값은 로컬 상태로 편집하고 "저장" 시 Core Data 에 반영한다.
@@ -21,12 +22,15 @@ struct SettingsView: View {
     @Environment(\.managedObjectContext) private var context
 
     @AppStorage(FeedingSettings.autoRecommendKey) private var autoRecommend = false
+    @AppStorage(FeedReminder.enabledKey) private var reminderOn = false
+    @AppStorage(FeedReminder.leadMinutesKey) private var reminderLead = 0
 
     // 편집용 로컬 상태
     @State private var name: String
     @State private var hasBirthday: Bool
     @State private var birthday: Date
     @State private var manualMonths: Int
+    @State private var sex: BabySex
     /// 몸무게 입력 문자열. TextField(value:) 는 포커스 해제 전까지 값이 반영되지 않아 문자열로 받는다.
     @State private var weightText: String
 
@@ -49,6 +53,7 @@ struct SettingsView: View {
         _hasBirthday = State(initialValue: baby.birthday != nil)
         _birthday = State(initialValue: baby.birthday ?? Date())
         _manualMonths = State(initialValue: max(Int(baby.manualAgeMonths), 0))
+        _sex = State(initialValue: baby.sex)
         _weightText = State(initialValue: baby.weightKg > 0 ? String(format: "%.1f", baby.weightKg) : "")
     }
 
@@ -77,6 +82,7 @@ struct SettingsView: View {
             || hasBirthday != (baby.birthday != nil)
             || (hasBirthday && birthday != baby.birthday)
             || (!hasBirthday && manualMonths != Int(baby.manualAgeMonths))
+            || sex != baby.sex
             || (parsedWeight ?? -1) != baby.weightKg
     }
 
@@ -90,6 +96,7 @@ struct SettingsView: View {
                 photoSection
                 babySection
                 feedingSection
+                reminderSection
                 Section {
                     Button("저장", action: save)
                         .frame(maxWidth: .infinity)
@@ -148,6 +155,11 @@ struct SettingsView: View {
             TextField("이름", text: $name)
                 .disableAutocorrection(true)
 
+            Picker("성별", selection: $sex) {
+                ForEach(BabySex.allCases, id: \.self) { Text($0.label).tag($0) }
+            }
+            .pickerStyle(.segmented)
+
             Toggle("생일 입력", isOn: $hasBirthday)
             if hasBirthday {
                 DatePicker("생일", selection: $birthday, in: ...Date(), displayedComponents: .date)
@@ -178,6 +190,37 @@ struct SettingsView: View {
                 Text("몸무게를 바꿔 저장하면 오늘 날짜로 성장 기록에 추가됩니다. 지난 기록은 성장 탭에서 관리하세요.")
             }
         }
+    }
+
+    private var reminderSection: some View {
+        Section {
+            Toggle("다음 수유 알림", isOn: $reminderOn)
+            if reminderOn {
+                Picker("알림 시점", selection: $reminderLead) {
+                    ForEach(FeedReminder.leadOptions, id: \.self) { m in
+                        Text(m == 0 ? "예상 시각" : "\(m)분 전").tag(m)
+                    }
+                }
+            }
+        } header: {
+            Text("알림")
+        } footer: {
+            Text("최근 수유 간격으로 예상한 다음 수유 시각에 알려줍니다. 수유를 기록할 때마다 시각이 다시 계산됩니다.")
+        }
+        .onChange(of: reminderOn) { on in
+            guard on else { FeedReminder.cancel(); return }
+            Task {
+                if await FeedReminder.requestAuthorization() {
+                    await MainActor.run { FeedReminder.reschedule(context: context) }
+                } else {
+                    await MainActor.run {
+                        reminderOn = false
+                        alertMessage = "알림이 꺼져 있어요. 설정 앱 > 베이비로그에서 알림을 허용해 주세요."
+                    }
+                }
+            }
+        }
+        .onChange(of: reminderLead) { _ in FeedReminder.reschedule(context: context) }
     }
 
     private var feedingSection: some View {
@@ -214,6 +257,7 @@ struct SettingsView: View {
         baby.name = trimmedName
         baby.birthday = hasBirthday ? birthday : nil
         baby.manualAgeMonths = hasBirthday ? -1 : Int16(manualMonths)
+        baby.sex = sex
         if weight > 0, weight != baby.weightKg {
             // 몸무게 변경은 오늘 날짜 성장 기록으로 남긴다 (Baby.weightKg 도 함께 갱신됨)
             GrowthStore.upsert(weightKg: weight, on: Date(), for: baby, in: context)

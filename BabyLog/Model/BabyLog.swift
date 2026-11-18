@@ -26,5 +26,14 @@ extension Baby {
     @NSManaged public var weightKg: Double
     /// 생일이 없을 때 직접 입력한 개월수. -1 = 미입력. (모델 v2 에서 추가)
     @NSManaged public var manualAgeMonths: Int16
+    /// 성별 raw (BabySex). 0 = 선택 안 함 (모델 v4)
+    @NSManaged public var sexRaw: Int16
     @NSManaged public var events: Set<CareEvent>?
+}
+
+extension Baby {
+    var sex: BabySex {
+        get { BabySex(rawValue: sexRaw) ?? .unknown }
+        set { sexRaw = newValue.rawValue }
+    }
 }

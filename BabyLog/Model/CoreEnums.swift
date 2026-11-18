@@ -50,3 +50,23 @@ extension CareKind {
         }
     }
 }
+
+/// 아기 성별 (Baby.sexRaw, 모델 v4). WHO 성장곡선 비교에만 쓴다.
+enum BabySex: Int16, CaseIterable {
+    case unknown = 0, boy = 1, girl = 2
+    var label: String {
+        switch self {
+        case .unknown: return "선택 안 함"
+        case .boy: return "남아"
+        case .girl: return "여아"
+        }
+    }
+}
+
+/// 모유 직접 수유 쪽 (CareEvent.breastLastSide, 모델 v4. -1 = 없음)
+enum BreastSide: Int16, CaseIterable {
+    case left = 0, right = 1
+    var label: String { self == .left ? "왼쪽" : "오른쪽" }
+    var short: String { self == .left ? "왼" : "오" }
+    var other: BreastSide { self == .left ? .right : .left }
+}

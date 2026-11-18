@@ -264,4 +264,101 @@ final class BabyLogTests: XCTestCase {
         XCTAssertFalse(GrowthStore.seedIfNeeded(for: baby, in: context))
         XCTAssertEqual(GrowthStore.records(for: baby, in: context).count, 1)
     }
+
+    // MARK: - 다음 수유 예상 (FeedSchedule)
+
+    func testPredictUsesMedianInterval() throws {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        // 3시간, 3시간, 6시간(밤잠) 간격 → 중앙값 3시간
+        let times = [-12, -9, -6, 0].map { now.addingTimeInterval(Double($0) * 3600 - 600) }
+        let p = try XCTUnwrap(FeedSchedule.predict(feedTimes: times, now: now))
+        XCTAssertEqual(p.interval, 3 * 3600, accuracy: 0.1)
+        XCTAssertEqual(p.next, times.last!.addingTimeInterval(3 * 3600))  // swiftlint:disable:this force_unwrapping
+    }
+
+    func testPredictMergesFeedsWithin30Minutes() throws {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        // 모유 후 20분 뒤 분유 보충 → 한 번으로
+        let offsets: [Double] = [-6 * 60, -3 * 60, -3 * 60 + 20, -10]
+        let times = offsets.map { now.addingTimeInterval($0 * 60) }
+        let p = try XCTUnwrap(FeedSchedule.predict(feedTimes: times, now: now))
+        XCTAssertEqual(p.lastFeed, times[3])
+        XCTAssertEqual(FeedSchedule.intervalText(p.interval), "2시간 55분")
+    }
+
+    func testPredictNeedsThreeSessionsWithin48h() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        XCTAssertNil(FeedSchedule.predict(feedTimes: [now.addingTimeInterval(-3600), now], now: now))
+        let old = [-60, -57, -54].map { now.addingTimeInterval(Double($0) * 3600) }  // 48시간 밖
+        XCTAssertNil(FeedSchedule.predict(feedTimes: old, now: now))
+    }
+
+    func testReminderFireDate() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        let p = FeedSchedule.Prediction(lastFeed: now.addingTimeInterval(-3600), interval: 3 * 3600)
+        XCTAssertEqual(FeedReminder.fireDate(prediction: p, leadMinutes: 10, now: now),
+                       now.addingTimeInterval(2 * 3600 - 600))
+        let late = FeedSchedule.Prediction(lastFeed: now.addingTimeInterval(-4 * 3600), interval: 3 * 3600)
+        XCTAssertNil(FeedReminder.fireDate(prediction: late, leadMinutes: 0, now: now))  // 이미 지남
+    }
+
+    // MARK: - 모유 좌/우 타이머
+
+    func testBreastTimerToggleSwitchAndPause() {
+        let t0 = Date(timeIntervalSince1970: 1_800_000_000)
+        var timer = BreastTimer()
+        timer.toggle(.left, now: t0)
+        timer.toggle(.right, now: t0.addingTimeInterval(300))           // 왼 5분 후 오른쪽으로
+        XCTAssertEqual(timer.seconds(.right, now: t0.addingTimeInterval(420)), 120)
+        timer.toggle(.right, now: t0.addingTimeInterval(480))           // 오른쪽 일시정지
+        XCTAssertFalse(timer.isRunning)
+        XCTAssertEqual(timer.leftSec, 300)
+        XCTAssertEqual(timer.rightSec, 180)
+        XCTAssertEqual(timer.lastSide, .right)
+        XCTAssertEqual(timer.firstStartedAt, t0)
+    }
+
+    func testBreastTimerManualAdjustNeverNegative() {
+        var timer = BreastTimer()
+        timer.adjust(.left, minutes: 1)
+        timer.adjust(.left, minutes: -3)
+        XCTAssertEqual(timer.leftSec, 0)
+        XCTAssertEqual(timer.lastSide, .left)
+    }
+
+    func testLastFeedingMLSkipsDirectBreastfeeding() {
+        let now = Date()
+        makeEvent(.feed, at: now.addingTimeInterval(-3600), ml: 120)
+        let breast = makeEvent(.feed, at: now)
+        breast.feedType = .breastMilk
+        breast.breastLeftSec = 600
+        breast.lastBreastSide = .left
+        XCTAssertEqual(LastValueProvider.lastFeedingML(for: baby, in: context), 120)
+        XCTAssertEqual(LastValueProvider.lastBreastSide(for: baby, in: context), .left)
+        XCTAssertEqual(EventRowView.breastSummary(left: 600, right: 0, last: .left), "왼 10분 · 오 0분 (총 10분) · 왼쪽에서 끝")
+    }
+
+    // MARK: - WHO 성장곡선 (CDC 배포 WHO 표의 백분위 값과 대조)
+
+    func testWHOWeightMatchesPublishedPercentiles() throws {
+        let z5 = -1.6448536, z95 = 1.6448536
+        let boys0 = try XCTUnwrap(WHOGrowth.lms(sex: .boy, months: 0))
+        XCTAssertEqual(WHOGrowth.weight(z: z5, lms: boys0), 2.603994, accuracy: 0.0005)
+        XCTAssertEqual(WHOGrowth.weight(z: z95, lms: boys0), 4.214527, accuracy: 0.0005)
+        let girls1 = try XCTUnwrap(WHOGrowth.lms(sex: .girl, months: 1))
+        XCTAssertEqual(WHOGrowth.weight(z: z5, lms: girls1), 3.326209, accuracy: 0.0005)
+        XCTAssertEqual(WHOGrowth.weight(z: z95, lms: girls1), 5.225436, accuracy: 0.0005)
+    }
+
+    func testWHOPercentile() throws {
+        XCTAssertEqual(try XCTUnwrap(WHOGrowth.percentile(weight: 9.6479, sex: .boy, months: 12)), 50, accuracy: 0.01)
+        XCTAssertEqual(try XCTUnwrap(WHOGrowth.percentile(weight: 2.603994, sex: .boy, months: 0)), 5, accuracy: 0.05)
+        XCTAssertNil(WHOGrowth.percentile(weight: 10, sex: .unknown, months: 12))
+        XCTAssertNil(WHOGrowth.percentile(weight: 10, sex: .girl, months: 30))   // 24개월 초과
+    }
+
+    func testWHOInterpolatesBetweenMonths() throws {
+        let mid = try XCTUnwrap(WHOGrowth.lms(sex: .girl, months: 2.5))
+        XCTAssertEqual(mid.m, (5.1282 + 5.8458) / 2, accuracy: 0.00001)
+    }
 }

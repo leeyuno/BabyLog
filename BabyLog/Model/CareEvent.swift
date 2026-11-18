@@ -31,6 +31,11 @@ extension CareEvent {
     @NSManaged public var sleepStartAt: Date?
     @NSManaged public var sleepEndAt: Date?
     @NSManaged public var note: String?
+    /// 모유 직접 수유 시간(초). 젖병 수유면 0. (모델 v4)
+    @NSManaged public var breastLeftSec: Int32
+    @NSManaged public var breastRightSec: Int32
+    /// 마지막으로 먹인 쪽. -1 = 없음 (모델 v4)
+    @NSManaged public var breastLastSide: Int16
     @NSManaged public var baby: Baby
 }
 
@@ -50,6 +55,18 @@ extension CareEvent {
         get { DiaperType(rawValue: diaperTypeRaw) }
         set { diaperTypeRaw = newValue?.rawValue ?? Int16.min }
     }
+
+    var lastBreastSide: BreastSide? {
+        get { BreastSide(rawValue: breastLastSide) }
+        set { breastLastSide = newValue?.rawValue ?? -1 }
+    }
+
+    /// 모유 직접 수유 기록인지 (시간 기록이 있거나, 모유인데 ml 가 없는 경우)
+    var isDirectBreastfeeding: Bool {
+        kind == .feed && feedType == .breastMilk && feedAmountML == 0
+    }
+
+    var breastTotalSec: Int { Int(breastLeftSec) + Int(breastRightSec) }
 
     /// 종료된 수면의 길이(분). 진행중이면 nil.
     var sleepDurationMinutes: Int? {

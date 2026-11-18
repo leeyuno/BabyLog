@@ -11,6 +11,7 @@
 //  "아이를 안고 한 손으로" 쓰는 상황을 기준으로 입력 단계를 최소화한다.
 //    - 시간 기본값은 "지금". 손대지 않으면 시트를 연 시각이 아니라 **저장 시각**으로 기록.
 //    - 자주 쓰는 과거 시점은 칩 한 번(5분/15분/30분/1시간 전), 정확한 시각만 피커로.
+//    - 모유는 [직접 수유 | 젖병]. 직접 수유는 좌/우 타이머(BreastTimerView), 젖병은 ml
 //    - 수유량 기본값: 자동추천 OFF → 직전 수유량, ON → 최근 평균이 권장량보다 적으면 권장량
 //      (규칙은 FeedingGuide.defaultFeedAmount). 편집 모드에서는 저장된 값을 그대로 보여준다.
 //
@@ -31,6 +32,12 @@ struct AddEventView: View {
     // feed
     @State private var feedType: FeedType
     @State private var feedAmount: Int
+    /// 모유일 때 직접 수유(타이머)인지 젖병(ml)인지. 저장 시 ml 이 0 이면 직접 수유로 본다.
+    @State private var breastDirect: Bool
+    @State private var breast: BreastTimer
+    /// 이번에 먼저 먹일 쪽 (지난번 마지막 쪽의 반대)
+    @State private var suggestedSide: BreastSide?
+    @State private var confirmDiscardTimer = false
 
     // diaper
     @State private var diaperType: DiaperType
@@ -69,6 +76,8 @@ struct AddEventView: View {
         _kind = State(initialValue: kind)
         _feedType = State(initialValue: .formula)
         _feedAmount = State(initialValue: FeedingGuide.fallbackML)   // onAppear 에서 직전값/권장량으로 교체
+        _breastDirect = State(initialValue: true)
+        _breast = State(initialValue: BreastTimer())
         _diaperType = State(initialValue: .pee)
         _recordedAt = State(initialValue: now)
         _timeTouched = State(initialValue: false)
@@ -86,6 +95,10 @@ struct AddEventView: View {
         _feedType = State(initialValue: event.feedType ?? .formula)
         _feedAmount = State(initialValue: event.feedAmountML > 0
                             ? FeedingGuide.clamp(Int(event.feedAmountML)) : FeedingGuide.fallbackML)
+        _breastDirect = State(initialValue: event.feedType != .breastMilk || event.isDirectBreastfeeding)
+        _breast = State(initialValue: BreastTimer(leftSec: Int(event.breastLeftSec),
+                                                  rightSec: Int(event.breastRightSec),
+                                                  lastSide: event.lastBreastSide))
         _diaperType = State(initialValue: event.diaperType ?? .pee)
         _recordedAt = State(initialValue: event.createdAt)
         _timeTouched = State(initialValue: true)     // 편집은 항상 저장된 시각 유지
@@ -148,9 +161,16 @@ struct AddEventView: View {
             .confirmationDialog("이 기록을 삭제할까요?", isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button("삭제", role: .destructive, action: deleteEvent)
             }
+            .confirmationDialog("수유 타이머가 진행 중이에요", isPresented: $confirmDiscardTimer,
+                                titleVisibility: .visible) {
+                Button("저장하고 닫기") { save() }
+                Button("저장하지 않고 닫기", role: .destructive) { dismiss() }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("닫기") { dismiss() }
+                    Button("닫기") {
+                        if breast.isRunning { confirmDiscardTimer = true } else { dismiss() }
+                    }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("저장") { save() }
@@ -171,24 +191,39 @@ struct AddEventView: View {
             }
             .pickerStyle(.segmented)
 
-            Stepper(value: $feedAmount, in: FeedingGuide.amountRange, step: 10) {
-                HStack {
-                    Text("수유량")
-                    Spacer()
-                    Text("\(feedAmount) ml")
-                        .font(.title3.weight(.semibold))
-                        .monospacedDigit()
+            if feedType == .breastMilk {
+                Picker("방식", selection: $breastDirect) {
+                    Text("직접 수유").tag(true)
+                    Text("젖병").tag(false)
                 }
+                .pickerStyle(.segmented)
             }
-            if autoRecommend, let rec = recommendedML, rec != feedAmount {
-                Button("권장량 \(rec) ml 적용") { feedAmount = rec }
+
+            if usesBreastTimer {
+                BreastTimerSection(timer: $breast, suggested: suggestedSide)
+            } else {
+                Stepper(value: $feedAmount, in: FeedingGuide.amountRange, step: 10) {
+                    HStack {
+                        Text("수유량")
+                        Spacer()
+                        Text("\(feedAmount) ml")
+                            .font(.title3.weight(.semibold))
+                            .monospacedDigit()
+                    }
+                }
+                if autoRecommend, let rec = recommendedML, rec != feedAmount {
+                    Button("권장량 \(rec) ml 적용") { feedAmount = rec }
+                }
             }
         } header: {
             Text("수유")
         } footer: {
-            recommendationFooter
+            if !usesBreastTimer { recommendationFooter }
         }
     }
+
+    /// 모유 + 직접 수유 → ml 대신 좌/우 타이머
+    private var usesBreastTimer: Bool { feedType == .breastMilk && breastDirect }
 
     /// 수유·기저귀 공용 시간 입력: 바로가기 칩 + 날짜/시간 피커
     private var timeSection: some View {
@@ -245,36 +280,11 @@ struct AddEventView: View {
         }
     }
 
-    // MARK: - 시간 헬퍼
-
-    /// 피커로 바꾸면 "직접 지정"으로 표시
-    private var recordedAtBinding: Binding<Date> {
-        Binding(get: { recordedAt },
-                set: { recordedAt = $0; timeTouched = true })
-    }
-
-    private func applyQuickOffset(_ minutes: Int) {
-        if minutes == 0 {
-            recordedAt = Date()
-            timeTouched = false          // "지금" → 저장 시각으로
-        } else {
-            recordedAt = Date().addingTimeInterval(Double(-minutes * 60))
-            timeTouched = true
-        }
-    }
-
-    /// 칩 강조: "지금"은 시간을 건드리지 않았을 때, 나머지는 현재 기준 ±1분 이내일 때
-    private func isQuickSelected(_ minutes: Int) -> Bool {
-        if minutes == 0 { return !timeTouched }
-        guard timeTouched else { return false }
-        let diff = Date().timeIntervalSince(recordedAt) / 60
-        return abs(diff - Double(minutes)) < 1
-    }
-
     // MARK: - 저장 / 삭제
 
     private func prefillIfAdding() {
         recommendedML = baby.recommendedPerFeedML
+        suggestedSide = LastValueProvider.lastBreastSide(for: baby, in: context)?.other
         guard !isEditing else { return }
         // 종류와 무관하게 미리 채워둔다(시트 안에서 수유로 바꿔도 유지)
         feedAmount = FeedingGuide.defaultFeedAmount(
@@ -288,7 +298,7 @@ struct AddEventView: View {
     private var isValid: Bool {
         switch kind {
         case .feed:
-            return feedAmount > 0
+            return usesBreastTimer || feedAmount > 0   // 직접 수유는 시간 없이 "먹였음"만 남겨도 됨
         case .diaper:
             return true
         case .sleep:
@@ -314,13 +324,25 @@ struct AddEventView: View {
         ev.diaperType = nil
         ev.sleepStartAt = nil
         ev.sleepEndAt = nil
+        ev.breastLeftSec = 0
+        ev.breastRightSec = 0
+        ev.lastBreastSide = nil
 
         let eventTime = timeTouched ? recordedAt : Date()
         switch kind {
         case .feed:
             ev.feedType = feedType
-            ev.feedAmountML = Int32(feedAmount)
-            ev.createdAt = eventTime
+            if usesBreastTimer {
+                breast.stop()
+                ev.breastLeftSec = Int32(breast.leftSec)
+                ev.breastRightSec = Int32(breast.rightSec)
+                ev.lastBreastSide = breast.lastSide
+                // 시간을 직접 고르지 않았으면 타이머를 처음 시작한 시각으로 기록
+                ev.createdAt = timeTouched ? recordedAt : (breast.firstStartedAt ?? eventTime)
+            } else {
+                ev.feedAmountML = Int32(feedAmount)
+                ev.createdAt = eventTime
+            }
         case .diaper:
             ev.diaperType = diaperType
             ev.createdAt = eventTime
@@ -351,6 +373,35 @@ struct AddEventView: View {
         } catch {
             saveError = error.localizedDescription
         }
+    }
+}
+
+// 시간 입력 헬퍼 (본문 길이를 줄이려고 분리 — 같은 파일이라 private 상태에 접근 가능)
+extension AddEventView {
+    // MARK: - 시간 헬퍼
+
+    /// 피커로 바꾸면 "직접 지정"으로 표시
+    private var recordedAtBinding: Binding<Date> {
+        Binding(get: { recordedAt },
+                set: { recordedAt = $0; timeTouched = true })
+    }
+
+    private func applyQuickOffset(_ minutes: Int) {
+        if minutes == 0 {
+            recordedAt = Date()
+            timeTouched = false          // "지금" → 저장 시각으로
+        } else {
+            recordedAt = Date().addingTimeInterval(Double(-minutes * 60))
+            timeTouched = true
+        }
+    }
+
+    /// 칩 강조: "지금"은 시간을 건드리지 않았을 때, 나머지는 현재 기준 ±1분 이내일 때
+    private func isQuickSelected(_ minutes: Int) -> Bool {
+        if minutes == 0 { return !timeTouched }
+        guard timeTouched else { return false }
+        let diff = Date().timeIntervalSince(recordedAt) / 60
+        return abs(diff - Double(minutes)) < 1
     }
 }
 

@@ -56,5 +56,6 @@ extension NSManagedObjectContext {
             throw error
         }
         WidgetCenter.shared.reloadAllTimelines()
+        FeedReminder.reschedule(context: self)   // 수유 기록이 바뀌면 다음 수유 알림도 다시 예약
     }
 }

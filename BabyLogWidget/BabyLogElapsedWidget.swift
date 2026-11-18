@@ -15,6 +15,8 @@ struct BabyLogElapsedEntry: TimelineEntry {
     let date: Date
     /// 마지막 수유 시각. nil 이면 기록 없음(또는 스토어 접근 불가).
     let lastFeedAt: Date?
+    /// 다음 수유 예상 시각 (FeedSchedule). 수유 3회 미만이면 nil.
+    var nextFeedAt: Date?
 }
 
 struct BabyLogElapsedProvider: TimelineProvider {
@@ -35,6 +37,10 @@ struct BabyLogElapsedProvider: TimelineProvider {
     }
 
     private func makeEntry() -> BabyLogElapsedEntry {
+        let next: Date? = SharedPersistence.read { ctx -> Date? in
+            guard let baby = SharedPersistence.firstBaby(in: ctx) else { return nil }
+            return FeedSchedule.prediction(for: baby, in: ctx)?.next
+        } ?? nil
         let last: Date? = SharedPersistence.read { ctx -> Date? in
             guard let baby = SharedPersistence.firstBaby(in: ctx) else { return nil }
             let req: NSFetchRequest<CareEvent> = CareEvent.fetchRequest()
@@ -43,7 +49,7 @@ struct BabyLogElapsedProvider: TimelineProvider {
             req.fetchLimit = 1
             return (try? ctx.fetch(req))?.first?.createdAt
         } ?? nil
-        return BabyLogElapsedEntry(date: Date(), lastFeedAt: last)
+        return BabyLogElapsedEntry(date: Date(), lastFeedAt: last, nextFeedAt: next)
     }
 }
 
@@ -66,6 +72,11 @@ struct BabyLogElapsedWidgetEntryView: View {
                 Text("기록 없음")
                     .font(.title3)
                     .bold()
+            }
+            if let next = entry.nextFeedAt {
+                Text("다음 약 \(next.formatted(date: .omitted, time: .shortened))")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
             }
         }
         .padding()

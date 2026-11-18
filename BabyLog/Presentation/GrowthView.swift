@@ -5,12 +5,12 @@
 //  Created by 이윤오 on 2026/11/18.
 //
 //  성장 탭: 프로필(사진·이름·개월수) + 개월수별 몸무게 차트 + 기록 목록.
-//  - x축: 생일 기준 개월수(소수). 생일이 없으면 날짜 축으로 대신 그린다.
+//  - x축: 생일 기준 개월수(소수). 생일이 없으면 날짜 축으로 대신 그린다. (차트: GrowthChartView)
+//  - 성별·생일이 있으면 WHO 성장곡선(3~97 백분위)과 최신 기록의 백분위를 함께 보여준다.
 //  - 몸무게는 하루 한 건(같은 날 다시 입력하면 갱신). 설정 탭에서 몸무게를 바꿔도 오늘 기록으로 쌓인다.
 //  - 기록이 바뀌면 Baby.weightKg(최신값)가 갱신되어 수유량 자동 추천에도 반영된다.
 //
 
-import Charts
 import CoreData
 import SwiftUI
 
@@ -99,19 +99,12 @@ struct GrowthView: View {
 
     // MARK: - 차트
 
-    private struct Point: Identifiable {
-        let id: NSManagedObjectID
-        let x: Double        // 개월수
-        let date: Date
-        let kg: Double
-    }
-
-    private var points: [Point] {
+    private var points: [GrowthChartPoint] {
         records.map { r in
-            Point(id: r.objectID,
-                  x: baby.birthday.map { GrowthMath.ageMonths(birthday: $0, at: r.measuredAt) } ?? 0,
-                  date: r.measuredAt,
-                  kg: r.weightKg)
+            GrowthChartPoint(id: r.objectID,
+                             x: baby.birthday.map { GrowthMath.ageMonths(birthday: $0, at: r.measuredAt) } ?? 0,
+                             date: r.measuredAt,
+                             kg: r.weightKg)
         }
     }
 
@@ -129,9 +122,10 @@ struct GrowthView: View {
             .padding(.vertical, 12)
         } else {
             VStack(alignment: .leading, spacing: 8) {
-                chart(pts)
-                    .frame(height: 220)
+                GrowthChartView(points: pts, byAge: baby.birthday != nil, sex: baby.sex)
+                    .frame(height: 240)
                 gainSummary(pts)
+                WHOPercentileNote(latest: pts.last, byAge: baby.birthday != nil, sex: baby.sex)
                 if baby.birthday == nil {
                     Text("설정에서 생일을 입력하면 개월수 기준으로 볼 수 있어요.")
                         .font(.caption).foregroundStyle(.secondary)
@@ -141,29 +135,9 @@ struct GrowthView: View {
         }
     }
 
-    private func chart(_ pts: [Point]) -> some View {
-        let kgs = pts.map(\.kg)
-        let lo = max((kgs.min() ?? 0) - 0.5, 0), hi = (kgs.max() ?? 1) + 0.5
-        let byAge = baby.birthday != nil
-        return Chart(pts) { p in
-            if byAge {
-                LineMark(x: .value("개월", p.x), y: .value("kg", p.kg))
-                    .interpolationMethod(.monotone)
-                PointMark(x: .value("개월", p.x), y: .value("kg", p.kg))
-            } else {
-                LineMark(x: .value("날짜", p.date), y: .value("kg", p.kg))
-                    .interpolationMethod(.monotone)
-                PointMark(x: .value("날짜", p.date), y: .value("kg", p.kg))
-            }
-        }
-        .chartYScale(domain: lo...hi)
-        .chartYAxisLabel("kg")
-        .chartXAxisLabel(byAge ? "개월" : "")
-    }
-
     /// 직전 기록 대비 증감
     @ViewBuilder
-    private func gainSummary(_ pts: [Point]) -> some View {
+    private func gainSummary(_ pts: [GrowthChartPoint]) -> some View {
         if pts.count >= 2 {
             let last = pts[pts.count - 1], prev = pts[pts.count - 2]
             let diff = last.kg - prev.kg

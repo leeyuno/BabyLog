@@ -37,12 +37,12 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 
 ## 타깃 멤버십 ⚠️ 가장 자주 깨지는 부분
 
-**앱과 위젯 두 타깃에 모두 포함되는 파일**: `DailySummary.swift`, `CareEvent.swift`, `BabyLog.swift`(Baby), `WeightRecord.swift`, `CoreEnums.swift`, `Routing.swift`,
+**앱과 위젯 두 타깃에 모두 포함되는 파일**: `DailySummary.swift`, `CareEvent.swift`, `BabyLog.swift`(Baby), `WeightRecord.swift`, `FeedSchedule.swift`, `CoreEnums.swift`, `Routing.swift`,
 `AddQuickHomeWidgetView.swift`, `AddQuickLockWidgetView.swift`, `DailySummaryWidgetChipView.swift`, `BabyLog.xcdatamodeld`, `BabyLogWidget.intentdefinition`,
 그리고 **위젯 파일 4개**(`BabyLogElapsedWidget`, `BabyLogTodayWidget`, `BabyLogDailySummaryWidget`, `BabyLogQuickAddWIdget`)입니다. 이 4개는 앱 타깃에서도 컴파일됩니다.
 
 **위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogWidgetLiveActivity.swift`
-**앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FeedingGuide.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
+**앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FeedingGuide.swift`, `WHOGrowth.swift`, `FeedReminder.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
 
 - 위 파일에서는 `UIKit`, `GoogleMobileAds`, `PersistenceController`, `WidgetCenter`, `FeedingGuide`처럼 **앱 전용 심볼을 참조하면 안 됩니다.**
   반대로 위젯 파일이 쓰는 헬퍼(예: `.widgetBackground()`)는 양쪽 타깃에 포함된 파일에 둬야 합니다. 위젯 전용 파일에 두면 앱 빌드가 깨집니다.
@@ -57,7 +57,7 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 - 스토어는 App Group 컨테이너의 `BabyLog.sqlite`(`BabyLogGroup.storeURL`)입니다. 앱과 위젯이 같은 파일을 읽습니다.
 - 모델은 `CoreDataModel.shared` 하나만 씁니다. 컨테이너를 만들 때는 반드시 `NSPersistentContainer(name:managedObjectModel: CoreDataModel.shared)`를 사용합니다.
 - enum의 rawValue(Int16)는 DB에 그대로 저장됩니다. **기존 값을 바꾸거나 번호를 다시 매기면 안 되고, 새 값은 추가만 합니다.** 값이 없으면 `Int16.min` 센티널을 씁니다(`feedType = nil`).
-- **모델 버전**: 현재 버전은 `BabyLog 3.xcdatamodel`입니다(`.xccurrentversion`). v2는 몸무게·개월수, v3는 `WeightRecord`를 추가했습니다. 출시된 버전을 직접 고치면 기존 스토어를 열지 못해 크래시가 납니다.
+- **모델 버전**: 현재 버전은 `BabyLog 3.xcdatamodel`입니다(`.xccurrentversion`). v2는 몸무게·개월수, v3는 `WeightRecord`, v4는 `Baby.sexRaw`와 `CareEvent.breastLeftSec`/`breastRightSec`/`breastLastSide`를 추가했습니다. 출시된 버전을 직접 고치면 기존 스토어를 열지 못해 크래시가 납니다.
   스키마를 바꿀 때는 **새 버전을 추가**합니다. 순서는 다음과 같습니다.
   1. 폴더 복사
   2. `.xccurrentversion` 수정
@@ -104,7 +104,26 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
   - 설정에서 몸무게를 바꿔 저장하면 오늘 날짜 기록이 생깁니다.
   - 성장 기록 도입 전에 입력한 몸무게는 성장 탭을 처음 열 때 첫 기록으로 옮깁니다(`seedIfNeeded`).
 - **성장 탭**(`GrowthView`): 차트의 x축은 생일 기준 개월수(`GrowthMath.ageMonths`, 일수 ÷ 30.4375)입니다. 생일이 없으면 날짜 축으로 그립니다.
-- 다음 단계 후보: WHO 성장 곡선 백분위(성별 정보 필요), 키·머리둘레 기록.
+- **WHO 성장곡선**(`WHOGrowth`, `GrowthChartView`)
+  - 성별과 생일이 있고 기록이 24개월 이하일 때만 표시합니다. 연령별 체중 0~24개월 L·M·S 표를 쓰고, 개월 사이 값은 선형 보간합니다.
+  - 표는 CDC가 배포한 WHO CSV에서 옮긴 값이라 **손으로 고치지 않습니다**. 테스트가 CSV의 5·95 백분위 값과 대조합니다.
+  - 화면에는 3~97 / 15~85 백분위 음영, 중앙값 점선, 최신 기록의 백분위를 그리고, "진단이 아닌 참고용" 문구를 반드시 함께 표시합니다.
+- 다음 단계 후보: 키·머리둘레 기록(같은 구조와 WHO 표로 확장 가능).
+
+## 모유 직접 수유 / 다음 수유 예상
+
+- **모유 직접 수유**(`BreastTimer`, `BreastTimerView`)
+  - 모유를 고르면 `[직접 수유 | 젖병]`을 선택합니다. 직접 수유는 왼쪽·오른쪽 타이머로 초를 기록하고 ml은 0으로 둡니다.
+  - **직접 수유 판별은 "모유이면서 ml이 0"** 입니다(`isDirectBreastfeeding`). 따로 플래그를 두지 않습니다.
+  - 타이머는 시작 시각을 기준으로 계산하므로 화면이 꺼져도 정확합니다. 단 앱이 종료되면 사라지고, 진행 중에 닫으려 하면 확인을 받습니다.
+  - 기록 시각은 사용자가 시간을 고르지 않았으면 **타이머를 처음 시작한 시각**입니다.
+  - `lastFeedingML`은 ml이 0보다 큰 기록만 봅니다. 직수 기록 때문에 기본값이 60ml로 돌아가지 않게 하기 위해서입니다. 다음 수유 때는 지난번 마지막 쪽의 반대쪽을 안내합니다.
+- **다음 수유 예상**(`FeedSchedule`, 위젯과 공용)
+  - 최근 48시간 수유를 쓰고, 30분 이내에 이어진 수유는 한 번으로 묶습니다. 간격은 최근 8개 간격의 **중앙값**이고, 3회 미만이면 예측하지 않습니다.
+  - 타임라인 상단 카드와 수유 경과 위젯에 표시합니다.
+- **알림**(`FeedReminder`)
+  - 설정에서 켠 경우에만 예상 시각(또는 10·20분 전)에 로컬 알림을 **1건만** 예약합니다.
+  - 기록을 저장할 때(`saveAndRefreshWidgets`), 앱이 활성화될 때, 설정을 바꿀 때 다시 예약합니다.
 
 ## 딥링크
 
