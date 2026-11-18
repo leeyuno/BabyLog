@@ -17,6 +17,11 @@
 - 타임라인에서 기록을 탭하면 종류, 수유량, 시간, 메모를 모두 고칠 수 있습니다.
 - 스와이프로 편집하거나 삭제할 수 있습니다. 실수로 지우지 않도록 끝까지 밀어서 바로 삭제하는 기능은 막아 두었습니다.
 
+### 프로필 · 성장 기록 (성장 탭)
+- 설정에서 아기 사진을 고르면 타임라인과 성장 탭에 프로필로 표시됩니다.
+- 몸무게를 기록하면 **개월수별 성장 그래프**와 직전 기록 대비 증감을 보여줍니다.
+- 몸무게는 하루에 한 건이고, 최신 몸무게가 수유량 자동 추천에 바로 반영됩니다.
+
 ### 수유량 자동 추천 (설정 탭)
 - 몸무게와 개월수를 입력하고 **자동 추천**을 켜면 1회 권장 수유량을 계산합니다.
   - 1일 총량은 체중(kg) × 150 ml이고, 최대 1,000 ml입니다.
@@ -39,7 +44,7 @@
 ## 기술 스택
 
 - SwiftUI, Core Data(App Group으로 위젯과 공유), WidgetKit, Swift Charts
-- Google Mobile Ads(AdMob) 11.5.0, CocoaPods로 관리
+- Google Mobile Ads(AdMob) 11.5.0, CocoaPods로 관리. 화면을 가리는 전면 광고는 쓰지 않음
 - 단위 테스트는 XCTest, 서식 검사는 SwiftLint
 
 ## 시작하기
@@ -72,10 +77,10 @@ swiftlint                         # 서식 검사 (.swiftlint.yml)
 
 ```
 BabyLog/                 앱
-  BabyLogApp.swift       진입점 (Core Data · 딥링크 · 광고)
+  BabyLogApp.swift       진입점 (Core Data · 딥링크)
   Persistence.swift      Core Data 스택 (App Group 공유 스토어)
   Model/                 엔티티, 집계(CareStats), 수유 가이드(FeedingGuide), 라우팅, 광고
-  Presentation/          SwiftUI 화면 (타임라인, 주간 개요, 설정, 기록 입력/편집)
+  Presentation/          SwiftUI 화면 (타임라인, 주간 개요, 성장, 설정, 기록 입력/편집)
 BabyLogWidget/           위젯 익스텐션
 BabyLogTests/            단위 테스트
 scripts/                 setup.sh, test.sh

@@ -4,14 +4,17 @@
 //
 //  Created by 이윤오 on 2026/11/16.
 //
-//  설정 탭: 아기 정보(이름·생일/개월수·몸무게) 수정 + 수유량 자동 추천 on/off.
+//  설정 탭: 아기 프로필 사진 + 아기 정보(이름·생일/개월수·몸무게) 수정 + 수유량 자동 추천 on/off.
+//  - 사진: PhotosPicker → BabyPhotoStore (정사각형 600px JPEG, 즉시 저장)
+//  - 몸무게를 바꿔 저장하면 오늘 날짜의 성장 기록(WeightRecord)으로 쌓인다 → 성장 탭 차트
 //  - 개월수: 생일이 있으면 자동 계산, 없으면 직접 입력(Baby.manualAgeMonths)
 //  - 자동 추천 스위치는 @AppStorage(FeedingSettings.autoRecommendKey) — AddEventView 와 공유
 //  - 입력값은 로컬 상태로 편집하고 "저장" 시 Core Data 에 반영한다.
 //
 
-import SwiftUI
 import CoreData
+import PhotosUI
+import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject var baby: Baby
@@ -28,6 +31,8 @@ struct SettingsView: View {
     @State private var weightText: String
 
     @State private var alertMessage: String?
+    @State private var photoItem: PhotosPickerItem?
+    @ObservedObject private var photos = BabyPhotoStore.shared
     @FocusState private var weightFocused: Bool
 
     /// 입력 허용 체중 범위(kg)
@@ -82,6 +87,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                photoSection
                 babySection
                 feedingSection
                 Section {
@@ -100,6 +106,39 @@ struct SettingsView: View {
             .alert(alertMessage ?? "", isPresented: Binding(get: { alertMessage != nil },
                                                            set: { if !$0 { alertMessage = nil } })) {
                 Button("확인", role: .cancel) {}
+            }
+        }
+    }
+
+    private var photoSection: some View {
+        Section {
+            HStack(spacing: 16) {
+                BabyAvatarView(baby: baby, size: 64)
+                VStack(alignment: .leading, spacing: 8) {
+                    PhotosPicker(selection: $photoItem, matching: .images) {
+                        Label(photos.image(for: baby.id) == nil ? "사진 선택" : "사진 변경", systemImage: "photo")
+                    }
+                    if photos.image(for: baby.id) != nil {
+                        Button("사진 삭제", role: .destructive) { photos.delete(for: baby.id) }
+                            .buttonStyle(.borderless)
+                    }
+                }
+            }
+            .padding(.vertical, 4)
+        } header: {
+            Text("프로필 사진")
+        }
+        .onChange(of: photoItem) { item in
+            guard let item else { return }
+            Task {
+                do {
+                    if let data = try await item.loadTransferable(type: Data.self) {
+                        try await MainActor.run { try photos.save(imageData: data, for: baby.id) }
+                    }
+                } catch {
+                    await MainActor.run { alertMessage = "사진 저장 실패: \(error.localizedDescription)" }
+                }
+                await MainActor.run { photoItem = nil }
             }
         }
     }
@@ -135,6 +174,8 @@ struct SettingsView: View {
             if parsedWeight == nil {
                 Text(Self.weightHint)
                     .foregroundStyle(.red)
+            } else {
+                Text("몸무게를 바꿔 저장하면 오늘 날짜로 성장 기록에 추가됩니다. 지난 기록은 성장 탭에서 관리하세요.")
             }
         }
     }
@@ -173,7 +214,12 @@ struct SettingsView: View {
         baby.name = trimmedName
         baby.birthday = hasBirthday ? birthday : nil
         baby.manualAgeMonths = hasBirthday ? -1 : Int16(manualMonths)
-        baby.weightKg = weight
+        if weight > 0, weight != baby.weightKg {
+            // 몸무게 변경은 오늘 날짜 성장 기록으로 남긴다 (Baby.weightKg 도 함께 갱신됨)
+            GrowthStore.upsert(weightKg: weight, on: Date(), for: baby, in: context)
+        } else if weight == 0 {
+            baby.weightKg = 0
+        }
 
         do {
             try context.saveAndRefreshWidgets()

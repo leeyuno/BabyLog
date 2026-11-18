@@ -83,6 +83,9 @@ struct TimelineView: View {
                 }
                 .navigationTitle("\(baby.name) 타임라인")
                 .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        BabyAvatarView(baby: baby, size: 32)
+                    }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             showAddSheet = true

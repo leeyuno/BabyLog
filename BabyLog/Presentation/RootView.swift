@@ -4,7 +4,7 @@
 //
 //  Created by 이윤오 on 2025/09/11.
 //
-//  루트 화면: 아기가 없으면 온보딩, 있으면 [타임라인 | 주간 개요 | 설정] 탭.
+//  루트 화면: 아기가 없으면 온보딩, 있으면 [타임라인 | 주간 개요 | 성장 | 설정] 탭.
 //  Router.route 를 관찰해 딥링크 기반 "새 기록" 시트를 띄운다.
 //
 
@@ -44,6 +44,12 @@ struct RootView: View {
                             Text("주간 개요")
                         }
 
+                    GrowthView(baby: baby)
+                        .tabItem {
+                            Image(systemName: "chart.line.uptrend.xyaxis")
+                            Text("성장")
+                        }
+
                     SettingsView(baby: baby)
                         .tabItem {
                             Image(systemName: "gearshape")
@@ -63,8 +69,6 @@ struct RootView: View {
                 .onChange(of: router.route) { route in
                     presentIfNeeded(route)
                 }
-                // 표시 기준 윈도우를 광고 매니저에 전달
-                .background(WindowAccessor())
             } else {
                 OnboardingNewBabyView()
             }

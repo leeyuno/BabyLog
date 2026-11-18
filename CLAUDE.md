@@ -27,9 +27,9 @@ UI 문자열과 코드 주석은 **한국어**로 씁니다.
 
 ```
 BabyLog/                 앱 타깃
-  BabyLogApp.swift       진입점: Core Data/Router 주입, 딥링크, 앱 오프닝 광고 트리거
+  BabyLogApp.swift       진입점: Core Data/Router 주입, 딥링크
   Persistence.swift      앱 Core Data 스택 + context.saveAndRefreshWidgets()
-  Model/                 엔티티, enum, 라우팅, 집계, 광고 매니저
+  Model/                 엔티티, enum, 라우팅, 집계, 수유 가이드, 광고 설정
   Presentation/          SwiftUI 화면/컴포넌트 (일부는 위젯에서도 쓰임)
 BabyLogWidget/           위젯 익스텐션 (수유 경과 / 오늘 통계 / 오늘 vs 6일 평균 / 빠른 추가)
 BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, LastValueProvider, FeedingGuide)
@@ -37,12 +37,12 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 
 ## 타깃 멤버십 ⚠️ 가장 자주 깨지는 부분
 
-**앱과 위젯 두 타깃에 모두 포함되는 파일**: `DailySummary.swift`, `CareEvent.swift`, `BabyLog.swift`(Baby), `CoreEnums.swift`, `Routing.swift`,
+**앱과 위젯 두 타깃에 모두 포함되는 파일**: `DailySummary.swift`, `CareEvent.swift`, `BabyLog.swift`(Baby), `WeightRecord.swift`, `CoreEnums.swift`, `Routing.swift`,
 `AddQuickHomeWidgetView.swift`, `AddQuickLockWidgetView.swift`, `DailySummaryWidgetChipView.swift`, `BabyLog.xcdatamodeld`, `BabyLogWidget.intentdefinition`,
 그리고 **위젯 파일 4개**(`BabyLogElapsedWidget`, `BabyLogTodayWidget`, `BabyLogDailySummaryWidget`, `BabyLogQuickAddWIdget`)입니다. 이 4개는 앱 타깃에서도 컴파일됩니다.
 
 **위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogWidgetLiveActivity.swift`
-**앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FeedingGuide.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
+**앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FeedingGuide.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
 
 - 위 파일에서는 `UIKit`, `GoogleMobileAds`, `PersistenceController`, `WidgetCenter`, `FeedingGuide`처럼 **앱 전용 심볼을 참조하면 안 됩니다.**
   반대로 위젯 파일이 쓰는 헬퍼(예: `.widgetBackground()`)는 양쪽 타깃에 포함된 파일에 둬야 합니다. 위젯 전용 파일에 두면 앱 빌드가 깨집니다.
@@ -53,11 +53,11 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 
 ## 데이터 계층 (Core Data, Codegen = Manual)
 
-- 엔티티: `Baby`(id, name, birthday, weightKg[0=미입력], manualAgeMonths[-1=미입력], events는 Cascade), `CareEvent`(kindRaw, feedTypeRaw, feedAmountML, diaperTypeRaw, sleepStartAt/EndAt, note, createdAt, baby)
+- 엔티티: `Baby`(id, name, birthday, weightKg[0=미입력], manualAgeMonths[-1=미입력], events·weightRecords는 Cascade), `CareEvent`(kindRaw, feedTypeRaw, feedAmountML, diaperTypeRaw, sleepStartAt/EndAt, note, createdAt, baby), `WeightRecord`(id, measuredAt[그 날 자정], weightKg, baby)
 - 스토어는 App Group 컨테이너의 `BabyLog.sqlite`(`BabyLogGroup.storeURL`)입니다. 앱과 위젯이 같은 파일을 읽습니다.
 - 모델은 `CoreDataModel.shared` 하나만 씁니다. 컨테이너를 만들 때는 반드시 `NSPersistentContainer(name:managedObjectModel: CoreDataModel.shared)`를 사용합니다.
 - enum의 rawValue(Int16)는 DB에 그대로 저장됩니다. **기존 값을 바꾸거나 번호를 다시 매기면 안 되고, 새 값은 추가만 합니다.** 값이 없으면 `Int16.min` 센티널을 씁니다(`feedType = nil`).
-- **모델 버전**: 현재 버전은 `BabyLog 2.xcdatamodel`입니다(`.xccurrentversion`). 출시된 버전을 직접 고치면 기존 스토어를 열지 못해 크래시가 납니다.
+- **모델 버전**: 현재 버전은 `BabyLog 3.xcdatamodel`입니다(`.xccurrentversion`). v2는 몸무게·개월수, v3는 `WeightRecord`를 추가했습니다. 출시된 버전을 직접 고치면 기존 스토어를 열지 못해 크래시가 납니다.
   스키마를 바꿀 때는 **새 버전을 추가**합니다. 순서는 다음과 같습니다.
   1. 폴더 복사
   2. `.xccurrentversion` 수정
@@ -92,6 +92,20 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
   - 체중이나 개월수가 입력되지 않았으면 꺼져 있을 때와 같습니다.
 - 권장량은 의료 정보이므로 UI에 **"참고용"이라는 안내와 전문의 상담 안내를 반드시 함께 표시**합니다. 공식이나 표를 바꾸면 `BabyLogTests`의 FeedingGuide 테스트도 함께 고칩니다.
 
+## 프로필 사진 / 성장 기록
+
+- **사진**(`BabyPhotoStore`): Core Data가 아니라 파일로 저장합니다.
+  - 위치는 App Group 컨테이너의 `BabyPhotos/<babyId>.jpg`입니다.
+  - 저장할 때 가운데를 정사각형으로 잘라 600px JPEG로 줄입니다.
+  - 화면은 `BabyAvatarView`를 씁니다. 스토어를 구독하므로 사진을 바꾸면 모든 화면에 바로 반영됩니다.
+- **몸무게 기록**(`WeightRecord`, `GrowthStore`)
+  - 기록은 **하루에 한 건**입니다. 같은 날짜로 다시 입력하면 그 날 기록을 갱신합니다.
+  - `Baby.weightKg`는 항상 **가장 최근 날짜 기록과 같게 유지**합니다(`syncLatestWeight`). 그래서 수유량 자동 추천이 자동으로 갱신됩니다.
+  - 설정에서 몸무게를 바꿔 저장하면 오늘 날짜 기록이 생깁니다.
+  - 성장 기록 도입 전에 입력한 몸무게는 성장 탭을 처음 열 때 첫 기록으로 옮깁니다(`seedIfNeeded`).
+- **성장 탭**(`GrowthView`): 차트의 x축은 생일 기준 개월수(`GrowthMath.ageMonths`, 일수 ÷ 30.4375)입니다. 생일이 없으면 날짜 축으로 그립니다.
+- 다음 단계 후보: WHO 성장 곡선 백분위(성별 정보 필요), 키·머리둘레 기록.
+
 ## 딥링크
 
 - `babylog://add?type=sleep|feeding|diaper`를 받으면 `Router.route = .add(kind)`가 되고, `RootView`가 `AddEventView` 시트를 띄웁니다. 시트가 닫히면 `router.reset()`이 호출됩니다.
@@ -111,15 +125,11 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 
 - `AdsConfig`: DEBUG 빌드는 구글 테스트 유닛, RELEASE 빌드는 실제 유닛을 씁니다. 테스트 중에 실제 유닛 ID를 쓰지 않습니다.
 - ⚠️ `Info.plist`의 `GADApplicationIdentifier`는 아직 **테스트 앱 ID**입니다. 출시 전에 실제 앱 ID로 바꿔야 합니다.
-- 앱 오프닝 광고(`AppOpenAdManager`) 노출 정책은 다음과 같습니다.
-  - 정오부터 다음 날 정오까지 1회
-  - 00~05시 조용시간에는 노출하지 않음
-  - 쿨다운 20분
-  - 로드 후 4시간이 지나면 만료
-  - 표시 재시도는 최대 5회
-
-  정책을 우회하는 코드(`return true`)는 커밋하지 않습니다. 디버깅할 때는 `AdsConfig.bypassAppOpenRules`를 쓰는데, 이 스위치는 DEBUG 빌드에서만 동작합니다.
-- 육아 앱 특성상 새벽 수유 중에 광고가 사용자를 방해하지 않는 것이 최우선입니다.
+- **화면을 가리는 전면 광고(앱 오프닝, 인터스티셜)는 쓰지 않습니다.**
+  - 앱을 여는 순간은 대부분 "지금 바로 기록해야 하는" 순간입니다. 이때 화면을 가리면 제품 컨셉(빠른 기록)과 정면으로 충돌합니다.
+  - 2026-11 결정으로 앱 오프닝 광고(`AppOpenAdManager`)를 제거했습니다. 수익이 높아도 다시 넣지 않습니다.
+- 현재 광고는 타임라인 하단 배너(`BannerView`) 하나입니다. 앱 톤에 맞는 네이티브 광고 카드로 바꾸는 것을 검토 중입니다.
+- 광고를 새로 추가할 때는 **기록 동선(타임라인 → 입력 시트 → 저장)을 막지 않는 위치와 형식**이어야 합니다.
 
 ## UX 원칙 (제품 컨셉)
 
@@ -130,6 +140,7 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
   - 시간의 기본값은 "지금"입니다. 사용자가 손대지 않으면 시트를 연 시각이 아니라 저장한 시각으로 기록합니다.
   - 수유량은 직전 값이나 권장량으로 미리 채웁니다.
 - **모든 기록은 나중에 고칠 수 있어야 합니다.** 타임라인에서 행을 탭하면 `AddEventView(editing:)`가 열리고, 종류, 양, 시간, 메모를 모두 수정하거나 삭제할 수 있습니다.
+- **기록 동선을 광고로 막지 않습니다.** 전면 광고는 쓰지 않습니다(광고 섹션 참고).
 - **실수를 방지합니다.** 풀 스와이프 삭제는 막고, 시트 안에서 삭제할 때는 한 번 더 확인을 받습니다. 미래 시각은 입력할 수 없습니다.
 - 기록 추가와 편집은 **한 화면(`AddEventView`)** 에서 처리합니다. 편집 전용 화면을 따로 만들지 않습니다.
 
@@ -195,5 +206,5 @@ let request = CareEvent.fetchRequest(
 - `ChartsGroupedBars`는 단위가 다른 세 지표를 한 y축에 그립니다. 수유 값이 너무 커서 수면과 배변 막대가 묻힙니다.
 - `MetricChipView`와 `DailySummaryWidgetChipView`의 로직이 중복됩니다(폰트만 다름). 고칠 때는 둘 다 고쳐야 합니다.
 - `FallbackBars.swift`는 쓰이지 않으므로 삭제 후보입니다.
-- 아기를 여러 명 다루는 기능은 아직 없습니다. 아기 정보 수정은 설정 탭에서 할 수 있습니다.
+- 아기를 여러 명 다루는 기능은 아직 없습니다. 아기 정보와 사진 수정은 설정 탭에서 할 수 있습니다.
 - 온보딩에서는 몸무게를 입력받지 않습니다. 자동 추천을 쓰려면 설정 탭에서 따로 입력해야 합니다.

@@ -18,8 +18,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         // 실기기 테스트 시 콘솔에 출력되는 테스트 기기 ID 를 여기에 추가
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = []
-        // 첫 실행 시 표시 지연을 줄이기 위해 미리 로드
-        AppOpenAdManager.shared.preload()
         return true
     }
 }

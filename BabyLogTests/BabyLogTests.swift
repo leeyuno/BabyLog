@@ -219,4 +219,49 @@ final class BabyLogTests: XCTestCase {
         }
         XCTAssertEqual(LastValueProvider.recentAverageFeedingML(for: baby, in: context) ?? 0, 140, accuracy: 0.001)
     }
+
+    // MARK: - 성장 기록 (GrowthMath / GrowthStore)
+
+    func testAgeMonthsFractional() throws {
+        let birthday = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 1, day: 1)))
+        let at = try XCTUnwrap(cal.date(byAdding: .day, value: 61, to: birthday))
+        XCTAssertEqual(GrowthMath.ageMonths(birthday: birthday, at: at), 61 / 30.4375, accuracy: 0.0001)
+        XCTAssertEqual(GrowthMath.ageMonths(birthday: at, at: birthday), 0)  // 생일 이전은 0
+    }
+
+    func testAgeText() throws {
+        let birthday = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 8, day: 5)))
+        let now1 = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 17)))
+        let now2 = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 8, day: 20)))
+        XCTAssertEqual(GrowthMath.ageText(birthday: birthday, now: now1), "3개월 12일")
+        XCTAssertEqual(GrowthMath.ageText(birthday: birthday, now: now2), "생후 15일")
+    }
+
+    func testWeightUpsertSameDayAndSyncLatest() throws {
+        let today = Date()
+        let lastWeek = try XCTUnwrap(cal.date(byAdding: .day, value: -7, to: today))
+        GrowthStore.upsert(weightKg: 5.8, on: lastWeek, for: baby, in: context)
+        GrowthStore.upsert(weightKg: 6.1, on: today, for: baby, in: context)
+        GrowthStore.upsert(weightKg: 6.2, on: today.addingTimeInterval(-60), for: baby, in: context) // 같은 날 → 갱신
+
+        let records = GrowthStore.records(for: baby, in: context)
+        XCTAssertEqual(records.map(\.weightKg), [5.8, 6.2])
+        XCTAssertEqual(baby.weightKg, 6.2)  // 최신 기록이 프로필 몸무게(수유 추천 입력값)가 됨
+    }
+
+    func testWeightDeleteFallsBackToPreviousRecord() throws {
+        let today = Date()
+        let lastWeek = try XCTUnwrap(cal.date(byAdding: .day, value: -7, to: today))
+        GrowthStore.upsert(weightKg: 5.8, on: lastWeek, for: baby, in: context)
+        let latest = GrowthStore.upsert(weightKg: 6.2, on: today, for: baby, in: context)
+        GrowthStore.delete(latest, of: baby, in: context)
+        XCTAssertEqual(baby.weightKg, 5.8)
+    }
+
+    func testSeedFromSettingsWeightOnlyOnce() {
+        baby.weightKg = 4.9
+        XCTAssertTrue(GrowthStore.seedIfNeeded(for: baby, in: context))
+        XCTAssertFalse(GrowthStore.seedIfNeeded(for: baby, in: context))
+        XCTAssertEqual(GrowthStore.records(for: baby, in: context).count, 1)
+    }
 }
