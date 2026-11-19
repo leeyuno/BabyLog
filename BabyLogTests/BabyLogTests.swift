@@ -265,6 +265,10 @@ final class BabyLogTests: XCTestCase {
         XCTAssertEqual(GrowthStore.records(for: baby, in: context).count, 1)
     }
 
+}
+
+// 수유 예상 · 모유 타이머 · WHO · 원탭 기록 (클래스 본문 길이 제한 때문에 분리)
+extension BabyLogTests {
     // MARK: - 다음 수유 예상 (FeedSchedule)
 
     func testPredictUsesMedianInterval() throws {
@@ -360,5 +364,100 @@ final class BabyLogTests: XCTestCase {
     func testWHOInterpolatesBetweenMonths() throws {
         let mid = try XCTUnwrap(WHOGrowth.lms(sex: .girl, months: 2.5))
         XCTAssertEqual(mid.m, (5.1282 + 5.8458) / 2, accuracy: 0.00001)
+    }
+
+    // MARK: - 원탭 기록 (OneTapLog)
+
+    func testOneTapDiaperAndFormulaUsesLastML() {
+        let now = Date()
+        XCTAssertEqual(OneTapLog.status(for: baby, in: context).formulaML, OneTapLog.defaultFormulaML)
+        makeEvent(.feed, at: now.addingTimeInterval(-3600), ml: 140)
+        OneTapLog.perform(.pee, baby: baby, in: context, now: now)
+        OneTapLog.perform(.formula, baby: baby, in: context, now: now)
+
+        let req: NSFetchRequest<CareEvent> = CareEvent.fetchRequest()
+        req.sortDescriptors = [NSSortDescriptor(key: #keyPath(CareEvent.createdAt), ascending: true)]
+        let events = (try? context.fetch(req)) ?? []
+        XCTAssertEqual(events.filter { $0.kind == .diaper }.first?.diaperType, .pee)
+        XCTAssertEqual(events.filter { $0.kind == .feed }.map(\.feedAmountML), [140, 140])
+    }
+
+    func testOneTapSleepToggle() {
+        let start = Date(timeIntervalSince1970: 1_800_000_000)
+        let text1 = OneTapLog.perform(.sleep, baby: baby, in: context, now: start)
+        XCTAssertTrue(text1.hasSuffix("잠들었어요 기록"))
+        XCTAssertEqual(OneTapLog.status(for: baby, in: context).sleepingSince, start)
+
+        let end = start.addingTimeInterval(5400)
+        let text2 = OneTapLog.perform(.sleep, baby: baby, in: context, now: end)
+        XCTAssertTrue(text2.hasSuffix("깼어요 기록"))
+        XCTAssertNil(OneTapLog.status(for: baby, in: context).sleepingSince)
+        let sleep = OneTapLog.ongoingSleep(for: baby, in: context)
+        XCTAssertNil(sleep)
+        let req: NSFetchRequest<CareEvent> = CareEvent.fetchRequest()
+        let all = (try? context.fetch(req)) ?? []
+        XCTAssertEqual(all.count, 1)                       // 새로 만들지 않고 같은 기록을 종료
+        XCTAssertEqual(all.first?.sleepDurationMinutes, 90)
+        XCTAssertEqual(all.first?.createdAt, end)          // 수면 기준 시각 = 종료
+    }
+
+    // MARK: - 밤 모드
+
+    func testNightModeAutoHours() throws {
+        func at(_ hour: Int) throws -> Date {
+            try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 18, hour: hour, minute: 30)))
+        }
+        XCTAssertTrue(NightMode.auto.isActive(at: try at(23)))
+        XCTAssertTrue(NightMode.auto.isActive(at: try at(3)))
+        XCTAssertFalse(NightMode.auto.isActive(at: try at(6)))
+        XCTAssertFalse(NightMode.auto.isActive(at: try at(14)))
+        XCTAssertTrue(NightMode.always.isActive(at: try at(14)))
+        XCTAssertFalse(NightMode.off.isActive(at: try at(3)))
+        XCTAssertEqual(NightModeModifier.bumped(.large), .xLarge)
+        XCTAssertEqual(NightModeModifier.bumped(.accessibility5), .accessibility5)
+    }
+
+    // MARK: - 백업 / 복원
+
+    func testBackupRoundTrip() throws {
+        baby.sex = .girl
+        baby.birthday = Date(timeIntervalSince1970: 1_780_000_000)
+        let feed = makeEvent(.feed, at: Date(timeIntervalSince1970: 1_790_000_000), ml: 120)
+        feed.note = "잘 먹음"
+        let breast = makeEvent(.feed, at: Date(timeIntervalSince1970: 1_790_003_600))
+        breast.feedType = .breastMilk
+        breast.breastLeftSec = 420
+        breast.lastBreastSide = .left
+        makeEvent(.diaper, at: Date(timeIntervalSince1970: 1_790_001_000), diaper: .poop)
+        GrowthStore.upsert(weightKg: 6.3, on: Date(timeIntervalSince1970: 1_790_000_000), for: baby, in: context)
+
+        let payload = try BackupService.makePayload(context: context, includePhotos: false)
+        let data = try JSONEncoder().encode(payload)
+        let decoded = try BackupService.decode(data)
+        XCTAssertEqual(decoded, payload)
+
+        // 다른(빈) 저장소에 복원
+        let other = PersistenceController(inMemory: true).container.viewContext
+        let counts = try BackupService.replaceAll(with: decoded, context: other, restorePhotos: false)
+        XCTAssertEqual(counts, .init(babies: 1, events: 3, weights: 1))
+        let again = try BackupService.makePayload(context: other, includePhotos: false,
+                                                  now: Date(timeIntervalSince1970: Double(payload.exportedAt) / 1000))
+        XCTAssertEqual(Set(again.events.map(\.id)), Set(payload.events.map(\.id)))
+        XCTAssertEqual(again.babies, payload.babies)
+        let restored = try XCTUnwrap(again.events.first { $0.id == breast.id.uuidString })
+        XCTAssertEqual(restored.breastLeftSec, 420)
+        XCTAssertEqual(restored.feedAmountMl, 0)
+        XCTAssertNil(again.events.first { $0.kind == Int(CareKind.diaper.rawValue) }?.feedType)
+    }
+
+    func testBackupRejectsForeignOrNewerFiles() {
+        XCTAssertThrowsError(try BackupService.decode(Data("{}".utf8)))
+        let json = #"{"format":"babylog-backup","version":99,"exportedAt":0,"platform":"android","#
+            + #""babies":[],"events":[],"weights":[]}"#
+        let newer = Data(json.utf8)
+        XCTAssertThrowsError(try BackupService.decode(newer)) { error in
+            XCTAssertEqual((error as? BackupService.BackupError)?.errorDescription,
+                           BackupService.BackupError.newerVersion(99).errorDescription)
+        }
     }
 }

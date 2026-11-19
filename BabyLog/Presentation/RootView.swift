@@ -56,6 +56,8 @@ struct RootView: View {
                             Text("설정")
                         }
                 }
+                // 백업 복원 등으로 아기 객체가 바뀌면 탭 전체를 새로 만든다 (지워진 객체 참조 방지)
+                .id(baby.objectID)
                 .sheet(
                     isPresented: $showAdd,
                     onDismiss: { router.reset() },

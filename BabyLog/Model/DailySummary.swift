@@ -47,6 +47,36 @@ enum CoreDataModel {
 // MARK: - 위젯용 읽기 전용 접근
 
 enum SharedPersistence {
+    /// 앱·위젯이 같은 스토어를 열 때 쓰는 설정.
+    /// ⚠️ 두 프로세스 모두 영속 히스토리 추적을 켜야 한다 (한쪽만 켜면 다른 쪽이 스토어를 읽기 전용으로 연다).
+    ///    앱은 히스토리로 위젯(원탭 기록)의 쓰기를 화면에 병합한다 — PersistentHistoryMerger.
+    static func storeDescription(url: URL) -> NSPersistentStoreDescription {
+        let d = NSPersistentStoreDescription(url: url)
+        d.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        d.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        return d
+    }
+
+    /// 위젯 프로세스에서 쓰기 (원탭 기록). 저장까지 하고 결과를 돌려준다.
+    static func write<T>(_ block: (NSManagedObjectContext) throws -> T) -> T? {
+        guard let container = widgetContainer else { return nil }
+        let context = container.newBackgroundContext()
+        context.transactionAuthor = "widget"
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        var result: T?
+        context.performAndWait {
+            do {
+                let value = try block(context)
+                if context.hasChanges { try context.save() }
+                result = value
+            } catch {
+                print("[SharedPersistence] 쓰기 실패:", error)
+                context.rollback()
+            }
+        }
+        return result
+    }
+
     /// 위젯 프로세스에서 재사용하는 컨테이너. 타임라인 갱신마다 새로 만들지 않는다.
     /// App Group 접근 불가·스토어 로드 실패 시 nil.
     static let widgetContainer: NSPersistentContainer? = {
@@ -55,7 +85,7 @@ enum SharedPersistence {
             return nil
         }
         let container = NSPersistentContainer(name: "BabyLog", managedObjectModel: CoreDataModel.shared)
-        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: url)]
+        container.persistentStoreDescriptions = [storeDescription(url: url)]
 
         // 기본값(shouldAddStoreAsynchronously == false)이라 콜백은 동기적으로 호출된다.
         var loadError: Error?

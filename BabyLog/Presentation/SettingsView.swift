@@ -8,6 +8,7 @@
 //  - 사진: PhotosPicker → BabyPhotoStore (정사각형 600px JPEG, 즉시 저장)
 //  - 몸무게를 바꿔 저장하면 오늘 날짜의 성장 기록(WeightRecord)으로 쌓인다 → 성장 탭 차트
 //  - 성별: WHO 성장곡선 비교에만 사용 / 다음 수유 알림: FeedReminder (즉시 반영)
+//  - 데이터: 백업 파일 만들기(fileExporter) / 백업에서 복원(fileImporter → 확인 → 전체 교체). Android 와 같은 형식
 //  - 개월수: 생일이 있으면 자동 계산, 없으면 직접 입력(Baby.manualAgeMonths)
 //  - 자동 추천 스위치는 @AppStorage(FeedingSettings.autoRecommendKey) — AddEventView 와 공유
 //  - 입력값은 로컬 상태로 편집하고 "저장" 시 Core Data 에 반영한다.
@@ -24,6 +25,7 @@ struct SettingsView: View {
     @AppStorage(FeedingSettings.autoRecommendKey) private var autoRecommend = false
     @AppStorage(FeedReminder.enabledKey) private var reminderOn = false
     @AppStorage(FeedReminder.leadMinutesKey) private var reminderLead = 0
+    @AppStorage(NightMode.storageKey) private var nightModeRaw = NightMode.auto.rawValue
 
     // 편집용 로컬 상태
     @State private var name: String
@@ -36,6 +38,9 @@ struct SettingsView: View {
 
     @State private var alertMessage: String?
     @State private var photoItem: PhotosPickerItem?
+    @State private var backupDocument: BackupDocument?
+    @State private var showImporter = false
+    @State private var pendingRestore: BackupPayload?
     @ObservedObject private var photos = BabyPhotoStore.shared
     @FocusState private var weightFocused: Bool
 
@@ -97,6 +102,8 @@ struct SettingsView: View {
                 babySection
                 feedingSection
                 reminderSection
+                displaySection
+                dataSection
                 Section {
                     Button("저장", action: save)
                         .frame(maxWidth: .infinity)
@@ -189,6 +196,77 @@ struct SettingsView: View {
             } else {
                 Text("몸무게를 바꿔 저장하면 오늘 날짜로 성장 기록에 추가됩니다. 지난 기록은 성장 탭에서 관리하세요.")
             }
+        }
+    }
+
+    private var dataSection: some View {
+        Section {
+            Button("백업 파일 만들기") {
+                do {
+                    backupDocument = BackupDocument(data: try BackupService.exportData(context: context))
+                } catch {
+                    alertMessage = "백업 실패: \(error.localizedDescription)"
+                }
+            }
+            Button("백업에서 복원") { showImporter = true }
+        } header: {
+            Text("데이터")
+        } footer: {
+            Text("기록은 이 폰에만 저장돼요. 기기를 바꾸기 전에 백업 파일을 iCloud Drive 나 메신저로 보관하세요. "
+                 + "안드로이드 앱의 백업 파일도 그대로 불러올 수 있어요.")
+        }
+        .fileExporter(isPresented: Binding(get: { backupDocument != nil }, set: { if !$0 { backupDocument = nil } }),
+                      document: backupDocument, contentType: .json,
+                      defaultFilename: BackupDocument.defaultFilename()) { result in
+            if case .failure(let error) = result { alertMessage = "백업 실패: \(error.localizedDescription)" }
+        }
+        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.json]) { result in
+            do {
+                let url = try result.get()
+                let scoped = url.startAccessingSecurityScopedResource()
+                defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+                pendingRestore = try BackupService.decode(Data(contentsOf: url))
+            } catch {
+                alertMessage = "복원 실패: \(error.localizedDescription)"
+            }
+        }
+        .confirmationDialog(restoreTitle, isPresented: Binding(get: { pendingRestore != nil },
+                                                               set: { if !$0 { pendingRestore = nil } }),
+                            titleVisibility: .visible) {
+            Button("지금 기록을 지우고 복원", role: .destructive, action: restore)
+        } message: {
+            Text("현재 이 폰의 기록은 모두 지워지고 백업 내용으로 바뀝니다. 되돌릴 수 없어요.")
+        }
+    }
+
+    private var restoreTitle: String {
+        guard let p = pendingRestore else { return "" }
+        let name = p.babies.first?.name ?? "아기"
+        return "\(name) · 기록 \(p.events.count)건 · 몸무게 \(p.weights.count)건으로 복원할까요?"
+    }
+
+    private func restore() {
+        guard let payload = pendingRestore else { return }
+        pendingRestore = nil
+        do {
+            let counts = try BackupService.replaceAll(with: payload, context: context)
+            try context.saveAndRefreshWidgets()
+            alertMessage = "복원했어요. 기록 \(counts.events)건, 몸무게 \(counts.weights)건"
+        } catch {
+            context.rollback()
+            alertMessage = "복원 실패: \(error.localizedDescription)"
+        }
+    }
+
+    private var displaySection: some View {
+        Section {
+            Picker("밤 모드", selection: $nightModeRaw) {
+                ForEach(NightMode.allCases, id: \.rawValue) { Text($0.label).tag($0.rawValue) }
+            }
+        } header: {
+            Text("화면")
+        } footer: {
+            Text("밤 모드에서는 화면이 어둡고 따뜻한 색으로 바뀌고 글자와 버튼이 커져요. 새벽 수유 때 아이가 깨지 않도록.")
         }
     }
 

@@ -19,6 +19,9 @@ struct BabyLogWidgetBundle: WidgetBundle {
         BabyLogTodayWidget()
         BabyLogDailySummaryWidget()
         AddQuickRecordWidget()
+        if #available(iOS 17.0, *) {
+            BabyLogOneTapWidget()   // 인터랙티브 위젯(원탭 기록)은 iOS 17+
+        }
         // BabyLogWidgetLiveActivity() — Xcode 템플릿 상태(미구현)라 번들에 포함하지 않음
     }
 }

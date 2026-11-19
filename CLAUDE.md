@@ -37,12 +37,12 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 
 ## 타깃 멤버십 ⚠️ 가장 자주 깨지는 부분
 
-**앱과 위젯 두 타깃에 모두 포함되는 파일**: `DailySummary.swift`, `CareEvent.swift`, `BabyLog.swift`(Baby), `WeightRecord.swift`, `FeedSchedule.swift`, `CoreEnums.swift`, `Routing.swift`,
+**앱과 위젯 두 타깃에 모두 포함되는 파일**: `DailySummary.swift`, `CareEvent.swift`, `BabyLog.swift`(Baby), `WeightRecord.swift`, `FeedSchedule.swift`, `OneTapLog.swift`, `CoreEnums.swift`, `Routing.swift`,
 `AddQuickHomeWidgetView.swift`, `AddQuickLockWidgetView.swift`, `DailySummaryWidgetChipView.swift`, `BabyLog.xcdatamodeld`, `BabyLogWidget.intentdefinition`,
 그리고 **위젯 파일 4개**(`BabyLogElapsedWidget`, `BabyLogTodayWidget`, `BabyLogDailySummaryWidget`, `BabyLogQuickAddWIdget`)입니다. 이 4개는 앱 타깃에서도 컴파일됩니다.
 
-**위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogWidgetLiveActivity.swift`
-**앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FeedingGuide.swift`, `WHOGrowth.swift`, `FeedReminder.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
+**위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogOneTapWidget.swift`(AppIntent), `BabyLogWidgetLiveActivity.swift`
+**앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FeedingGuide.swift`, `WHOGrowth.swift`, `FeedReminder.swift`, `NightMode.swift`, `BackupService.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
 
 - 위 파일에서는 `UIKit`, `GoogleMobileAds`, `PersistenceController`, `WidgetCenter`, `FeedingGuide`처럼 **앱 전용 심볼을 참조하면 안 됩니다.**
   반대로 위젯 파일이 쓰는 헬퍼(예: `.widgetBackground()`)는 양쪽 타깃에 포함된 파일에 둬야 합니다. 위젯 전용 파일에 두면 앱 빌드가 깨집니다.
@@ -124,6 +124,31 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 - **알림**(`FeedReminder`)
   - 설정에서 켠 경우에만 예상 시각(또는 10·20분 전)에 로컬 알림을 **1건만** 예약합니다.
   - 기록을 저장할 때(`saveAndRefreshWidgets`), 앱이 활성화될 때, 설정을 바꿀 때 다시 예약합니다.
+
+## 원탭 기록 위젯 (iOS 17+) / 위젯의 쓰기
+
+- `BabyLogOneTapWidget`의 버튼(`Button(intent: LogCareIntent)`)은 **앱을 열지 않고 위젯 프로세스에서 바로 저장**합니다. 동작은 `OneTapLog.perform`에 있습니다.
+  - 소변, 대변: 지금 시각으로 기저귀를 기록합니다.
+  - 분유: 직전 "ml 있는" 수유량으로 기록합니다(없으면 60ml).
+  - 수면: 자는 중인 수면이 있으면 지금 시각으로 끝내고, 없으면 지금부터 수면을 시작합니다.
+- ⚠️ **앱과 위젯 두 프로세스가 같은 스토어에 씁니다.** 그래서 두 컨테이너 모두 `SharedPersistence.storeDescription`(영속 히스토리 추적 + 원격 변경 알림)으로 엽니다. 한쪽만 켜면 다른 쪽이 읽기 전용으로 엽니다.
+  - 앱은 `PersistentHistoryMerger`가 원격 변경 알림과 앱 활성화 시점에 다른 author의 트랜잭션을 `viewContext`에 병합합니다.
+  - 앱의 author는 `"app"`, 위젯의 author는 `"widget"`입니다.
+- 결과 문구("14:05 소변 기록")는 App Group UserDefaults의 `onetap.lastResult`에 저장하고 위젯에 표시합니다.
+
+## 밤 모드 (`NightMode`)
+
+- 설정은 `자동(22:00~05:59) / 항상 / 끄기`이고 기본값은 자동입니다. `@AppStorage("display.nightMode")`에 저장합니다.
+- 켜지면 다크 모드, 호박색 강조색(파란빛 줄임), Dynamic Type 한 단계 확대가 적용됩니다. 루트에 `.nightMode()`를 붙이고 1분마다 다시 판정합니다.
+
+## 데이터 백업 / 복원 (`BackupService`)
+
+- 설정 → 데이터에서 JSON 파일로 내보내고(`fileExporter`), 불러옵니다(`fileImporter`). 사진도 base64로 함께 들어갑니다.
+- ⚠️ **형식은 Android `lib/data/backup.dart`와 완전히 같습니다.** 그래서 아이폰과 안드로이드 사이 이전이 가능합니다.
+  - `format`은 `"babylog-backup"`, 현재 `version`은 1입니다. 날짜는 epoch ms, enum은 raw 정수, 값이 없으면 null입니다.
+  - 필드를 바꾸면 양쪽을 함께 바꾸고 version을 올립니다. 더 새 version의 파일은 거부합니다.
+- 복원은 **전체 교체**입니다. 확인을 받은 뒤 현재 아기를 삭제하고(기록과 몸무게는 Cascade) 백업 내용을 넣습니다.
+  - 아기 객체가 바뀌므로 `RootView`의 탭 트리에 `.id(baby.objectID)`를 붙여 새로 만듭니다.
 
 ## 딥링크
 
