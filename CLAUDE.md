@@ -37,11 +37,11 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 
 ## 타깃 멤버십 ⚠️ 가장 자주 깨지는 부분
 
-**앱과 위젯 두 타깃에 모두 포함되는 파일**: `DailySummary.swift`, `CareEvent.swift`, `BabyLog.swift`(Baby), `WeightRecord.swift`, `FeedSchedule.swift`, `OneTapLog.swift`, `CoreEnums.swift`, `Routing.swift`,
+**앱과 위젯 두 타깃에 모두 포함되는 파일**: `DailySummary.swift`, `CareEvent.swift`, `BabyLog.swift`(Baby), `WeightRecord.swift`, `FeedSchedule.swift`, `OneTapLog.swift`, `NextFeedAttributes.swift`, `CoreEnums.swift`, `Routing.swift`,
 `AddQuickHomeWidgetView.swift`, `AddQuickLockWidgetView.swift`, `DailySummaryWidgetChipView.swift`, `BabyLog.xcdatamodeld`, `BabyLogWidget.intentdefinition`,
 그리고 **위젯 파일 4개**(`BabyLogElapsedWidget`, `BabyLogTodayWidget`, `BabyLogDailySummaryWidget`, `BabyLogQuickAddWIdget`)입니다. 이 4개는 앱 타깃에서도 컴파일됩니다.
 
-**위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogOneTapWidget.swift`(AppIntent), `BabyLogWidgetLiveActivity.swift`
+**위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogOneTapWidget.swift`(AppIntent), `BabyLogWidgetLiveActivity.swift`(잠금화면 다음 수유)
 **앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FeedingGuide.swift`, `WHOGrowth.swift`, `FeedReminder.swift`, `NightMode.swift`, `BackupService.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
 
 - 위 파일에서는 `UIKit`, `GoogleMobileAds`, `PersistenceController`, `WidgetCenter`, `FeedingGuide`처럼 **앱 전용 심볼을 참조하면 안 됩니다.**
@@ -124,6 +124,11 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 - **알림**(`FeedReminder`)
   - 설정에서 켠 경우에만 예상 시각(또는 10·20분 전)에 로컬 알림을 **1건만** 예약합니다.
   - 기록을 저장할 때(`saveAndRefreshWidgets`), 앱이 활성화될 때, 설정을 바꿀 때 다시 예약합니다.
+- **잠금화면 다음 수유**(`NextFeedLiveActivity` → 라이브 액티비티)
+  - `FeedReminder.reschedule`과 같은 시점에 `sync()`합니다. 설정은 "잠금화면에 다음 수유 표시"이고 기본값은 켜짐입니다.
+  - 화면에는 다음 예상 시각, 남은 시간 카운트다운, 진행 막대를 보여주고, 탭하면 수유 기록이 열립니다. 예상 시각이 지나면 stale 문구로 바뀌고, 2시간이 지나면 내립니다.
+  - 데이터 타입 `NextFeedAttributes`는 앱과 위젯 양쪽 타깃에 있습니다. Info.plist에 `NSSupportsLiveActivities`가 필요합니다.
+  - 라이브 액티비티는 앱이 화면에 있을 때만 시작·갱신됩니다. 위젯 원탭 기록은 앱을 다시 열 때 반영됩니다.
 
 ## 원탭 기록 위젯 (iOS 17+) / 위젯의 쓰기
 

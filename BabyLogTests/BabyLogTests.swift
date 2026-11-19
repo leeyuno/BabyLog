@@ -460,4 +460,18 @@ extension BabyLogTests {
                            BackupService.BackupError.newerVersion(99).errorDescription)
         }
     }
+
+    // MARK: - 잠금화면 다음 수유 (라이브 액티비티 상태)
+
+    func testLiveActivityStateShownUntilTwoHoursOverdue() throws {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        let p = FeedSchedule.Prediction(lastFeed: now.addingTimeInterval(-3600), interval: 3 * 3600)
+        let state = try XCTUnwrap(NextFeedLiveActivity.contentState(for: p, now: now))
+        XCTAssertEqual(state.next, now.addingTimeInterval(2 * 3600))
+        XCTAssertEqual(state.intervalMinutes, 180)
+        // 예상 시각 1시간 지남 → 계속 표시, 3시간 지남 → 내림
+        XCTAssertNotNil(NextFeedLiveActivity.contentState(for: p, now: now.addingTimeInterval(3 * 3600)))
+        XCTAssertNil(NextFeedLiveActivity.contentState(for: p, now: now.addingTimeInterval(5 * 3600)))
+        XCTAssertNil(NextFeedLiveActivity.contentState(for: nil, now: now))
+    }
 }

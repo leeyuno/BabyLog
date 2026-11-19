@@ -25,6 +25,7 @@ struct SettingsView: View {
     @AppStorage(FeedingSettings.autoRecommendKey) private var autoRecommend = false
     @AppStorage(FeedReminder.enabledKey) private var reminderOn = false
     @AppStorage(FeedReminder.leadMinutesKey) private var reminderLead = 0
+    @AppStorage(NextFeedLiveActivity.enabledKey) private var lockScreenOn = true
     @AppStorage(NightMode.storageKey) private var nightModeRaw = NightMode.auto.rawValue
 
     // 편집용 로컬 상태
@@ -272,6 +273,7 @@ struct SettingsView: View {
 
     private var reminderSection: some View {
         Section {
+            Toggle("잠금화면에 다음 수유 표시", isOn: $lockScreenOn)
             Toggle("다음 수유 알림", isOn: $reminderOn)
             if reminderOn {
                 Picker("알림 시점", selection: $reminderLead) {
@@ -283,7 +285,8 @@ struct SettingsView: View {
         } header: {
             Text("알림")
         } footer: {
-            Text("최근 수유 간격으로 예상한 다음 수유 시각에 알려줍니다. 수유를 기록할 때마다 시각이 다시 계산됩니다.")
+            Text("잠금화면·다이나믹 아일랜드에 다음 수유까지 남은 시간을 계속 보여줘요(탭하면 바로 수유 기록). "
+                 + "알림은 예상 시각에 한 번 울려요. 수유를 기록할 때마다 다시 계산됩니다.")
         }
         .onChange(of: reminderOn) { on in
             guard on else { FeedReminder.cancel(); return }
@@ -299,6 +302,7 @@ struct SettingsView: View {
             }
         }
         .onChange(of: reminderLead) { _ in FeedReminder.reschedule(context: context) }
+        .onChange(of: lockScreenOn) { _ in FeedReminder.reschedule(context: context) }
     }
 
     private var feedingSection: some View {

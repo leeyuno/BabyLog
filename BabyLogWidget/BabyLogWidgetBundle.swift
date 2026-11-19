@@ -22,7 +22,7 @@ struct BabyLogWidgetBundle: WidgetBundle {
         if #available(iOS 17.0, *) {
             BabyLogOneTapWidget()   // 인터랙티브 위젯(원탭 기록)은 iOS 17+
         }
-        // BabyLogWidgetLiveActivity() — Xcode 템플릿 상태(미구현)라 번들에 포함하지 않음
+        BabyLogWidgetLiveActivity()   // 잠금화면 · 다이나믹 아일랜드 "다음 수유"
     }
 }
 

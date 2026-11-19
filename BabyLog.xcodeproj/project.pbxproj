@@ -64,6 +64,9 @@
 		4F1E7E962E82434900ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */; };
+		4F1E7F022E90000600ED93E7 /* NextFeedAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F012E90000600ED93E7 /* NextFeedAttributes.swift */; };
+		4F1E7F032E90000600ED93E7 /* NextFeedAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F012E90000600ED93E7 /* NextFeedAttributes.swift */; };
+		4F1E7F052E90000600ED93E7 /* NextFeedLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F042E90000600ED93E7 /* NextFeedLiveActivity.swift */; };
 		4F1E7EF42E90000500ED93E7 /* BackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EF32E90000500ED93E7 /* BackupService.swift */; };
 		4F1E7EF22E90000500ED93E7 /* NightMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EF12E90000500ED93E7 /* NightMode.swift */; };
 		4F1E7EE22E90000400ED93E7 /* OneTapLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EE12E90000400ED93E7 /* OneTapLog.swift */; };
@@ -179,6 +182,8 @@
 		4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickLockWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickHomeWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastValueProvider.swift; sourceTree = "<group>"; };
+		4F1E7F012E90000600ED93E7 /* NextFeedAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextFeedAttributes.swift; sourceTree = "<group>"; };
+		4F1E7F042E90000600ED93E7 /* NextFeedLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextFeedLiveActivity.swift; sourceTree = "<group>"; };
 		4F1E7EF32E90000500ED93E7 /* BackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupService.swift; sourceTree = "<group>"; };
 		4F1E7EF12E90000500ED93E7 /* NightMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightMode.swift; sourceTree = "<group>"; };
 		4F1E7EE12E90000400ED93E7 /* OneTapLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneTapLog.swift; sourceTree = "<group>"; };
@@ -319,6 +324,8 @@
 				4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */,
 				4F1E7E8D2E82400600ED93E7 /* AdsConfig.swift */,
 				4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */,
+				4F1E7F012E90000600ED93E7 /* NextFeedAttributes.swift */,
+				4F1E7F042E90000600ED93E7 /* NextFeedLiveActivity.swift */,
 				4F1E7EF32E90000500ED93E7 /* BackupService.swift */,
 				4F1E7EF12E90000500ED93E7 /* NightMode.swift */,
 				4F1E7EE12E90000400ED93E7 /* OneTapLog.swift */,
@@ -699,6 +706,8 @@
 			files = (
 				4F1E7E1E2E72FAB900ED93E7 /* RootView.swift in Sources */,
 				4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */,
+				4F1E7F022E90000600ED93E7 /* NextFeedAttributes.swift in Sources */,
+				4F1E7F052E90000600ED93E7 /* NextFeedLiveActivity.swift in Sources */,
 				4F1E7EF42E90000500ED93E7 /* BackupService.swift in Sources */,
 				4F1E7EF22E90000500ED93E7 /* NightMode.swift in Sources */,
 				4F1E7EE22E90000400ED93E7 /* OneTapLog.swift in Sources */,
@@ -767,6 +776,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F1E7DEF2E72F85800ED93F0 /* BabyLog.xcdatamodeld in Sources */,
+				4F1E7F032E90000600ED93E7 /* NextFeedAttributes.swift in Sources */,
 				4F1E7EE32E90000400ED93E7 /* OneTapLog.swift in Sources */,
 				4F1E7EE52E90000400ED93E7 /* BabyLogOneTapWidget.swift in Sources */,
 				4F1E7ED32E90000300ED93E7 /* FeedSchedule.swift in Sources */,
