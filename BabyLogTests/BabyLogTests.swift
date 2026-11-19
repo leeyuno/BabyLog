@@ -14,9 +14,9 @@ import CoreData
 
 final class BabyLogTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
-    private var baby: Baby!
-    private let cal = Calendar.current
+    var context: NSManagedObjectContext!
+    var baby: Baby!
+    let cal = Calendar.current
 
     override func setUpWithError() throws {
         context = PersistenceController(inMemory: true).container.viewContext
@@ -33,9 +33,9 @@ final class BabyLogTests: XCTestCase {
     // MARK: - Helpers
 
     @discardableResult
-    private func makeEvent(_ kind: CareKind, at date: Date,
-                           ml: Int32 = 0, diaper: DiaperType? = nil,
-                           sleepMinutes: Double? = nil) -> CareEvent {
+    func makeEvent(_ kind: CareKind, at date: Date,
+                   ml: Int32 = 0, diaper: DiaperType? = nil,
+                   sleepMinutes: Double? = nil) -> CareEvent {
         let e = CareEvent(context: context)
         e.id = UUID()
         e.kind = kind
@@ -415,50 +415,6 @@ extension BabyLogTests {
         XCTAssertFalse(NightMode.off.isActive(at: try at(3)))
         XCTAssertEqual(NightModeModifier.bumped(.large), .xLarge)
         XCTAssertEqual(NightModeModifier.bumped(.accessibility5), .accessibility5)
-    }
-
-    // MARK: - 백업 / 복원
-
-    func testBackupRoundTrip() throws {
-        baby.sex = .girl
-        baby.birthday = Date(timeIntervalSince1970: 1_780_000_000)
-        let feed = makeEvent(.feed, at: Date(timeIntervalSince1970: 1_790_000_000), ml: 120)
-        feed.note = "잘 먹음"
-        let breast = makeEvent(.feed, at: Date(timeIntervalSince1970: 1_790_003_600))
-        breast.feedType = .breastMilk
-        breast.breastLeftSec = 420
-        breast.lastBreastSide = .left
-        makeEvent(.diaper, at: Date(timeIntervalSince1970: 1_790_001_000), diaper: .poop)
-        GrowthStore.upsert(weightKg: 6.3, on: Date(timeIntervalSince1970: 1_790_000_000), for: baby, in: context)
-
-        let payload = try BackupService.makePayload(context: context, includePhotos: false)
-        let data = try JSONEncoder().encode(payload)
-        let decoded = try BackupService.decode(data)
-        XCTAssertEqual(decoded, payload)
-
-        // 다른(빈) 저장소에 복원
-        let other = PersistenceController(inMemory: true).container.viewContext
-        let counts = try BackupService.replaceAll(with: decoded, context: other, restorePhotos: false)
-        XCTAssertEqual(counts, .init(babies: 1, events: 3, weights: 1))
-        let again = try BackupService.makePayload(context: other, includePhotos: false,
-                                                  now: Date(timeIntervalSince1970: Double(payload.exportedAt) / 1000))
-        XCTAssertEqual(Set(again.events.map(\.id)), Set(payload.events.map(\.id)))
-        XCTAssertEqual(again.babies, payload.babies)
-        let restored = try XCTUnwrap(again.events.first { $0.id == breast.id.uuidString })
-        XCTAssertEqual(restored.breastLeftSec, 420)
-        XCTAssertEqual(restored.feedAmountMl, 0)
-        XCTAssertNil(again.events.first { $0.kind == Int(CareKind.diaper.rawValue) }?.feedType)
-    }
-
-    func testBackupRejectsForeignOrNewerFiles() {
-        XCTAssertThrowsError(try BackupService.decode(Data("{}".utf8)))
-        let json = #"{"format":"babylog-backup","version":99,"exportedAt":0,"platform":"android","#
-            + #""babies":[],"events":[],"weights":[]}"#
-        let newer = Data(json.utf8)
-        XCTAssertThrowsError(try BackupService.decode(newer)) { error in
-            XCTAssertEqual((error as? BackupService.BackupError)?.errorDescription,
-                           BackupService.BackupError.newerVersion(99).errorDescription)
-        }
     }
 
     // MARK: - 잠금화면 다음 수유 (라이브 액티비티 상태)

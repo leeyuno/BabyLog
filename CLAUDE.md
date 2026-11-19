@@ -42,7 +42,7 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 그리고 **위젯 파일 4개**(`BabyLogElapsedWidget`, `BabyLogTodayWidget`, `BabyLogDailySummaryWidget`, `BabyLogQuickAddWIdget`)입니다. 이 4개는 앱 타깃에서도 컴파일됩니다.
 
 **위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogOneTapWidget.swift`(AppIntent), `BabyLogWidgetLiveActivity.swift`(잠금화면 다음 수유)
-**앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FeedingGuide.swift`, `WHOGrowth.swift`, `FeedReminder.swift`, `NightMode.swift`, `BackupService.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
+**앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FamilySync.swift`, `FirestoreFamilyBackend.swift`, `FeedingGuide.swift`, `WHOGrowth.swift`, `FeedReminder.swift`, `NightMode.swift`, `BackupService.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
 
 - 위 파일에서는 `UIKit`, `GoogleMobileAds`, `PersistenceController`, `WidgetCenter`, `FeedingGuide`처럼 **앱 전용 심볼을 참조하면 안 됩니다.**
   반대로 위젯 파일이 쓰는 헬퍼(예: `.widgetBackground()`)는 양쪽 타깃에 포함된 파일에 둬야 합니다. 위젯 전용 파일에 두면 앱 빌드가 깨집니다.
@@ -154,6 +154,20 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
   - 필드를 바꾸면 양쪽을 함께 바꾸고 version을 올립니다. 더 새 version의 파일은 거부합니다.
 - 복원은 **전체 교체**입니다. 확인을 받은 뒤 현재 아기를 삭제하고(기록과 몸무게는 Cascade) 백업 내용을 넣습니다.
   - 아기 객체가 바뀌므로 `RootView`의 탭 트리에 `.id(baby.objectID)`를 붙여 새로 만듭니다.
+
+## 가족 공유 (`FamilySync`, Firebase)
+
+- 서버 구조, 보안 규칙, 설정 파일은 `firebase/README.md`에 있습니다. Android 앱과 **같은 Firestore 문서**를 씁니다.
+- **보내기**
+  - `saveAndRefreshWidgets`가 저장 **전에** `FamilyChanges.collect`로 바뀐 기록, 몸무게, 아기를 모아 두었다가, 저장 후 `FamilySync.push`로 보냅니다. 화면마다 전송 코드를 넣지 않습니다.
+  - 위젯 원탭 기록(author `"widget"`)은 앱이 활성화될 때 `PersistentHistoryMerger`가 찾아서 보냅니다. 위젯 확장에는 Firebase를 넣지 않습니다.
+- **받기**
+  - Firestore 리스너가 받은 변경을 백그라운드 컨텍스트(author `"family"`)에 `applyRemote`로 반영합니다.
+  - 이때는 일반 `save()`를 써서 **다시 보내지 않습니다**(되돌이 방지). 같은 기록을 동시에 고치면 마지막 쓰기가 남습니다.
+- 가족을 만들면 내 기록을 올리고, **참여하면 이 폰의 기록이 가족 기록으로 교체**됩니다(확인을 받음). 가족 공유 중에는 백업 복원을 막습니다. 프로필 사진은 공유하지 않습니다.
+- ⚠️ **ID는 항상 소문자입니다**(`BackupService.wireID`). 읽을 때는 대소문자를 모두 받습니다.
+- `GoogleService-Info.plist`가 없으면(공개 저장소를 새로 클론한 경우 등) Firebase를 건너뛰고 가족 공유만 꺼집니다.
+- Firebase iOS SDK는 CocoaPods(FirebaseAuth, FirebaseFirestore 12.19)로 들어와 있습니다. Firebase는 2026년 10월 이후 CocoaPods 배포를 중단하므로, 업그레이드가 필요해지면 Swift Package Manager로 옮겨야 합니다.
 
 ## 딥링크
 

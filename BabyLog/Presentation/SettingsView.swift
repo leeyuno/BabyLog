@@ -8,6 +8,7 @@
 //  - 사진: PhotosPicker → BabyPhotoStore (정사각형 600px JPEG, 즉시 저장)
 //  - 몸무게를 바꿔 저장하면 오늘 날짜의 성장 기록(WeightRecord)으로 쌓인다 → 성장 탭 차트
 //  - 성별: WHO 성장곡선 비교에만 사용 / 다음 수유 알림: FeedReminder (즉시 반영)
+//  - 가족 공유: 만들기(초대 코드) / 코드로 참여(이 폰 기록을 가족 기록으로 교체) / 나가기 — FamilySync
 //  - 데이터: 백업 파일 만들기(fileExporter) / 백업에서 복원(fileImporter → 확인 → 전체 교체). Android 와 같은 형식
 //  - 개월수: 생일이 있으면 자동 계산, 없으면 직접 입력(Baby.manualAgeMonths)
 //  - 자동 추천 스위치는 @AppStorage(FeedingSettings.autoRecommendKey) — AddEventView 와 공유
@@ -42,6 +43,15 @@ struct SettingsView: View {
     @State private var backupDocument: BackupDocument?
     @State private var showImporter = false
     @State private var pendingRestore: BackupPayload?
+    @ObservedObject private var family = FamilySync.shared
+    @State private var inviteCode: String?
+    @State private var joinCodeInput = ""
+    @State private var showJoinPrompt = false
+    @State private var confirmCreateFamily = false
+    @State private var confirmJoinFamily = false
+    @State private var confirmLeaveFamily = false
+    @State private var familyBusy = false
+    @State private var memberCount = 0
     @ObservedObject private var photos = BabyPhotoStore.shared
     @FocusState private var weightFocused: Bool
 
@@ -104,6 +114,7 @@ struct SettingsView: View {
                 feedingSection
                 reminderSection
                 displaySection
+                familySection
                 dataSection
                 Section {
                     Button("저장", action: save)
@@ -200,65 +211,6 @@ struct SettingsView: View {
         }
     }
 
-    private var dataSection: some View {
-        Section {
-            Button("백업 파일 만들기") {
-                do {
-                    backupDocument = BackupDocument(data: try BackupService.exportData(context: context))
-                } catch {
-                    alertMessage = "백업 실패: \(error.localizedDescription)"
-                }
-            }
-            Button("백업에서 복원") { showImporter = true }
-        } header: {
-            Text("데이터")
-        } footer: {
-            Text("기록은 이 폰에만 저장돼요. 기기를 바꾸기 전에 백업 파일을 iCloud Drive 나 메신저로 보관하세요. "
-                 + "안드로이드 앱의 백업 파일도 그대로 불러올 수 있어요.")
-        }
-        .fileExporter(isPresented: Binding(get: { backupDocument != nil }, set: { if !$0 { backupDocument = nil } }),
-                      document: backupDocument, contentType: .json,
-                      defaultFilename: BackupDocument.defaultFilename()) { result in
-            if case .failure(let error) = result { alertMessage = "백업 실패: \(error.localizedDescription)" }
-        }
-        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.json]) { result in
-            do {
-                let url = try result.get()
-                let scoped = url.startAccessingSecurityScopedResource()
-                defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-                pendingRestore = try BackupService.decode(Data(contentsOf: url))
-            } catch {
-                alertMessage = "복원 실패: \(error.localizedDescription)"
-            }
-        }
-        .confirmationDialog(restoreTitle, isPresented: Binding(get: { pendingRestore != nil },
-                                                               set: { if !$0 { pendingRestore = nil } }),
-                            titleVisibility: .visible) {
-            Button("지금 기록을 지우고 복원", role: .destructive, action: restore)
-        } message: {
-            Text("현재 이 폰의 기록은 모두 지워지고 백업 내용으로 바뀝니다. 되돌릴 수 없어요.")
-        }
-    }
-
-    private var restoreTitle: String {
-        guard let p = pendingRestore else { return "" }
-        let name = p.babies.first?.name ?? "아기"
-        return "\(name) · 기록 \(p.events.count)건 · 몸무게 \(p.weights.count)건으로 복원할까요?"
-    }
-
-    private func restore() {
-        guard let payload = pendingRestore else { return }
-        pendingRestore = nil
-        do {
-            let counts = try BackupService.replaceAll(with: payload, context: context)
-            try context.saveAndRefreshWidgets()
-            alertMessage = "복원했어요. 기록 \(counts.events)건, 몸무게 \(counts.weights)건"
-        } catch {
-            context.rollback()
-            alertMessage = "복원 실패: \(error.localizedDescription)"
-        }
-    }
-
     private var displaySection: some View {
         Section {
             Picker("밤 모드", selection: $nightModeRaw) {
@@ -352,6 +304,144 @@ struct SettingsView: View {
             alertMessage = "저장되었습니다."
         } catch {
             alertMessage = "저장 실패: \(error.localizedDescription)"
+        }
+    }
+}
+
+// 가족 공유 · 데이터(백업/복원) 섹션 — 본문 길이 제한 때문에 분리 (같은 파일이라 private 상태에 접근 가능)
+extension SettingsView {
+    private var familySection: some View {
+        Section {
+            if !family.isAvailable {
+                Label("지금은 가족 공유를 사용할 수 없어요", systemImage: "icloud.slash")
+            } else if family.isJoined {
+                Label(memberCount > 0 ? "가족 \(memberCount)명과 공유 중" : "가족과 공유 중", systemImage: "person.3.fill")
+                Button("초대 코드 만들기") { runFamily { inviteCode = try await family.newInvite() } }
+                Button("가족에서 나가기", role: .destructive) { confirmLeaveFamily = true }
+            } else {
+                Button("가족 만들기") { confirmCreateFamily = true }
+                Button("초대 코드로 참여") { joinCodeInput = ""; showJoinPrompt = true }
+            }
+            if familyBusy { ProgressView() }
+        } header: {
+            Text("가족 공유")
+        } footer: {
+            Text(family.isJoined
+                 ? "기록하면 바로 가족의 폰에도 반영돼요. 프로필 사진은 공유되지 않아요."
+                 : "배우자·조부모와 기록을 실시간으로 함께 봐요. 안드로이드를 쓰는 가족과도 함께할 수 있어요.")
+        }
+        .task(id: family.familyId) { memberCount = await family.memberCount() }
+        .confirmationDialog("가족을 만들까요?", isPresented: $confirmCreateFamily, titleVisibility: .visible) {
+            Button("만들기") { runFamily { inviteCode = try await family.create() } }
+        } message: {
+            Text("이 폰의 기록이 가족 공간에 올라가고, 초대 코드를 받은 가족이 함께 보고 기록할 수 있어요.")
+        }
+        .alert("초대 코드 입력", isPresented: $showJoinPrompt) {
+            TextField("예: K7MP2Q", text: $joinCodeInput)
+                .textInputAutocapitalization(.characters)
+                .autocorrectionDisabled()
+            Button("취소", role: .cancel) {}
+            Button("다음") {
+                if joinCodeInput.trimmingCharacters(in: .whitespaces).count == 6 { confirmJoinFamily = true }
+            }
+        } message: {
+            Text("가족에게 받은 6자리 코드를 입력하세요.")
+        }
+        .confirmationDialog("가족에 참여할까요?", isPresented: $confirmJoinFamily, titleVisibility: .visible) {
+            Button("참여", role: .destructive) {
+                runFamily {
+                    try await family.join(code: joinCodeInput)
+                    alertMessage = "가족과 연결됐어요"
+                }
+            }
+        } message: {
+            Text("이 폰에 있던 기록은 가족 기록으로 바뀌어요. 필요하면 먼저 \"백업 파일 만들기\"로 보관하세요.")
+        }
+        .confirmationDialog("가족 공유에서 나갈까요?", isPresented: $confirmLeaveFamily, titleVisibility: .visible) {
+            Button("나가기", role: .destructive) { runFamily { await family.leave() } }
+        } message: {
+            Text("이 폰의 기록은 남아 있지만 가족과 더 이상 공유되지 않아요.")
+        }
+        .alert("초대 코드", isPresented: Binding(get: { inviteCode != nil }, set: { if !$0 { inviteCode = nil } })) {
+            Button("복사") { UIPasteboard.general.string = inviteCode }
+            Button("확인", role: .cancel) {}
+        } message: {
+            Text("\(inviteCode ?? "")\n\n가족의 베이비로그 앱 > 설정 > 가족 공유 > 초대 코드로 참여에 입력하세요. 24시간 동안 쓸 수 있어요.")
+        }
+    }
+
+    /// 네트워크 작업 실행 + 오류 안내
+    private func runFamily(_ task: @escaping () async throws -> Void) {
+        familyBusy = true
+        Task {
+            do { try await task() } catch { alertMessage = error.localizedDescription }
+            memberCount = await family.memberCount()
+            familyBusy = false
+        }
+    }
+
+    private var dataSection: some View {
+        Section {
+            Button("백업 파일 만들기") {
+                do {
+                    backupDocument = BackupDocument(data: try BackupService.exportData(context: context))
+                } catch {
+                    alertMessage = "백업 실패: \(error.localizedDescription)"
+                }
+            }
+            Button("백업에서 복원") {
+                if family.isJoined {
+                    alertMessage = "가족 공유 중에는 복원할 수 없어요. 가족 공유에서 나간 뒤 다시 시도하세요."
+                } else {
+                    showImporter = true
+                }
+            }
+        } header: {
+            Text("데이터")
+        } footer: {
+            Text("기록은 이 폰에만 저장돼요. 기기를 바꾸기 전에 백업 파일을 iCloud Drive 나 메신저로 보관하세요. "
+                 + "안드로이드 앱의 백업 파일도 그대로 불러올 수 있어요.")
+        }
+        .fileExporter(isPresented: Binding(get: { backupDocument != nil }, set: { if !$0 { backupDocument = nil } }),
+                      document: backupDocument, contentType: .json,
+                      defaultFilename: BackupDocument.defaultFilename()) { result in
+            if case .failure(let error) = result { alertMessage = "백업 실패: \(error.localizedDescription)" }
+        }
+        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.json]) { result in
+            do {
+                let url = try result.get()
+                let scoped = url.startAccessingSecurityScopedResource()
+                defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+                pendingRestore = try BackupService.decode(Data(contentsOf: url))
+            } catch {
+                alertMessage = "복원 실패: \(error.localizedDescription)"
+            }
+        }
+        .confirmationDialog(restoreTitle, isPresented: Binding(get: { pendingRestore != nil },
+                                                               set: { if !$0 { pendingRestore = nil } }),
+                            titleVisibility: .visible) {
+            Button("지금 기록을 지우고 복원", role: .destructive, action: restore)
+        } message: {
+            Text("현재 이 폰의 기록은 모두 지워지고 백업 내용으로 바뀝니다. 되돌릴 수 없어요.")
+        }
+    }
+
+    private var restoreTitle: String {
+        guard let p = pendingRestore else { return "" }
+        let name = p.babies.first?.name ?? "아기"
+        return "\(name) · 기록 \(p.events.count)건 · 몸무게 \(p.weights.count)건으로 복원할까요?"
+    }
+
+    private func restore() {
+        guard let payload = pendingRestore else { return }
+        pendingRestore = nil
+        do {
+            let counts = try BackupService.replaceAll(with: payload, context: context)
+            try context.saveAndRefreshWidgets()
+            alertMessage = "복원했어요. 기록 \(counts.events)건, 몸무게 \(counts.weights)건"
+        } catch {
+            context.rollback()
+            alertMessage = "복원 실패: \(error.localizedDescription)"
         }
     }
 }

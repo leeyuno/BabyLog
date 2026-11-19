@@ -82,10 +82,18 @@ final class PersistentHistoryMerger {
                 self.lastToken = transactions.last?.token
                 let foreign = transactions.filter { $0.author != Self.appAuthor }
                 guard !foreign.isEmpty else { return }
+                // 위젯 원탭 기록은 가족에게도 보내야 한다 (가족 원격 반영분 author "family" 는 제외)
+                let widgetObjectIDs = foreign.filter { $0.author == "widget" }
+                    .flatMap { $0.changes ?? [] }
+                    .filter { $0.changeType != .delete }
+                    .map(\.changedObjectID)
                 let viewContext = self.container.viewContext
                 viewContext.perform {
                     for tx in foreign { viewContext.mergeChanges(fromContextDidSave: tx.objectIDNotification()) }
                     FeedReminder.reschedule(context: viewContext)   // 위젯 기록도 다음 수유 예상에 반영
+                    var changes = FamilyChanges()
+                    changes.add(objects: widgetObjectIDs.compactMap { try? viewContext.existingObject(with: $0) })
+                    if !changes.isEmpty { Task { @MainActor in FamilySync.shared.push(changes) } }
                 }
             }
         }
@@ -97,6 +105,9 @@ extension NSManagedObjectContext {
     /// 실패 시 변경을 롤백하고 에러를 다시 던진다(호출 측에서 사용자 알림 처리).
     func saveAndRefreshWidgets() throws {
         guard hasChanges else { return }
+        // 가족 공유 중이면 저장 "전"에 바뀐 객체를 모아 두었다가 저장 후 가족에게 보낸다
+        let inFamily = UserDefaults.standard.string(forKey: FamilySync.familyIdKey) != nil
+        let familyChanges = inFamily ? FamilyChanges.collect(from: self) : FamilyChanges()
         do {
             try save()
         } catch {
@@ -105,5 +116,8 @@ extension NSManagedObjectContext {
         }
         WidgetCenter.shared.reloadAllTimelines()
         FeedReminder.reschedule(context: self)   // 수유 기록이 바뀌면 다음 수유 알림도 다시 예약
+        if !familyChanges.isEmpty {
+            Task { @MainActor in FamilySync.shared.push(familyChanges) }
+        }
     }
 }

@@ -14,6 +14,10 @@ ADMOB_VERSION = '11.5.0'
 
 target 'BabyLog' do
   pod 'Google-Mobile-Ads-SDK', ADMOB_VERSION
+  # 가족 공유 (익명 로그인 + Cloud Firestore). 위젯 익스텐션에는 넣지 않는다 —
+  # 위젯 원탭 기록은 앱이 활성화될 때 PersistentHistoryMerger 가 가족에게 보낸다.
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
 
   target 'BabyLogTests' do
     inherit! :search_paths
@@ -32,6 +36,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       # Pods 의 최소 배포 타깃을 앱과 맞춰 "deployment target 9.0/11.0 is unsupported" 경고 제거
+      # Firebase 는 iOS 15+ 요구 — 앱보다 낮지 않게 유지
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
     end
   end
