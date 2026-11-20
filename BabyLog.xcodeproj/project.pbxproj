@@ -65,6 +65,7 @@
 		4F1E7E962E82434900ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */; };
+		4F1E7F422E90000A00ED93E7 /* Telemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F412E90000A00ED93E7 /* Telemetry.swift */; };
 		4F1E7F122E90000700ED93E7 /* FamilySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F112E90000700ED93E7 /* FamilySync.swift */; };
 		4F1E7F142E90000700ED93E7 /* FirestoreFamilyBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F132E90000700ED93E7 /* FirestoreFamilyBackend.swift */; };
 		4F1E7EB22E90000100ED93E7 /* FeedingGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EB12E90000100ED93E7 /* FeedingGuide.swift */; };
@@ -83,6 +84,7 @@
 		4F1E7EE22E90000400ED93E7 /* OneTapLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EE12E90000400ED93E7 /* OneTapLog.swift */; };
 		4F1E7EE32E90000400ED93E7 /* OneTapLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EE12E90000400ED93E7 /* OneTapLog.swift */; };
 		4F1E7EE52E90000400ED93E7 /* BabyLogOneTapWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EE42E90000400ED93E7 /* BabyLogOneTapWidget.swift */; };
+		4F1E7F322E90000900ED93E7 /* BabyLogNextFeedWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F312E90000900ED93E7 /* BabyLogNextFeedWidget.swift */; };
 		4F1E7EF22E90000500ED93E7 /* NightMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EF12E90000500ED93E7 /* NightMode.swift */; };
 		4F1E7EF42E90000500ED93E7 /* BackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7EF32E90000500ED93E7 /* BackupService.swift */; };
 		4F1E7F022E90000600ED93E7 /* NextFeedAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F012E90000600ED93E7 /* NextFeedAttributes.swift */; };
@@ -186,6 +188,7 @@
 		4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickLockWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickHomeWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastValueProvider.swift; sourceTree = "<group>"; };
+		4F1E7F412E90000A00ED93E7 /* Telemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Telemetry.swift; sourceTree = "<group>"; };
 		4F1E7F112E90000700ED93E7 /* FamilySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilySync.swift; sourceTree = "<group>"; };
 		4F1E7F132E90000700ED93E7 /* FirestoreFamilyBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreFamilyBackend.swift; sourceTree = "<group>"; };
 		4F1E7EB02E90000100ED93E7 /* BabyLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BabyLog 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -204,6 +207,7 @@
 		4F1E7EDC2E90000300ED93E7 /* BabyLog 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BabyLog 4.xcdatamodel"; sourceTree = "<group>"; };
 		4F1E7EE12E90000400ED93E7 /* OneTapLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneTapLog.swift; sourceTree = "<group>"; };
 		4F1E7EE42E90000400ED93E7 /* BabyLogOneTapWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogOneTapWidget.swift; sourceTree = "<group>"; };
+		4F1E7F312E90000900ED93E7 /* BabyLogNextFeedWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLogNextFeedWidget.swift; sourceTree = "<group>"; };
 		4F1E7EF12E90000500ED93E7 /* NightMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightMode.swift; sourceTree = "<group>"; };
 		4F1E7EF32E90000500ED93E7 /* BackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupService.swift; sourceTree = "<group>"; };
 		4F1E7F012E90000600ED93E7 /* NextFeedAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextFeedAttributes.swift; sourceTree = "<group>"; };
@@ -331,6 +335,7 @@
 				4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */,
 				4F1E7E8D2E82400600ED93E7 /* AdsConfig.swift */,
 				4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */,
+				4F1E7F412E90000A00ED93E7 /* Telemetry.swift */,
 				4F1E7F112E90000700ED93E7 /* FamilySync.swift */,
 				4F1E7F132E90000700ED93E7 /* FirestoreFamilyBackend.swift */,
 				4F1E7F012E90000600ED93E7 /* NextFeedAttributes.swift */,
@@ -394,6 +399,7 @@
 			children = (
 				4F1E7E442E7FA48400ED93E7 /* BabyLogWidgetBundle.swift */,
 				4F1E7EE42E90000400ED93E7 /* BabyLogOneTapWidget.swift */,
+				4F1E7F312E90000900ED93E7 /* BabyLogNextFeedWidget.swift */,
 				4F1E7E462E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift */,
 				4F1E7E822E81A19200ED93E7 /* BabyLogQuickAddWIdget.swift */,
 				4F1E7E482E7FA48400ED93E7 /* BabyLogElapsedWidget.swift */,
@@ -436,6 +442,7 @@
 				4F1E7E562E7FA48600ED93E7 /* Embed Foundation Extensions */,
 				552061BAF48E5E1C2E37ADD8 /* [CP] Copy Pods Resources */,
 				44CDEB39E0E636CB6A372D8B /* [CP] Embed Pods Frameworks */,
+				4F1E7F432E90000A00ED93E7 /* Upload Crashlytics dSYM */,
 			);
 			buildRules = (
 			);
@@ -587,6 +594,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4F1E7F432E90000A00ED93E7 /* Upload Crashlytics dSYM */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Upload Crashlytics dSYM";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Crashlytics: 릴리스 빌드의 dSYM 을 올려 크래시 스택을 읽을 수 있게 한다.\n# Firebase 설정 파일이 없거나(공개 저장소 클론) DEBUG 빌드면 건너뛴다.\nif [ \"${CONFIGURATION}\" != \"Release\" ]; then exit 0; fi\nif [ ! -f \"${SRCROOT}/BabyLog/GoogleService-Info.plist\" ]; then\n  echo \"warning: GoogleService-Info.plist 없음 — Crashlytics dSYM 업로드 생략\"; exit 0\nfi\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
 		4F1E7F152E90000700ED93E7 /* Copy Firebase Config (if present) */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -771,6 +802,7 @@
 			files = (
 				4F1E7E1E2E72FAB900ED93E7 /* RootView.swift in Sources */,
 				4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */,
+				4F1E7F422E90000A00ED93E7 /* Telemetry.swift in Sources */,
 				4F1E7F122E90000700ED93E7 /* FamilySync.swift in Sources */,
 				4F1E7F142E90000700ED93E7 /* FirestoreFamilyBackend.swift in Sources */,
 				4F1E7F022E90000600ED93E7 /* NextFeedAttributes.swift in Sources */,
@@ -847,6 +879,7 @@
 				4F1E7F032E90000600ED93E7 /* NextFeedAttributes.swift in Sources */,
 				4F1E7EE32E90000400ED93E7 /* OneTapLog.swift in Sources */,
 				4F1E7EE52E90000400ED93E7 /* BabyLogOneTapWidget.swift in Sources */,
+				4F1E7F322E90000900ED93E7 /* BabyLogNextFeedWidget.swift in Sources */,
 				4F1E7ED32E90000300ED93E7 /* FeedSchedule.swift in Sources */,
 				4F1E7EC32E90000200ED93E7 /* WeightRecord.swift in Sources */,
 				4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */,

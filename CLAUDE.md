@@ -41,7 +41,7 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 `AddQuickHomeWidgetView.swift`, `AddQuickLockWidgetView.swift`, `DailySummaryWidgetChipView.swift`, `BabyLog.xcdatamodeld`, `BabyLogWidget.intentdefinition`,
 그리고 **위젯 파일 4개**(`BabyLogElapsedWidget`, `BabyLogTodayWidget`, `BabyLogDailySummaryWidget`, `BabyLogQuickAddWIdget`)입니다. 이 4개는 앱 타깃에서도 컴파일됩니다.
 
-**위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogOneTapWidget.swift`(AppIntent), `BabyLogWidgetLiveActivity.swift`(잠금화면 다음 수유)
+**위젯 타깃에만 들어가는 파일**: `BabyLogWidgetBundle.swift`(@main), `BabyLogOneTapWidget.swift`(AppIntent), `BabyLogNextFeedWidget.swift`(잠금화면 "○ 수유 1시간 20분 뒤"), `BabyLogWidgetLiveActivity.swift`(잠금화면 다음 수유)
 **앱 타깃에만 들어가는 파일**: 위 목록에 없는 나머지 전부입니다(예: `FamilySync.swift`, `FirestoreFamilyBackend.swift`, `FeedingGuide.swift`, `WHOGrowth.swift`, `FeedReminder.swift`, `NightMode.swift`, `BackupService.swift`, `BabyPhotoStore.swift`, `GrowthView.swift`, `SettingsView.swift`, `Persistence.swift`, 광고 관련 파일).
 
 - 위 파일에서는 `UIKit`, `GoogleMobileAds`, `PersistenceController`, `WidgetCenter`, `FeedingGuide`처럼 **앱 전용 심볼을 참조하면 안 됩니다.**
@@ -168,6 +168,16 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 - ⚠️ **ID는 항상 소문자입니다**(`BackupService.wireID`). 읽을 때는 대소문자를 모두 받습니다.
 - `GoogleService-Info.plist`가 없으면(공개 저장소를 새로 클론한 경우 등) Firebase를 건너뛰고 가족 공유만 꺼집니다.
 - Firebase iOS SDK는 CocoaPods(FirebaseAuth, FirebaseFirestore 12.19)로 들어와 있습니다. Firebase는 2026년 10월 이후 CocoaPods 배포를 중단하므로, 업그레이드가 필요해지면 Swift Package Manager로 옮겨야 합니다.
+
+## 크래시 리포트 · 사용 통계 (`Telemetry`)
+
+- Firebase Crashlytics와 Analytics를 씁니다. `FirebaseApp.configure()` 다음에 `Telemetry.start()`를 호출합니다.
+- **DEBUG 빌드에서는 수집하지 않습니다.** 설정 파일이 없으면 모든 호출이 아무 일도 하지 않습니다.
+- ⚠️ **아기 이름, 수유량, 몸무게, 메모 같은 건강·개인 정보는 이벤트에 넣지 않습니다.** 기능 사용(종류, 신규·수정)만 남깁니다.
+  - 이벤트 이름은 Android와 같습니다: `record_saved`, `weight_saved`, `family_*`, `backup_*`.
+- 크래시 스택을 읽으려면 dSYM이 필요합니다. 빌드 단계 "Upload Crashlytics dSYM"이 **Release이면서 설정 파일이 있을 때만** 업로드합니다. 위젯 확장의 크래시는 수집하지 않습니다.
+- Analytics 데이터를 보려면 Firebase 콘솔에서 Google Analytics를 연결해야 합니다(프로젝트 설정 > 통합).
+- App Store 개인정보 라벨에 "진단(크래시 데이터)"과 "사용 데이터(제품 상호작용)"를 표시해야 합니다.
 
 ## 딥링크
 

@@ -358,6 +358,7 @@ struct AddEventView: View {
 
         do {
             try context.saveAndRefreshWidgets()
+            Telemetry.log(.recordSaved, ["kind": "\(kind)", "mode": isEditing ? "edit" : "new"])
             dismiss()
         } catch {
             saveError = error.localizedDescription

@@ -274,6 +274,7 @@ struct WeightEntrySheet: View {
             GrowthStore.delete(record, of: baby, in: context)
         }
         GrowthStore.upsert(weightKg: kg, on: date, for: baby, in: context)
+        Telemetry.log(.weightSaved)
         commit()
     }
 

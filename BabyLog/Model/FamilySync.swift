@@ -159,6 +159,7 @@ final class FamilySync: ObservableObject {
         let id = try await backend.createFamily(docs)
         setFamilyId(id)
         start()
+        Telemetry.log(.familyCreated)
         return try await backend.createInvite(familyId: id)
     }
 
@@ -185,6 +186,7 @@ final class FamilySync: ObservableObject {
         try context.saveAndRefreshWidgets()   // 아직 familyId 가 없으므로 다시 보내지 않는다
         setFamilyId(id)
         start()
+        Telemetry.log(.familyJoined)
     }
 
     func leave() async {
@@ -193,6 +195,7 @@ final class FamilySync: ObservableObject {
             try? await backend.leave(familyId: id)   // 실패해도 이 폰에서는 나간 것으로
         }
         setFamilyId(nil)
+        Telemetry.log(.familyLeft)
     }
 
     func memberCount() async -> Int {
@@ -298,6 +301,7 @@ final class FamilySync: ObservableObject {
             for u in changes.upserts {
                 do { try await backend.upsert(familyId: id, collection: u.collection, doc: u.doc) } catch {
                     print("[FamilySync] 전송 실패:", error)
+                    Telemetry.record(error, reason: "family push")
                 }
             }
             for d in changes.deletes {

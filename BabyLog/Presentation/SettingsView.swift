@@ -385,6 +385,7 @@ extension SettingsView {
             Button("백업 파일 만들기") {
                 do {
                     backupDocument = BackupDocument(data: try BackupService.exportData(context: context))
+                    Telemetry.log(.backupExported)
                 } catch {
                     alertMessage = "백업 실패: \(error.localizedDescription)"
                 }
@@ -437,6 +438,7 @@ extension SettingsView {
         pendingRestore = nil
         do {
             let counts = try BackupService.replaceAll(with: payload, context: context)
+            Telemetry.log(.backupRestored)
             try context.saveAndRefreshWidgets()
             alertMessage = "복원했어요. 기록 \(counts.events)건, 몸무게 \(counts.weights)건"
         } catch {

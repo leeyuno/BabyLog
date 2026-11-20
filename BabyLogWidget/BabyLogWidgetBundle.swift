@@ -19,6 +19,7 @@ struct BabyLogWidgetBundle: WidgetBundle {
         BabyLogTodayWidget()
         BabyLogDailySummaryWidget()
         AddQuickRecordWidget()
+        BabyLogNextFeedWidget()   // 잠금화면 "○ 수유 1시간 20분 뒤"
         if #available(iOS 17.0, *) {
             BabyLogOneTapWidget()   // 인터랙티브 위젯(원탭 기록)은 iOS 17+
         }

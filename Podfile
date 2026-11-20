@@ -18,6 +18,9 @@ target 'BabyLog' do
   # 위젯 원탭 기록은 앱이 활성화될 때 PersistentHistoryMerger 가 가족에게 보낸다.
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
+  # 크래시 리포트 · 사용 통계 (릴리스 빌드에서만 수집 — Telemetry.swift)
+  pod 'FirebaseCrashlytics'
+  pod 'FirebaseAnalytics'
 
   target 'BabyLogTests' do
     inherit! :search_paths
