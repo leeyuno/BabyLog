@@ -17,7 +17,7 @@ import WidgetKit
 
 @available(iOS 17.0, *)
 struct LogCareIntent: AppIntent {
-    static var title: LocalizedStringResource = "베이비로그 빠른 기록"
+    static var title: LocalizedStringResource = "먹싸자 빠른 기록"
     static var description = IntentDescription("앱을 열지 않고 기록합니다.")
 
     @Parameter(title: "동작") var action: String

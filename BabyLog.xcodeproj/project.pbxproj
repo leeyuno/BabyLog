@@ -65,6 +65,8 @@
 		4F1E7E962E82434900ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */; };
+		4F1E7F522E90000B00ED93E7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E7F512E90000B00ED93E7 /* PrivacyInfo.xcprivacy */; };
+		4F1E7F542E90000B00ED93E7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E7F532E90000B00ED93E7 /* PrivacyInfo.xcprivacy */; };
 		4F1E7F422E90000A00ED93E7 /* Telemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F412E90000A00ED93E7 /* Telemetry.swift */; };
 		4F1E7F122E90000700ED93E7 /* FamilySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F112E90000700ED93E7 /* FamilySync.swift */; };
 		4F1E7F142E90000700ED93E7 /* FirestoreFamilyBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F132E90000700ED93E7 /* FirestoreFamilyBackend.swift */; };
@@ -188,6 +190,8 @@
 		4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickLockWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickHomeWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastValueProvider.swift; sourceTree = "<group>"; };
+		4F1E7F512E90000B00ED93E7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4F1E7F532E90000B00ED93E7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4F1E7F412E90000A00ED93E7 /* Telemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Telemetry.swift; sourceTree = "<group>"; };
 		4F1E7F112E90000700ED93E7 /* FamilySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilySync.swift; sourceTree = "<group>"; };
 		4F1E7F132E90000700ED93E7 /* FirestoreFamilyBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreFamilyBackend.swift; sourceTree = "<group>"; };
@@ -293,6 +297,7 @@
 				4F1E7DE22E72F85600ED93E7 /* BabyLogApp.swift */,
 				4F1E7DE62E72F85800ED93E7 /* Assets.xcassets */,
 				4F1E7DEB2E72F85800ED93E7 /* Persistence.swift */,
+				4F1E7F512E90000B00ED93E7 /* PrivacyInfo.xcprivacy */,
 				4F1E7DED2E72F85800ED93E7 /* BabyLog.xcdatamodeld */,
 				4F1E7DE82E72F85800ED93E7 /* Preview Content */,
 			);
@@ -398,6 +403,7 @@
 			isa = PBXGroup;
 			children = (
 				4F1E7E442E7FA48400ED93E7 /* BabyLogWidgetBundle.swift */,
+				4F1E7F532E90000B00ED93E7 /* PrivacyInfo.xcprivacy */,
 				4F1E7EE42E90000400ED93E7 /* BabyLogOneTapWidget.swift */,
 				4F1E7F312E90000900ED93E7 /* BabyLogNextFeedWidget.swift */,
 				4F1E7E462E7FA48400ED93E7 /* BabyLogWidgetLiveActivity.swift */,
@@ -566,6 +572,7 @@
 			files = (
 				4F1E7DEA2E72F85800ED93E7 /* Preview Assets.xcassets in Resources */,
 				4F1E7DE72E72F85800ED93E7 /* Assets.xcassets in Resources */,
+				4F1E7F522E90000B00ED93E7 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +595,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F1E7E4C2E7FA48600ED93E7 /* Assets.xcassets in Resources */,
+				4F1E7F542E90000B00ED93E7 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1050,6 +1058,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BabyLog/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "먹싸자";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1088,6 +1097,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BabyLog/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "먹싸자";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1203,7 +1213,7 @@
 				DEVELOPMENT_TEAM = X53GZ83749;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BabyLogWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BabyLogWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = "먹싸자";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1232,7 +1242,7 @@
 				DEVELOPMENT_TEAM = X53GZ83749;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BabyLogWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BabyLogWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = "먹싸자";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

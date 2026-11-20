@@ -116,6 +116,7 @@ struct SettingsView: View {
                 displaySection
                 familySection
                 dataSection
+                aboutSection
                 Section {
                     Button("저장", action: save)
                         .frame(maxWidth: .infinity)
@@ -248,7 +249,7 @@ struct SettingsView: View {
                 } else {
                     await MainActor.run {
                         reminderOn = false
-                        alertMessage = "알림이 꺼져 있어요. 설정 앱 > 베이비로그에서 알림을 허용해 주세요."
+                        alertMessage = "알림이 꺼져 있어요. 설정 앱 > 먹싸자에서 알림을 허용해 주세요."
                     }
                 }
             }
@@ -308,8 +309,27 @@ struct SettingsView: View {
     }
 }
 
-// 가족 공유 · 데이터(백업/복원) 섹션 — 본문 길이 제한 때문에 분리 (같은 파일이라 private 상태에 접근 가능)
+// 가족 공유 · 데이터(백업/복원) · 앱 정보 섹션 — 본문 길이 제한 때문에 분리 (같은 파일이라 private 상태에 접근 가능)
 extension SettingsView {
+    /// 개인정보처리방침·이용약관 (GitHub Pages: 저장소 docs/) — 스토어 심사상 앱 안에서도 열 수 있어야 한다
+    private enum Legal {
+        static let base = "https://leeyuno.github.io/BabyLog"
+        // 고정 문자열이라 실패할 수 없음
+        // swiftlint:disable:next force_unwrapping
+        static let privacy = URL(string: "\(base)/privacy/")!
+        // swiftlint:disable:next force_unwrapping
+        static let terms = URL(string: "\(base)/terms/")!
+    }
+
+    private var aboutSection: some View {
+        Section("앱 정보") {
+            Link("개인정보처리방침", destination: Legal.privacy)
+            Link("이용약관", destination: Legal.terms)
+            LabeledContent("버전", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
+                as? String ?? "-")
+        }
+    }
+
     private var familySection: some View {
         Section {
             if !family.isAvailable {
@@ -366,7 +386,7 @@ extension SettingsView {
             Button("복사") { UIPasteboard.general.string = inviteCode }
             Button("확인", role: .cancel) {}
         } message: {
-            Text("\(inviteCode ?? "")\n\n가족의 베이비로그 앱 > 설정 > 가족 공유 > 초대 코드로 참여에 입력하세요. 24시간 동안 쓸 수 있어요.")
+            Text("\(inviteCode ?? "")\n\n가족의 먹싸자 앱 > 설정 > 가족 공유 > 초대 코드로 참여에 입력하세요. 24시간 동안 쓸 수 있어요.")
         }
     }
 

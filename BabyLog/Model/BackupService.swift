@@ -62,7 +62,7 @@ enum BackupService {
         case notBabyLogFile, newerVersion(Int)
         var errorDescription: String? {
             switch self {
-            case .notBabyLogFile: return "베이비로그 백업 파일이 아니에요."
+            case .notBabyLogFile: return "먹싸자 백업 파일이 아니에요."
             case .newerVersion(let v): return "더 새로운 버전(\(v))의 백업이에요. 앱을 업데이트한 뒤 다시 시도하세요."
             }
         }
@@ -221,6 +221,6 @@ struct BackupDocument: FileDocument {
     static func defaultFilename(now: Date = Date()) -> String {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
-        return "베이비로그-백업-\(f.string(from: now))"
+        return "먹싸자-백업-\(f.string(from: now))"
     }
 }

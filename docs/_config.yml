@@ -1,0 +1,8 @@
+# GitHub Pages (저장소 설정 > Pages > main 브랜치 /docs) — https://leeyuno.github.io/BabyLog/
+# ⚠️ 공개 전 아래 세 값을 채울 것. 문서 본문은 이 값을 그대로 가져다 쓴다.
+title: 먹싸자
+lang: ko
+app_name: 먹싸자
+developer_name: "[개발자 닉네임 — 공개 전 입력]"
+contact_email: "[문의 이메일 — 공개 전 입력]"
+effective_date: "[시행일 — 공개일로 입력, 예: 2026년 12월 1일]"

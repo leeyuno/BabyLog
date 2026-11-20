@@ -52,7 +52,7 @@ struct BabyLogDailySummaryWidgetEntryView: View {
             content(summary: s)
         } else {
             VStack(alignment: .leading) {
-                Text("베이비로그").font(.headline)
+                Text("먹싸자").font(.headline)
                 Text("앱을 열어 오늘 데이터를 기록하세요").font(.caption).foregroundStyle(.secondary)
             }
             .padding()

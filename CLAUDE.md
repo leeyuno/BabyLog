@@ -1,6 +1,8 @@
 # CLAUDE.md — BabyLog
 
-수유 · 기저귀 · 수면을 기록하는 iOS 육아 기록 앱입니다. SwiftUI와 Core Data로 만들었고, WidgetKit 위젯과 AdMob 광고가 붙어 있습니다.
+수유 · 기저귀 · 수면을 기록하는 iOS 육아 기록 앱입니다. 사용자에게 보이는 앱 이름은 **먹싸자**(먹고·싸고·자고)이고, 코드·번들 ID·`babylog://` 링크·위젯 kind는 기존 `BabyLog` 이름을 그대로 씁니다(바꾸면 기존 데이터와 위젯이 끊김).
+
+- 개인정보처리방침·이용약관은 `docs/`(GitHub Pages)에 있고, 값은 `docs/_config.yml`에서 채웁니다. 앱이 처리하는 데이터를 바꾸면 이 문서와 `PrivacyInfo.xcprivacy`, 스토어 개인정보 항목을 함께 고칩니다. SwiftUI와 Core Data로 만들었고, WidgetKit 위젯과 AdMob 광고가 붙어 있습니다.
 UI 문자열과 코드 주석은 **한국어**로 씁니다.
 
 ## 빌드 / 실행
