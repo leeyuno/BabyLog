@@ -15,10 +15,17 @@ import CoreData
 import WidgetKit
 
 struct PersistenceController {
+    #if DEBUG
+    /// 스크린샷 데모 모드(-screenshotDemo)면 인메모리 데모 스토어 (DemoData.swift)
+    static let shared = DemoData.isOn ? DemoData.makeController() : PersistenceController()
+    #else
     static let shared = PersistenceController()
+    #endif
 
     let container: NSPersistentContainer
     let historyMerger: PersistentHistoryMerger?
+    /// 스토어를 열지 못한 경우의 오류. nil 이 아니면 앱은 기록 화면 대신 안내 화면(StoreErrorView)을 띄운다.
+    let loadError: Error?
 
     /// - Parameter inMemory: true 면 /dev/null 스토어(프리뷰·유닛테스트용)
     init(inMemory: Bool = false) {
@@ -34,17 +41,20 @@ struct PersistenceController {
             container.persistentStoreDescriptions = [SharedPersistence.storeDescription(url: storeURL)]
         }
 
+        // 실패 원인: 디스크 부족, 마이그레이션 불가 등. 크래시 대신 안내 화면을 띄우고 기록 파일은 그대로 둔다
+        // (지우면 복구할 길이 없어진다). loadPersistentStores 는 기본 설정에서 동기로 끝난다.
+        var failure: Error?
         container.loadPersistentStores { _, error in
-            if let error = error as NSError? {
-                // 실패 원인: 디스크 부족, 잠금 상태의 데이터 보호, 마이그레이션 불가 등.
-                // TODO: 출시 전 사용자 알림/복구 경로 마련 (현재는 개발 단계라 크래시로 노출)
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+            if let error {
+                print("[Persistence] 스토어 로드 실패:", error)
+                failure = error
             }
         }
+        loadError = failure
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         container.viewContext.transactionAuthor = PersistentHistoryMerger.appAuthor
-        historyMerger = inMemory ? nil : PersistentHistoryMerger(container: container)
+        historyMerger = (inMemory || failure != nil) ? nil : PersistentHistoryMerger(container: container)
     }
 }
 

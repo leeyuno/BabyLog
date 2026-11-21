@@ -25,36 +25,41 @@ struct RootView: View {
     )
     private var babies: FetchedResults<Baby>
 
+    @State private var tab = Self.initialTab
     @State private var showAdd = false
     @State private var addKind: AddKind = .feeding
 
     var body: some View {
         Group {
             if let baby = babies.first {
-                TabView {
+                TabView(selection: $tab) {
                     TimelineView(baby: baby)
                         .tabItem {
                             Image(systemName: "list.bullet.rectangle")
                             Text("타임라인")
                         }
+                        .tag(0)
 
                     WeeklyOverviewView(baby: baby)
                         .tabItem {
                             Image(systemName: "chart.bar.doc.horizontal")
                             Text("주간 개요")
                         }
+                        .tag(1)
 
                     GrowthView(baby: baby)
                         .tabItem {
                             Image(systemName: "chart.line.uptrend.xyaxis")
                             Text("성장")
                         }
+                        .tag(2)
 
                     SettingsView(baby: baby)
                         .tabItem {
                             Image(systemName: "gearshape")
                             Text("설정")
                         }
+                        .tag(3)
                 }
                 // 백업 복원 등으로 아기 객체가 바뀌면 탭 전체를 새로 만든다 (지워진 객체 참조 방지)
                 .id(baby.objectID)
@@ -67,7 +72,15 @@ struct RootView: View {
                     }
                 )
                 // 첫 진입(앱이 딥링크로 콜드스타트)에도 반영되도록 onAppear 에서도 확인
-                .onAppear { presentIfNeeded(router.route) }
+                .onAppear {
+                    presentIfNeeded(router.route)
+                    #if DEBUG
+                    if DemoData.isOn, let kind = DemoData.initialAdd {
+                        addKind = kind
+                        showAdd = true
+                    }
+                    #endif
+                }
                 .onChange(of: router.route) { route in
                     presentIfNeeded(route)
                 }
@@ -75,6 +88,15 @@ struct RootView: View {
                 OnboardingNewBabyView()
             }
         }
+    }
+
+    /// 시작 탭 — 스크린샷 데모 모드(-demoTab)에서만 바뀐다
+    private static var initialTab: Int {
+        #if DEBUG
+        return DemoData.isOn ? DemoData.initialTab : 0
+        #else
+        return 0
+        #endif
     }
 
     private func presentIfNeeded(_ route: AppRoute) {

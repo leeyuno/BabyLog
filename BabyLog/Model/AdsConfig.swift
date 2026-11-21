@@ -19,4 +19,13 @@ enum AdsConfig {
     #else
     static let bannerUnitID = "ca-app-pub-8508073786238492/5538132947"
     #endif
+
+    /// 광고 표시 여부 — 스크린샷 데모 모드에서는 테스트 광고가 찍히지 않도록 숨긴다
+    static var showsAds: Bool {
+        #if DEBUG
+        return !DemoData.isOn
+        #else
+        return true
+        #endif
+    }
 }

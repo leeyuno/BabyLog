@@ -51,7 +51,7 @@ struct WeeklyOverviewView: View {
         return ScrollView {
             VStack(spacing: 24) {
                 headerTotals(totals)
-                ChartsGroupedBars(totals: totals)
+                WeeklyMetricChart(totals: totals)
                 kpiChips(DailySummary(totals: totals))
             }
             .padding()

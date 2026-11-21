@@ -22,7 +22,8 @@ UI 문자열과 코드 주석은 **한국어**로 씁니다.
   - ⚠️ 테스트에 `CODE_SIGNING_ALLOWED=NO`를 쓰면 안 됩니다. App Group 엔타이틀먼트가 빠져서 호스트 앱이 시작하자마자 크래시합니다.
   - 스크립트는 로컬 ad-hoc 서명(`CODE_SIGN_IDENTITY=-`)을 사용합니다.
 - 스킴: `BabyLog`(앱과 단위 테스트), `BabyLogWidgetExtension`(위젯)
-- 배포 타깃: 앱과 단위 테스트는 `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`(Xcode 27 기준 17.0), 위젯과 UI 테스트는 16.2(프로젝트 기본값), Pods는 16.0(Podfile의 post_install에서 설정)
+- 배포 타깃: 앱과 단위 테스트는 **17.0**(고정), 위젯과 UI 테스트는 16.2(프로젝트 기본값), Pods는 16.0(Podfile의 post_install에서 설정)
+- 기기: 아이폰 전용(`TARGETED_DEVICE_FAMILY = 1`), 세로 전용. 앱 언어는 한국어(`developmentRegion = ko`)입니다. en으로 되돌리면 한국어 폰에서도 날짜가 "Nov 20 / PM"으로 나옵니다.
   - ⚠️ 테스트 타깃이 앱보다 낮으면 `@testable import` 단계에서 컴파일 에러가 납니다. 배포 타깃을 바꿀 때는 모든 타깃을 함께 맞춥니다.
 
 ## 디렉터리 구조
@@ -219,10 +220,18 @@ BabyLogTests/            단위 테스트 (Router, CareStats, DailySummary, Last
 - **실수를 방지합니다.** 풀 스와이프 삭제는 막고, 시트 안에서 삭제할 때는 한 번 더 확인을 받습니다. 미래 시각은 입력할 수 없습니다.
 - 기록 추가와 편집은 **한 화면(`AddEventView`)** 에서 처리합니다. 편집 전용 화면을 따로 만들지 않습니다.
 
+## 출시 (App Store)
+
+- 체크리스트, 개인정보 라벨 답변, 연령 등급은 `fastlane/APP_STORE.md`, 스토어 문구는 `fastlane/metadata/ko/`에 있습니다.
+- 빌드 단계 "Release Checks"는 **Archive 할 때** AdMob 앱 ID가 테스트 ID이거나 `GoogleService-Info.plist`가 없으면 실패합니다.
+- 스크린샷은 `./scripts/screenshots.sh`로 찍습니다. DEBUG 전용 데모 모드(`DemoData.swift`, 실행 인자 `-screenshotDemo -demoTab N -demoAdd feeding`)가 인메모리 데모 기록을 쓰고 광고를 숨깁니다. 실제 데이터는 건드리지 않습니다.
+- 앱이 수집하는 데이터를 바꾸면 `docs/privacy.md`, `PrivacyInfo.xcprivacy`, `fastlane/APP_STORE.md`의 개인정보 라벨을 함께 고칩니다.
+
 ## 코드 컨벤션
 
 - 파일 헤더 아래에 그 파일의 역할을 한국어 1~3줄로 적습니다. 비직관적인 규칙은 `⚠️`로 표시합니다.
 - 디버그용 `print`는 남기지 않습니다. 에러 로그만 허용합니다.
+- `Text("…")` 문자열 리터럴은 마크다운으로 해석됩니다. `3~97 · 15~85`처럼 `~`가 두 번 들어가면 취소선이 되므로 `Text(verbatim:)`을 씁니다.
 - iOS 16 호환을 유지합니다. iOS 17 전용 API는 `#available`로 분기합니다.
 - 새 화면에는 `PreviewPersistence.controller`를 쓰는 `PreviewProvider`를 붙입니다.
 - 커밋 메시지는 `[feat] 한글 설명`, `[fix] 한글 설명` 형식입니다.
@@ -275,11 +284,8 @@ let request = CareEvent.fetchRequest(
 
 ## 알려진 이슈 / TODO
 
-- 앱의 배포 타깃이 `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`이라서 **Xcode를 업데이트하면 최소 지원 iOS 버전이 저절로 올라갈 수 있습니다.** 출시 전에 명시적인 버전(예: 17.0)으로 고정하는 것을 권장합니다.
-- `PersistenceController`는 스토어 로드에 실패하면 `fatalError`를 냅니다. 사용자에게 알리고 복구하는 경로가 필요합니다.
+- 스토어 로드에 실패하면 크래시 대신 안내 화면(`StoreErrorView`)을 띄우고 파일은 그대로 둡니다. 자동 복구(재시도, 백업에서 복원)는 아직 없습니다.
 - `TimelineView`(24시간)와 `WeeklyOverviewView`(7일)의 기준 시각은 init 시점에 고정됩니다. 자정을 넘겨 앱을 켜 두면 범위가 갱신되지 않습니다.
-- `ChartsGroupedBars`는 단위가 다른 세 지표를 한 y축에 그립니다. 수유 값이 너무 커서 수면과 배변 막대가 묻힙니다.
 - `MetricChipView`와 `DailySummaryWidgetChipView`의 로직이 중복됩니다(폰트만 다름). 고칠 때는 둘 다 고쳐야 합니다.
-- `FallbackBars.swift`는 쓰이지 않으므로 삭제 후보입니다.
 - 아기를 여러 명 다루는 기능은 아직 없습니다. 아기 정보와 사진 수정은 설정 탭에서 할 수 있습니다.
 - 온보딩에서는 몸무게를 입력받지 않습니다. 자동 추천을 쓰려면 설정 탭에서 따로 입력해야 합니다.

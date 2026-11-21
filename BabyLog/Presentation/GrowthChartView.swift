@@ -118,7 +118,8 @@ struct WHOPercentileNote: View {
                       let pct = WHOGrowth.percentile(weight: p.kg, sex: sex, months: p.x) {
                 Text("WHO 기준 백분위 \(Self.format(pct)) · 같은 개월수 \(sex.label) 100명 중 약 \(Int(pct.rounded()))명보다 무거워요")
                     .foregroundStyle(.primary)
-                Text("음영은 WHO 성장 표준 3~97 · 15~85 백분위, 점선은 중앙값이에요. 진단이 아닌 참고용입니다.")
+                // verbatim: 문자열 리터럴은 마크다운으로 해석돼 "~…~"가 취소선이 된다
+                Text(verbatim: "음영은 WHO 성장 표준 3~97 · 15~85 백분위, 점선은 중앙값이에요. 진단이 아닌 참고용입니다.")
             } else if latest != nil, byAge {
                 Text("WHO 비교는 24개월까지만 제공돼요.")
             }

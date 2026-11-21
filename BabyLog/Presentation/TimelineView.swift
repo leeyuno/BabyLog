@@ -80,10 +80,12 @@ struct TimelineView: View {
                                 }
                             }
                         }
-                        BannerView(adUnitID: AdsConfig.bannerUnitID)
+                        if AdsConfig.showsAds {
+                            BannerView(adUnitID: AdsConfig.bannerUnitID)
                                 .frame(height: 60)            // Adaptive 배너 높이 ≈ 50~60
                                 .listRowInsets(EdgeInsets())  // 좌우 여백 제거
                                 .listRowSeparator(.hidden)    // 구분선 제거
+                        }
                     }
                 }
                 .navigationTitle("\(baby.name) 타임라인")

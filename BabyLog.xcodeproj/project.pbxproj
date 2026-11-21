@@ -29,8 +29,7 @@
 		4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */; };
 		4F1E7E302E75A12500ED93E7 /* BabyLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */; };
 		4F1E7E342E7F8C5000ED93E7 /* WeeklyOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */; };
-		4F1E7E362E7F93C000ED93E7 /* ChartsGroupedBars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */; };
-		4F1E7E382E7F960E00ED93E7 /* FallbackBars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */; };
+		4F1E7E362E7F93C000ED93E7 /* WeeklyMetricChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E352E7F93C000ED93E7 /* WeeklyMetricChart.swift */; };
 		4F1E7E402E7FA48400ED93E7 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1E7E3F2E7FA48300ED93E7 /* WidgetKit.framework */; };
 		4F1E7E422E7FA48400ED93E7 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1E7E412E7FA48400ED93E7 /* SwiftUI.framework */; };
 		4F1E7E452E7FA48400ED93E7 /* BabyLogWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E442E7FA48400ED93E7 /* BabyLogWidgetBundle.swift */; };
@@ -65,6 +64,7 @@
 		4F1E7E962E82434900ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E972E82434D00ED93E7 /* AddQuickHomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */; };
 		4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */; };
+		4F1E7F622E90000C00ED93E7 /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F612E90000C00ED93E7 /* DemoData.swift */; };
 		4F1E7F522E90000B00ED93E7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E7F512E90000B00ED93E7 /* PrivacyInfo.xcprivacy */; };
 		4F1E7F542E90000B00ED93E7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E7F532E90000B00ED93E7 /* PrivacyInfo.xcprivacy */; };
 		4F1E7F422E90000A00ED93E7 /* Telemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E7F412E90000A00ED93E7 /* Telemetry.swift */; };
@@ -164,8 +164,7 @@
 		4F1E7E2D2E7454BB00ED93E7 /* PreviewPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPersistence.swift; sourceTree = "<group>"; };
 		4F1E7E2F2E75A12500ED93E7 /* BabyLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLog.swift; sourceTree = "<group>"; };
 		4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyOverviewView.swift; sourceTree = "<group>"; };
-		4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsGroupedBars.swift; sourceTree = "<group>"; };
-		4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallbackBars.swift; sourceTree = "<group>"; };
+		4F1E7E352E7F93C000ED93E7 /* WeeklyMetricChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyMetricChart.swift; sourceTree = "<group>"; };
 		4F1E7E3D2E7FA48300ED93E7 /* BabyLogWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BabyLogWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1E7E3F2E7FA48300ED93E7 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4F1E7E412E7FA48400ED93E7 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -190,6 +189,7 @@
 		4F1E7E922E82433A00ED93E7 /* AddQuickLockWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickLockWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E952E82434900ED93E7 /* AddQuickHomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuickHomeWidgetView.swift; sourceTree = "<group>"; };
 		4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastValueProvider.swift; sourceTree = "<group>"; };
+		4F1E7F612E90000C00ED93E7 /* DemoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
 		4F1E7F512E90000B00ED93E7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4F1E7F532E90000B00ED93E7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4F1E7F412E90000A00ED93E7 /* Telemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Telemetry.swift; sourceTree = "<group>"; };
@@ -340,6 +340,7 @@
 				4F1E7E792E819E4A00ED93E7 /* DailySummary.swift */,
 				4F1E7E8D2E82400600ED93E7 /* AdsConfig.swift */,
 				4F1E7E982E82925500ED93E7 /* LastValueProvider.swift */,
+				4F1E7F612E90000C00ED93E7 /* DemoData.swift */,
 				4F1E7F412E90000A00ED93E7 /* Telemetry.swift */,
 				4F1E7F112E90000700ED93E7 /* FamilySync.swift */,
 				4F1E7F132E90000700ED93E7 /* FirestoreFamilyBackend.swift */,
@@ -362,10 +363,9 @@
 			isa = PBXGroup;
 			children = (
 				4F1E7E1D2E72FAB900ED93E7 /* RootView.swift */,
-				4F1E7E352E7F93C000ED93E7 /* ChartsGroupedBars.swift */,
+				4F1E7E352E7F93C000ED93E7 /* WeeklyMetricChart.swift */,
 				4F1E7E332E7F8C5000ED93E7 /* WeeklyOverviewView.swift */,
 				4F1E7E6B2E8195D100ED93E7 /* MetricChipView.swift */,
-				4F1E7E372E7F960E00ED93E7 /* FallbackBars.swift */,
 				4F1E7E212E72FB8E00ED93E7 /* TimelineView.swift */,
 				4F1E7E232E72FE9000ED93E7 /* EventRowView.swift */,
 				4F1E7E7D2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift */,
@@ -449,6 +449,7 @@
 				552061BAF48E5E1C2E37ADD8 /* [CP] Copy Pods Resources */,
 				44CDEB39E0E636CB6A372D8B /* [CP] Embed Pods Frameworks */,
 				4F1E7F432E90000A00ED93E7 /* Upload Crashlytics dSYM */,
+				4F1E7F632E90000C00ED93E7 /* Release Checks */,
 			);
 			buildRules = (
 			);
@@ -546,9 +547,10 @@
 			};
 			buildConfigurationList = 4F1E7DDA2E72F85600ED93E7 /* Build configuration list for PBXProject "BabyLog" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				ko,
 				en,
 				Base,
 			);
@@ -602,6 +604,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4F1E7F632E90000C00ED93E7 /* Release Checks */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Release Checks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# 출시 점검: App Store 로 보낼 빌드(archive)가 테스트 설정으로 나가는 것을 막는다.\nif [ \"${ACTION}\" != \"install\" ]; then exit 0; fi\nPLIST=\"${SRCROOT}/BabyLog/Info.plist\"\nGAD=$(/usr/libexec/PlistBuddy -c \"Print :GADApplicationIdentifier\" \"$PLIST\" 2>/dev/null)\nif [ \"$GAD\" = \"ca-app-pub-3940256099942544~1458002511\" ]; then\n  echo \"error: Info.plist 의 GADApplicationIdentifier 가 구글 테스트 앱 ID 입니다. AdMob 의 실제 앱 ID 로 바꾸세요.\"\n  exit 1\nfi\nif [ ! -f \"${SRCROOT}/BabyLog/GoogleService-Info.plist\" ]; then\n  echo \"error: GoogleService-Info.plist 가 없습니다. 가족 공유·크래시 리포트가 꺼진 채로 출시됩니다.\"\n  exit 1\nfi\n";
+		};
 		4F1E7F432E90000A00ED93E7 /* Upload Crashlytics dSYM */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -624,7 +645,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Crashlytics: 릴리스 빌드의 dSYM 을 올려 크래시 스택을 읽을 수 있게 한다.\n# Firebase 설정 파일이 없거나(공개 저장소 클론) DEBUG 빌드면 건너뛴다.\nif [ \"${CONFIGURATION}\" != \"Release\" ]; then exit 0; fi\nif [ ! -f \"${SRCROOT}/BabyLog/GoogleService-Info.plist\" ]; then\n  echo \"warning: GoogleService-Info.plist 없음 — Crashlytics dSYM 업로드 생략\"; exit 0\nfi\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+			shellScript = "# Crashlytics: 릴리스 빌드의 dSYM 을 올려 크래시 스택을 읽을 수 있게 한다.\n# Firebase 설정 파일이 없거나(공개 저장소 클론) DEBUG 빌드면 건너뛴다.\nif [ \"${CONFIGURATION}\" != \"Release\" ]; then exit 0; fi\n# 서명하지 않은 검증용 빌드는 배포할 수 없으므로 올리지 않는다\nif [ \"${CODE_SIGNING_ALLOWED}\" = \"NO\" ]; then exit 0; fi\nif [ ! -f \"${SRCROOT}/BabyLog/GoogleService-Info.plist\" ]; then\n  echo \"warning: GoogleService-Info.plist 없음 — Crashlytics dSYM 업로드 생략\"; exit 0\nfi\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		4F1E7F152E90000700ED93E7 /* Copy Firebase Config (if present) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -810,6 +831,7 @@
 			files = (
 				4F1E7E1E2E72FAB900ED93E7 /* RootView.swift in Sources */,
 				4F1E7E992E82925500ED93E7 /* LastValueProvider.swift in Sources */,
+				4F1E7F622E90000C00ED93E7 /* DemoData.swift in Sources */,
 				4F1E7F422E90000A00ED93E7 /* Telemetry.swift in Sources */,
 				4F1E7F122E90000700ED93E7 /* FamilySync.swift in Sources */,
 				4F1E7F142E90000700ED93E7 /* FirestoreFamilyBackend.swift in Sources */,
@@ -836,7 +858,7 @@
 				4F1E7E222E72FB8E00ED93E7 /* TimelineView.swift in Sources */,
 				4F1E7E7A2E819E4A00ED93E7 /* DailySummary.swift in Sources */,
 				4F1E7E7C2E819E5B00ED93E7 /* BabyLogDailySummaryWidget.swift in Sources */,
-				4F1E7E362E7F93C000ED93E7 /* ChartsGroupedBars.swift in Sources */,
+				4F1E7E362E7F93C000ED93E7 /* WeeklyMetricChart.swift in Sources */,
 				4F1E7E8E2E82400600ED93E7 /* AdsConfig.swift in Sources */,
 				4F1E7DEC2E72F85800ED93E7 /* Persistence.swift in Sources */,
 				4F1E7E4F2E7FA48600ED93E7 /* BabyLogWidget.intentdefinition in Sources */,
@@ -856,7 +878,6 @@
 				4F1E7E242E72FE9000ED93E7 /* EventRowView.swift in Sources */,
 				4F1E7E2E2E7454BB00ED93E7 /* PreviewPersistence.swift in Sources */,
 				4F1E7E1B2E72FA1500ED93E7 /* CareEvent.swift in Sources */,
-				4F1E7E382E7F960E00ED93E7 /* FallbackBars.swift in Sources */,
 				4F1E7E7E2E819ED900ED93E7 /* DailySummaryWidgetChipView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1064,8 +1085,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1078,7 +1099,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1103,8 +1124,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1117,7 +1138,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -1131,7 +1152,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X53GZ83749;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leeyuno.babylog.ios.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1152,7 +1173,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X53GZ83749;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leeyuno.babylog.ios.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1226,7 +1247,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1255,7 +1276,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
